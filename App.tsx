@@ -2,23 +2,17 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import MapView, { EventActionType, LatLng, Marker, Point, Polyline } from 'react-native-maps'
+import MapView, { Polyline } from 'react-native-maps'
 import React, { useState } from 'react';
+
 import useMarkers from './hook/useMarkers';
+import useRoutes from './hook/useRoutes';
 
+import { ListMarkers } from './component/ListMarkers';
+import { ListRoutes } from './component/ListRoutes';
 
-interface MarkerCustom {
-  name?: string;
-  coordinate: LatLng; 
-  position?: Point; 
-}
-interface Route extends MarkerCustom{
-  coordinateEnd: LatLng
-}
-interface MapEvent extends MarkerCustom{
-  action: EventActionType; 
-  id?: string | undefined;
-}
+import { MarkerCustom, Route, MapEvent } from './type_tmp';
+
 
 const styles = StyleSheet.create({
   page: {
@@ -48,8 +42,8 @@ const styles = StyleSheet.create({
 
 
 export default function App() {
-  const [markers, addMarker, removeMarker] = useMarkers([]);
-  const [routes, addRoute, removeRoute] = useMarkers([]);
+  const [markers, addMarker, removeMarker] = useMarkers();
+  const [routes, addRoute, removeRoute] = useRoutes();
   const [formName, setFormName] = useState<string>('')
   const [activeComponent, setActiveComponent] = useState<MarkerCustom | Route | null>(null)
 
@@ -69,7 +63,7 @@ export default function App() {
     addRoute({name:`${departure.name} - ${destination.name}`, coordinate: departure.coordinate, coordinateEnd: destination.coordinate})
   }
 
-  const handlePressEvent = (marker: MarkerCustom): void => {
+  const handlePressEvent = (marker: MarkerCustom | Route): void => {
     setActiveComponent(marker)
   }
 
@@ -85,32 +79,9 @@ export default function App() {
         <View style={styles.container}>
           
           <MapView style={styles.map} rotateEnabled={false} onPress={(e) => {handleMapPressEvent(e.nativeEvent)}}>
-            {
-              markers.length == 0 ? <></>:
-              markers.map((marker: MarkerCustom, i: number) => 
-                <Marker key={i} 
-                  coordinate={marker.coordinate} 
-                  anchor={marker.position} 
-                  onPress={(event) => handlePressEvent(marker)}
-                />)
-            }
-            {
-              routes.length == 0? <></> :
-              routes.map((route: Route,i: number) => {
-                return <Polyline
-                  key={i}
-                  coordinates={[
-                    route.coordinate,
-                    route.coordinateEnd
-                  ]}
-                  strokeColor= {i%2 ? "red": "blue"}
-                  strokeWidth={6}
-                  tappable={true}
-                  onPress={(e) => {handlePressEvent(route)}}
-              />
-              })
-
-            }
+            
+              <ListMarkers markers={markers} handlePressEvent={handlePressEvent}/>
+              <ListRoutes routes={routes} handlePressEvent={handlePressEvent} />
             
           </MapView>
         </View>
