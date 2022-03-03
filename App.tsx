@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import MapView, { EventActionType, LatLng, Marker, Point, Polyline } from 'react-native-maps'
 import React, { useState } from 'react';
+import useMarkers from './hook/useMarkers';
+
 
 interface ComponentInMap {
   name?: string;
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
 
 
 export default function App() {
-  const [markers, setMarkers] = useState<ComponentInMap[]>([])
+  const [markers, addMarker, removeMarker] = useMarkers([]);
   const [routes, setRoutes] = useState<Route[]>([])
   const [formName, setFormName] = useState<string>('')
   const [activeComponent, setActiveComponent] = useState<ComponentInMap | Route | null>(null)
@@ -56,7 +58,7 @@ export default function App() {
       return
 
     const newMarker = {name:formName, coordinate: event.coordinate, point: event.position}
-    setMarkers(((old: any) => [...old, newMarker]))
+    addMarker(newMarker)
     setFormName('')
 
     if(markers.length < 1)
@@ -84,7 +86,7 @@ export default function App() {
           <MapView style={styles.map} rotateEnabled={false} onPress={(e) => {handleMapPressEvent(e.nativeEvent)}}>
             {
               markers.length == 0 ? <></>:
-              markers.map((marker, i) => <Marker key={i} coordinate={marker.coordinate} anchor={marker.position} onPress={(event) => handlePressEvent(marker)}/>)
+              markers.map((marker: ComponentInMap, i: React.Key | null | undefined) => <Marker key={i} coordinate={marker.coordinate} anchor={marker.position} onPress={(event) => handlePressEvent(marker)}/>)
             }
             {
               routes.length == 0? <></> :
