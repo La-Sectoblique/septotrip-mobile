@@ -7,15 +7,15 @@ import React, { useState } from 'react';
 import useMarkers from './hook/useMarkers';
 
 
-interface ComponentInMap {
+interface MarkerCustom {
   name?: string;
   coordinate: LatLng; 
   position?: Point; 
 }
-interface Route extends ComponentInMap{
+interface Route extends MarkerCustom{
   coordinateEnd: LatLng
 }
-interface MapEvent extends ComponentInMap{
+interface MapEvent extends MarkerCustom{
   action: EventActionType; 
   id?: string | undefined;
 }
@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
 
 export default function App() {
   const [markers, addMarker, removeMarker] = useMarkers([]);
-  const [routes, setRoutes] = useState<Route[]>([])
+  const [routes, addRoute, removeRoute] = useMarkers([]);
   const [formName, setFormName] = useState<string>('')
-  const [activeComponent, setActiveComponent] = useState<ComponentInMap | Route | null>(null)
+  const [activeComponent, setActiveComponent] = useState<MarkerCustom | Route | null>(null)
 
   const handleMapPressEvent = (event: MapEvent): void => {
     if(formName.length == 0)
@@ -65,10 +65,11 @@ export default function App() {
       return
     const departure = markers[markers.length - 1]
     const destination = newMarker
-    setRoutes((old: any) => [...old, {name:`${departure.name} - ${destination.name}`, coordinate: departure.coordinate, coordinateEnd: destination.coordinate}])
+
+    addRoute({name:`${departure.name} - ${destination.name}`, coordinate: departure.coordinate, coordinateEnd: destination.coordinate})
   }
 
-  const handlePressEvent = (marker: ComponentInMap): void => {
+  const handlePressEvent = (marker: MarkerCustom): void => {
     setActiveComponent(marker)
   }
 
@@ -86,18 +87,23 @@ export default function App() {
           <MapView style={styles.map} rotateEnabled={false} onPress={(e) => {handleMapPressEvent(e.nativeEvent)}}>
             {
               markers.length == 0 ? <></>:
-              markers.map((marker: ComponentInMap, i: React.Key | null | undefined) => <Marker key={i} coordinate={marker.coordinate} anchor={marker.position} onPress={(event) => handlePressEvent(marker)}/>)
+              markers.map((marker: MarkerCustom, i: number) => 
+                <Marker key={i} 
+                  coordinate={marker.coordinate} 
+                  anchor={marker.position} 
+                  onPress={(event) => handlePressEvent(marker)}
+                />)
             }
             {
               routes.length == 0? <></> :
-              routes.map((route,i) => {
+              routes.map((route: Route,i: number) => {
                 return <Polyline
                   key={i}
                   coordinates={[
                     route.coordinate,
                     route.coordinateEnd
                   ]}
-                  strokeColor= {i%2? "red": "blue"}
+                  strokeColor= {i%2 ? "red": "blue"}
                   strokeWidth={6}
                   tappable={true}
                   onPress={(e) => {handlePressEvent(route)}}
