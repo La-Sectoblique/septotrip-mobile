@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
+import * as SecureStore from 'expo-secure-store';
+
 import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import MapView, { Polyline } from 'react-native-maps'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import useMarkers from './hook/useMarkers';
 import useRoutes from './hook/useRoutes';
@@ -11,7 +13,9 @@ import useRoutes from './hook/useRoutes';
 import { ListMarkers } from './component/ListMarkers';
 import { ListRoutes } from './component/ListRoutes';
 
-import { MarkerCustom, Route, MapEvent } from './type_tmp';
+import { Route, MapEvent } from './type_tmp';
+import { addPoint, getUserPoints, init, login, register } from '@la-sectoblique/septoblique-service';
+import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
 
 
 const styles = StyleSheet.create({
@@ -44,41 +48,60 @@ const styles = StyleSheet.create({
 export default function App() {
   const [markers, addMarker, removeMarker] = useMarkers();
   const [routes, addRoute, removeRoute] = useRoutes();
-  const [activeComponent, setActiveComponent] = useState<MarkerCustom | Route | null>(null)
+  const [activeComponent, setActiveComponent] = useState<PointOutput | Route | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  // const handleMapPressEvent = (event: MapEvent): void => {
-  //   if(formName.length == 0)
-  //     return
 
-  //   const newMarker = {name:formName, coordinate: event.coordinate, point: event.position}
-  //   addMarker(newMarker)
-  //   setFormName('')
+  useEffect(() => {
 
-  //   if(markers.length < 1)
-  //     return
-  //   const departure = markers[markers.length - 1]
-  //   const destination = newMarker
+    // register({email: 'test@ladwein.fr', password: '1234'})
+    // .then((res) => console.log(res.message))
 
-  //   addRoute({name:`${departure.name} - ${destination.name}`, coordinate: departure.coordinate, coordinateEnd: destination.coordinate})
-  // }
+    login({email: 'test@ladwein.fr', password: '1234'})
+    .then(() => {
+      setLoading(true)
+      getUserPoints()
+        .then((res) => {
+          addMarker(res);
+          setLoading(false);
+        })
+    })
 
-  const handlePressEvent = (marker: MarkerCustom | Route): void => {
+    
+  },[])
+
+  init({url: 'http://api.septotrip.com', 
+    getToken: async  () => {
+      const get_auth = await SecureStore.getItemAsync('auth_token')
+      if (!get_auth){
+        return ''
+      }
+
+      return get_auth
+    },
+    storeToken: (token: string) => {
+      SecureStore.setItemAsync('auth_token', token);
+    }
+  })
+  
+  const handlePressEvent = (marker: PointOutput | Route): void => {
     setActiveComponent(marker)
   }
 
+  if(loading)
+    return <></>
   return (
        <SafeAreaView style={styles.page}>
          {
-            activeComponent == null ? <></>:
+            activeComponent == null ? <Text>{markers.length}</Text>:
             <>
-              <Text>{activeComponent.name}</Text>
-              <Text>{activeComponent.coordinate.latitude} : {activeComponent.coordinate.longitude}</Text>
+              <Text>{activeComponent.title}</Text>
+              <Text>{activeComponent.localisation.coordinates}</Text>
             </>
           }
         <View style={styles.container}>
           
           <MapView style={styles.map} rotateEnabled={false}>
-            
               <ListMarkers markers={markers} handlePressEvent={handlePressEvent}/>
               <ListRoutes routes={routes} handlePressEvent={handlePressEvent} />
             

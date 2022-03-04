@@ -1,9 +1,9 @@
+import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point'
 import MapView, { EventActionType, LatLng, Marker, Point, Polyline } from 'react-native-maps'
-import { MarkerCustom } from '../type_tmp'
 
 interface ListMarkerProps {
-    markers: MarkerCustom[], 
-    handlePressEvent: (arg0: MarkerCustom) => void,
+    markers: PointOutput[], 
+    handlePressEvent: (arg0: PointOutput) => void,
 }
 
 export const ListMarkers = (props: ListMarkerProps) => {
@@ -11,10 +11,9 @@ export const ListMarkers = (props: ListMarkerProps) => {
     return (
         <>
             {props.markers.length == 0 ? <></>:
-            props.markers.map((marker: MarkerCustom, i: number) => 
+            props.markers.map((marker: PointOutput, i: number) => 
             <Marker key={i} 
-                coordinate={marker.coordinate} 
-                anchor={marker.position} 
+                coordinate={{longitude: marker.localisation.coordinates[0], latitude: marker.localisation.coordinates[1]} as LatLng} 
                 onPress={(event) => props.handlePressEvent(marker)}
             />)
             }

@@ -1,15 +1,18 @@
+import { isPointOutput, PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import { useState } from "react";
-import { MarkerCustom } from "../type_tmp";
 
-export default function useMarkers(): [MarkerCustom[], (marker: MarkerCustom) => void, (marker: MarkerCustom) => void] {
+export default function useMarkers(): [PointOutput[], (marker: PointOutput | PointOutput[]) => void, (marker: PointOutput) => void] {
 
-  const [markers, setMarkers] = useState([] as MarkerCustom[]);
+  const [markers, setMarkers] = useState([] as PointOutput[]);
 
-  const addMarker = (marker: MarkerCustom): void => {
-    setMarkers((previousState: MarkerCustom[]) => [...previousState, marker])
+  const addMarker = (markers: PointOutput | PointOutput[]): void => {
+    if(isPointOutput(markers))
+      setMarkers((previousState: PointOutput[]) => [...previousState, markers])
+    else
+      setMarkers((previousState: PointOutput[]) => [...previousState, ...markers])
   };
 
-  const removeMarker = (marker: MarkerCustom): void => {
+  const removeMarker = (marker: PointOutput): void => {
     setMarkers(markers.filter((item) => item != marker));
   };
 
