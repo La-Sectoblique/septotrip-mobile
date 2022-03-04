@@ -44,24 +44,23 @@ const styles = StyleSheet.create({
 export default function App() {
   const [markers, addMarker, removeMarker] = useMarkers();
   const [routes, addRoute, removeRoute] = useRoutes();
-  const [formName, setFormName] = useState<string>('')
   const [activeComponent, setActiveComponent] = useState<MarkerCustom | Route | null>(null)
 
-  const handleMapPressEvent = (event: MapEvent): void => {
-    if(formName.length == 0)
-      return
+  // const handleMapPressEvent = (event: MapEvent): void => {
+  //   if(formName.length == 0)
+  //     return
 
-    const newMarker = {name:formName, coordinate: event.coordinate, point: event.position}
-    addMarker(newMarker)
-    setFormName('')
+  //   const newMarker = {name:formName, coordinate: event.coordinate, point: event.position}
+  //   addMarker(newMarker)
+  //   setFormName('')
 
-    if(markers.length < 1)
-      return
-    const departure = markers[markers.length - 1]
-    const destination = newMarker
+  //   if(markers.length < 1)
+  //     return
+  //   const departure = markers[markers.length - 1]
+  //   const destination = newMarker
 
-    addRoute({name:`${departure.name} - ${destination.name}`, coordinate: departure.coordinate, coordinateEnd: destination.coordinate})
-  }
+  //   addRoute({name:`${departure.name} - ${destination.name}`, coordinate: departure.coordinate, coordinateEnd: destination.coordinate})
+  // }
 
   const handlePressEvent = (marker: MarkerCustom | Route): void => {
     setActiveComponent(marker)
@@ -78,14 +77,13 @@ export default function App() {
           }
         <View style={styles.container}>
           
-          <MapView style={styles.map} rotateEnabled={false} onPress={(e) => {handleMapPressEvent(e.nativeEvent)}}>
+          <MapView style={styles.map} rotateEnabled={false}>
             
               <ListMarkers markers={markers} handlePressEvent={handlePressEvent}/>
               <ListRoutes routes={routes} handlePressEvent={handlePressEvent} />
             
           </MapView>
         </View>
-        <TextInput style={styles.input} placeholder='nom du marker' value={formName} onChangeText={setFormName}/>
         <StatusBar style="auto" />
       </SafeAreaView>
   );
