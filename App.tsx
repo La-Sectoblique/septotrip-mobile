@@ -7,11 +7,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Polyline } from 'react-native-maps'
 import React, { useEffect, useState } from 'react';
 
-import useMarkers from './hook/useMarkers';
-import useRoutes from './hook/useRoutes';
+import useMarkers from './src/hook/useMarkers';
+import useRoutes from './src/hook/useRoutes';
 
-import { ListMarkers } from './component/ListMarkers';
-import { ListRoutes } from './component/ListRoutes';
+import { ListMarkers } from './src/component/ListMarkers';
+import { ListRoutes } from './src/component/ListRoutes';
 
 import { Route, MapEvent } from './type_tmp';
 import { addPoint, getUserPoints, init, login, register } from '@la-sectoblique/septoblique-service';
@@ -65,7 +65,9 @@ export default function App() {
           addMarker(res);
           setLoading(false);
         })
+        .catch((err) => console.error(err))
     })
+    .catch((err) => console.error(err))
 
     
   },[])

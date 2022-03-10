@@ -1,5 +1,5 @@
-import { Polyline } from 'react-native-maps'
-import { MarkerCustom, Route } from '../type_tmp'
+import { LatLng, Polyline } from 'react-native-maps'
+import { Route } from '../../type_tmp'
 
 interface ListMarkerProps {
     routes: Route[], 
@@ -16,7 +16,7 @@ export const ListRoutes = (props: ListMarkerProps) => {
                 return <Polyline
                   key={i}
                   coordinates={[
-                    route.coordinate,
+                    {longitude: route.localisation.coordinates[0], latitude: route.localisation.coordinates[1]} as LatLng,
                     route.coordinateEnd
                   ]}
                   strokeColor= {i%2 ? "red": "blue"}
