@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Route } from "../type_tmp";
+import { Route } from "../../type_tmp";
 
 export default function useRoutes(): [Route[], (ar0: Route) => void, (ar0: Route) => void] {
 
