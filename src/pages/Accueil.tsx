@@ -41,14 +41,14 @@ const styles = StyleSheet.create({
   });
   
 export const Accueil = () => {
-    const [markers, addMarker, removeMarker] = useMarkers();
+    const [markers, initMarker, addMarker, removeMarker] = useMarkers();
     const [routes, addRoute, removeRoute] = useRoutes();
     const [activeComponent, setActiveComponent] = useState<PointOutput | Route | null>(null)
 
 
     useEffect(() => { 
         getUserPoints()
-        .then((res) => addMarker(res))
+        .then((res) => initMarker(res))
         .catch((err) => console.error(JSON.stringify(err)))
     }, [])
     
@@ -67,7 +67,7 @@ export const Accueil = () => {
          }
        <View style={styles.container}>
          
-         <MapView style={styles.map} rotateEnabled={false}>
+         <MapView style={styles.map} rotateEnabled={false} provider={null} showsUserLocation={true} loadingEnabled={true}>
              <ListMarkers markers={markers} handlePressEvent={handlePressEvent}/>
              <ListRoutes routes={routes} handlePressEvent={handlePressEvent} />
            
