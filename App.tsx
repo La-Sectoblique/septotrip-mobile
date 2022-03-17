@@ -2,9 +2,16 @@ import * as SecureStore from 'expo-secure-store';
 
 import React, { useEffect, useState } from 'react';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+
 import { init, login } from '@la-sectoblique/septoblique-service';
 
-import { Accueil } from './src/pages/Accueil';
+import { Register } from './src/pages/Register';
+import { Login } from './src/pages/Login';
+
+
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(true)
@@ -33,11 +40,20 @@ export default function App() {
       SecureStore.setItemAsync('auth_token', token);
     }
   })
+  
+  const Tab = createBottomTabNavigator();
+
 
   if(loading)
     return <></>
 
+
   return (
-       <Accueil />
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Inscription" component={Register} />
+        <Tab.Screen name="Connexion" component={Login} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
