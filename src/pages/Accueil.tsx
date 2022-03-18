@@ -47,9 +47,9 @@ export const Accueil = () => {
 
 
     useEffect(() => { 
-        getUserPoints()
-        .then((res) => initMarker(res))
-        .catch((err) => console.error(JSON.stringify(err)))
+        // getUserPoints()
+        // .then((res) => initMarker(res))
+        // .catch((err) => console.error(JSON.stringify(err)))
     }, [])
     
     const handlePressEvent = (marker: PointOutput | Route): void => {
