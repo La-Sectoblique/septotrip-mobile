@@ -1,9 +1,13 @@
 import { isPointOutput, PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import { useState } from "react";
 
-export default function useMarkers(): [PointOutput[], (marker: PointOutput | PointOutput[]) => void, (marker: PointOutput) => void] {
+export default function useMarkers(): [PointOutput[], (markers: PointOutput[]) => void, (marker: PointOutput | PointOutput[]) => void, (marker: PointOutput) => void] {
 
   const [markers, setMarkers] = useState([] as PointOutput[]);
+
+  const initMarker = (markers: PointOutput[]): void => {
+    setMarkers([...markers])
+  };
 
   const addMarker = (markers: PointOutput | PointOutput[]): void => {
     if(isPointOutput(markers))
@@ -16,5 +20,5 @@ export default function useMarkers(): [PointOutput[], (marker: PointOutput | Poi
     setMarkers(markers.filter((item) => item != marker));
   };
 
-  return [markers, addMarker, removeMarker];
+  return [markers, initMarker, addMarker, removeMarker];
 }
