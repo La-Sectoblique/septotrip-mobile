@@ -55,9 +55,15 @@ export const Login = ({navigation}: any) => {
         return
       }
 
+      // const data: LoginCredentials = {
+      //   email: email,
+      //   password: password
+      // }
+      //DEBUG
+
       const data: LoginCredentials = {
-        email: email,
-        password: password
+        email: "test@ladwein.fr",
+        password: "1234"
       }
 
       //Execute register function after one second to see loading page
