@@ -44,16 +44,17 @@ export const Login = ({navigation}: any) => {
       setMissingEmail(false);
       setMissingPassword(false);
 
-      if(password.length === 0)
-        setMissingPassword(true)
       
-      if(email.length === 0)
-        setMissingEmail(true)
+      // if(password.length === 0)
+      //   setMissingPassword(true)
+      
+      // if(email.length === 0)
+      //   setMissingEmail(true)
 
-      if(email.length === 0 || password.length === 0){
-        setLoading(false)
-        return
-      }
+      // if(email.length === 0 || password.length === 0){
+      //   setLoading(false)
+      //   return
+      // }
 
       // const data: LoginCredentials = {
       //   email: email,
