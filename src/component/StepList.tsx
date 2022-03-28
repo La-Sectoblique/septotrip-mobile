@@ -1,11 +1,11 @@
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step'
 import { EventActionType, LatLng, Marker, Point, Polyline } from 'react-native-maps'
 
-interface ListMarkerProps {
+interface StepListProps {
     steps: StepOutput[], 
 }
 
-export const StepList = (props: ListMarkerProps) => {
+export const StepList = (props: StepListProps) => {
 
 
     if(props.steps.length == 0)
