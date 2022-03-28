@@ -66,14 +66,14 @@ export const Login = ({navigation}: any) => {
         email: "test@ladwein.fr",
         password: "1234"
       }
-
+      
       //Execute register function after one second to see loading page
       setTimeout(() => {
         login(data)
         .then(() => {
           setLoading(false)
-          navigation.navigate('Accueil')
-         })
+          navigation.navigate('MapView');         
+        })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err))
           if(err.code === 404)

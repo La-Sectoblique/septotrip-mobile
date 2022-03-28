@@ -61,7 +61,7 @@ export const TripViewerMap = () => {
 
 
     useEffect(() => { 
-        getUserPoints()
+        getUserPoints(0)
         .then((res) => addMarker(res))
         .catch((err) => console.error(JSON.stringify(err)))
     }, [])
