@@ -4,7 +4,7 @@ import { Dimensions, Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 
-import { getUserTrips } from '@la-sectoblique/septoblique-service';
+import { addStep, getUserTrips } from '@la-sectoblique/septoblique-service';
 
 import { TripOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Trip';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
@@ -13,6 +13,8 @@ import useTrips from '../../hook/useTrips';
 
 import { TripList } from '../../component/trip/TripList';
 import { ShowTrip } from '../../component/trip/ShowTrip';
+import { ApiResponse } from '@la-sectoblique/septoblique-service/dist/types/utils/Api';
+import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
 
 const styles = StyleSheet.create({
     page: {
@@ -30,6 +32,7 @@ export const TripViewerMap = () => {
 
     useEffect(() => { 
       setLoading(true)
+
       getUserTrips()
         .then((res: TripOutput[]) => initTrip(res))
         .catch((err: ApiError) => console.error(JSON.stringify(err)))

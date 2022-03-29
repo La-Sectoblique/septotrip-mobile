@@ -1,12 +1,12 @@
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
 import { View, Text, TouchableOpacity } from "react-native"
 
-interface TripListProps {
+interface TripDetailsProps {
     trip: TripOutput,
     setActiveTrip: (arg0: TripOutput) => void
 }
 
-export const TripDetails = (props: TripListProps) => {
+export const TripDetails = (props: TripDetailsProps) => {
 
     const handlePressEvent = () => {
         props.setActiveTrip(props.trip)

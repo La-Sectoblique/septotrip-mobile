@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, Text, TextInput, Dimensions} from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 
-import { login, register } from '@la-sectoblique/septoblique-service';
+import { addStep, login, register } from '@la-sectoblique/septoblique-service';
 import { LoginCredentials } from '@la-sectoblique/septoblique-service/dist/types/utils/Credentials';
 import { Error } from '../component/Error';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
@@ -38,7 +38,7 @@ export const Login = ({navigation}: any) => {
     const [missingEmail, setMissingEmail] = useState<boolean>(false)
     const [missingPassword, setMissingPassword] = useState<boolean>(false)
 
-
+    
     const handleSubmitButton = () => {
       setLoading(true);
       setMissingEmail(false);
