@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, Text, TextInput, Dimensions} from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 
-import { login, register } from '@la-sectoblique/septoblique-service';
+import { addStep, login, register } from '@la-sectoblique/septoblique-service';
 import { LoginCredentials } from '@la-sectoblique/septoblique-service/dist/types/utils/Credentials';
 import { Error } from '../component/Error';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
@@ -38,22 +38,23 @@ export const Login = ({navigation}: any) => {
     const [missingEmail, setMissingEmail] = useState<boolean>(false)
     const [missingPassword, setMissingPassword] = useState<boolean>(false)
 
-
+    
     const handleSubmitButton = () => {
       setLoading(true);
       setMissingEmail(false);
       setMissingPassword(false);
 
-      if(password.length === 0)
-        setMissingPassword(true)
       
-      if(email.length === 0)
-        setMissingEmail(true)
+      // if(password.length === 0)
+      //   setMissingPassword(true)
+      
+      // if(email.length === 0)
+      //   setMissingEmail(true)
 
-      if(email.length === 0 || password.length === 0){
-        setLoading(false)
-        return
-      }
+      // if(email.length === 0 || password.length === 0){
+      //   setLoading(false)
+      //   return
+      // }
 
       // const data: LoginCredentials = {
       //   email: email,
@@ -65,14 +66,14 @@ export const Login = ({navigation}: any) => {
         email: "test@ladwein.fr",
         password: "1234"
       }
-
+      
       //Execute register function after one second to see loading page
       setTimeout(() => {
         login(data)
         .then(() => {
           setLoading(false)
-          navigation.navigate('Accueil')
-         })
+          navigation.navigate('MapView');         
+        })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err))
           if(err.code === 404)
