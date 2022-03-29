@@ -16,8 +16,8 @@ export const StepPathList = (props: StepPathListProps) => {
             {
               props.steps.map((step: StepOutput,i: number, steps: StepOutput[]) => {
                 if(i == steps.length - 1)
-                  return <></>
-
+                  return 
+                  
                 return <Polyline
                   key={step.id}
                   coordinates={[

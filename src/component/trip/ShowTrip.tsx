@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Dimensions} from "react-native"
 import MapView from "react-native-maps"
 
 
-import { getTripSteps } from "@la-sectoblique/septoblique-service"
+import { getStepPoints, getTripSteps } from "@la-sectoblique/septoblique-service"
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
@@ -16,6 +16,7 @@ import { StepMarkerList } from "../step/StepMarkerList"
 import { StepList } from "../step/StepList"
 import { StepPathList } from "../step/StepPathList"
 import { StepDetails } from "../step/StepDetails"
+import { PointMarkerList } from "../point/PointMarkerList"
 
 interface TripListProps {
     trip: TripOutput,
@@ -24,7 +25,7 @@ interface TripListProps {
 export const ShowTrip = (props: TripListProps) => {
     const [steps, initStep, addStep, removeStep] = useSteps();
     const [activeElement, setActiveElement] = useState<StepOutput>();
-    const [pointOfInterest, setPointOfInterest] = useState<PointOutput[]>();
+    const [pointOfInterest, setPointOfInterest] = useState<PointOutput[]>([] as PointOutput[]);
     //Default center the map on Paris coordinate
     const [focus, setFocus] = useState<LocalisationPoint>({type: "Point", coordinates: [48.864716, 2.349014]});
     const [loading, setLoading] = useState<boolean>(false)
@@ -58,6 +59,10 @@ export const ShowTrip = (props: TripListProps) => {
 
     const handleMarkerPress = (stepTrigger: StepOutput) => {
         setActiveElement(stepTrigger)
+
+        getStepPoints(stepTrigger.id)
+        .then((res: PointOutput[]) => setPointOfInterest(res))
+        .catch((err: ApiError) => console.log(JSON.stringify(err)))
     }
 
     if(loading)
@@ -79,6 +84,7 @@ export const ShowTrip = (props: TripListProps) => {
                     initialRegion={{latitude: focus.coordinates[0], longitude: focus.coordinates[1], latitudeDelta: 50, longitudeDelta: 50}}
                 >
                     <StepMarkerList steps={steps} handleMarkerPress={handleMarkerPress}/>
+                    <PointMarkerList points={pointOfInterest} />
                     <StepPathList steps={steps} />
                 </MapView>
             </View>
