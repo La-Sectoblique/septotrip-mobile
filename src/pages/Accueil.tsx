@@ -47,7 +47,7 @@ export const Accueil = () => {
 
 
     useEffect(() => { 
-        getUserPoints()
+        getUserPoints(1)
         .then((res) => addMarker(res))
         .catch((err) => console.error(JSON.stringify(err)))
     }, [])

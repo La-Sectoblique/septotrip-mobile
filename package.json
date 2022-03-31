@@ -11,7 +11,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@la-sectoblique/septoblique-service": "^0.1.0",
+    "@la-sectoblique/septoblique-service": "^0.4.0",
     "expo": "~44.0.0",
     "expo-secure-store": "^11.1.1",
     "expo-status-bar": "~1.2.0",
@@ -20,7 +20,9 @@
     "react-native": "0.64.3",
     "react-native-maps": "0.29.4",
     "react-native-safe-area-context": "3.3.2",
-    "react-native-web": "0.17.1"
+    "react-native-sass-transformer": "^2.0.0",
+    "react-native-web": "0.17.1",
+    "sass": "^1.49.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -28,6 +30,9 @@
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
     "jest": "^27.5.1",
+    "postcss": "^8.4.12",
+    "postcss-css-variables": "^0.18.0",
+    "react-native-postcss-transformer": "^1.2.4",
     "typescript": "~4.3.5"
   },
   "private": true

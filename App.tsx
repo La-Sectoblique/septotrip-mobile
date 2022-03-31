@@ -2,9 +2,15 @@ import * as SecureStore from 'expo-secure-store';
 
 import React, { useEffect, useState } from 'react';
 
+import {Text} from 'react-native';
+
 import { init, login } from '@la-sectoblique/septoblique-service';
 
 import { Accueil } from './src/pages/Accueil';
+
+import {Loader} from './src/component/Loader';
+
+import Appstyles from './App.scss';
 
 export default function App() {
   const [loading, setLoading] = useState<boolean>(true)
@@ -38,6 +44,8 @@ export default function App() {
     return <></>
 
   return (
-       <Accueil />
+    
+    <Accueil />
+
   );
 }
