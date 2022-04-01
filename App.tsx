@@ -1,26 +1,20 @@
 import * as SecureStore from 'expo-secure-store';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import {Text} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator  } from '@react-navigation/native-stack';
 
-import { init, login } from '@la-sectoblique/septoblique-service';
+import { init } from '@la-sectoblique/septoblique-service';
 
-import Appstyles from './App.scss';
+
+import TripNavigation from './src/navigation/TripNavigation';
+import AuthNavigation from './src/navigation/AuthNavigation';
+
+
+import styles from "./App.scss"
 
 export default function App() {
-  const [loading, setLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-  
-    login({email: 'test@ladwein.fr', password: '1234'})
-    .then(() => {
-      setLoading(false)
-    })
-    .catch((err) => console.error(err))
-
-    
-  },[])
 
   init({url: 'http://api.septotrip.com', 
     getToken: async  () => {
@@ -35,13 +29,15 @@ export default function App() {
       SecureStore.setItemAsync('auth_token', token);
     }
   })
-
-  if(loading)
-    return <></>
+  
+  const Stack = createNativeStackNavigator();
 
   return (
-    
-    <Accueil />
-
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Authentification" component={AuthNavigation} />
+        <Stack.Screen name="Planification" component={TripNavigation} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
