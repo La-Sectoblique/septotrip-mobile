@@ -62,9 +62,14 @@ export const Login = ({navigation}: any) => {
       // }
       //DEBUG
 
+      // const data: LoginCredentials = {
+      //   email: "test@ladwein.fr",
+      //   password: "1234"
+      // }
+
       const data: LoginCredentials = {
-        email: "test@ladwein.fr",
-        password: "1234"
+        email: "jean",
+        password: "jean"
       }
       
       //Execute register function after one second to see loading page
@@ -72,7 +77,7 @@ export const Login = ({navigation}: any) => {
         login(data)
         .then(() => {
           setLoading(false)
-          navigation.navigate('MapView');         
+          navigation.navigate('Planification');         
         })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err))

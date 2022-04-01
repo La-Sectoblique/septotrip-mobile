@@ -16,8 +16,9 @@ export const PointMarkerList = (props: PointMarkerListProps) => {
             {
             props.points.map((point: PointOutput, i: number) => {
             return <Marker key={point.id} 
-                coordinate={{longitude: point.localisation.coordinates[1], latitude: point.localisation.coordinates[0]} as LatLng} 
+                coordinate={{longitude: point.localisation.coordinates[0], latitude: point.localisation.coordinates[1]} as LatLng} 
                 pinColor="blue"
+                onPress={() => {alert("Point d'intérêt: \n" + point.title + "\n\n" + point.description)}}
             />})
             }
         </>

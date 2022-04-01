@@ -27,7 +27,7 @@ export const ShowTrip = (props: TripListProps) => {
     const [activeElement, setActiveElement] = useState<StepOutput>();
     const [pointOfInterest, setPointOfInterest] = useState<PointOutput[]>([] as PointOutput[]);
     //Default center the map on Paris coordinate
-    const [focus, setFocus] = useState<LocalisationPoint>({type: "Point", coordinates: [48.864716, 2.349014]});
+    const [focus, setFocus] = useState<LocalisationPoint>({type: "Point", coordinates: [2.349014, 48.864716]});
     const [loading, setLoading] = useState<boolean>(false)
     
     const styles = StyleSheet.create({
@@ -70,7 +70,7 @@ export const ShowTrip = (props: TripListProps) => {
 
     return (
         <View>
-            <Text>Titre : {props.trip.name}</Text>
+            <Text>Nom du voyage : {props.trip.name}</Text>
             
             <StepDetails step={activeElement} />
             
@@ -81,7 +81,7 @@ export const ShowTrip = (props: TripListProps) => {
                     provider={null} 
                     showsUserLocation={true} 
                     loadingEnabled={true} 
-                    initialRegion={{latitude: focus.coordinates[0], longitude: focus.coordinates[1], latitudeDelta: 50, longitudeDelta: 50}}
+                    initialRegion={{latitude: focus.coordinates[1], longitude: focus.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
                 >
                     <StepMarkerList steps={steps} handleMarkerPress={handleMarkerPress}/>
                     <PointMarkerList points={pointOfInterest} />

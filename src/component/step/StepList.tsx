@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, Text, TouchableHighlight, StyleSheet } from 'react-native'
+import { Dimensions, Text, TouchableHighlight, StyleSheet, View } from 'react-native'
 
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step'
 
@@ -25,15 +25,21 @@ export const StepList = (props: StepListProps) => {
   
     return (
         <>
+            <Text style={{marginVertical: 5, marginHorizontal: 5, fontSize: 18}}>Liste des étapes: </Text>
             {
-                props.steps.map((step: StepOutput, i: number) =>
-                <TouchableHighlight
-                    style = {styles.stepcircle}
-                    underlayColor = '#ccc'
-                    onPress = { () => alert(step.name) }
-                >
-                    <Text></Text>
-                </TouchableHighlight>)
+                props.steps.map((step: StepOutput, i: number) => {
+                    return <View key={step.id} style={{display: 'flex', flexDirection: "row", alignItems: 'center', marginHorizontal: 5, marginVertical: 2}}>
+                        <TouchableHighlight
+                            style = {styles.stepcircle}
+                            underlayColor = '#ccc'
+                            onPress = { () => alert(step.name + "\n" + step.localisation.coordinates) }
+                        >
+                            <Text></Text>
+                        </TouchableHighlight>
+                        <Text style={{textAlign: 'center', marginHorizontal: 2}}>{step.name}</Text>
+                    </View>
+
+                })
             }
         </>
     )

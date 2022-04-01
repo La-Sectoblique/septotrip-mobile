@@ -17,7 +17,7 @@ export const StepMarkerList = (props: StepMarkerListProps) => {
             {
             props.steps.map((step: StepOutput, i: number) => {
             return <Marker key={step.id} 
-                coordinate={{longitude: step.localisation.coordinates[1], latitude: step.localisation.coordinates[0]} as LatLng} 
+                coordinate={{longitude: step.localisation.coordinates[0], latitude: step.localisation.coordinates[1]} as LatLng} 
                 onPress={(event) => props.handleMarkerPress(step)}
             />})
             }

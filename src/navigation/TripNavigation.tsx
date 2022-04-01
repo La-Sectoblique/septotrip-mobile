@@ -20,7 +20,7 @@ export default function TripNavigation() {
 
   return (
       <Tab.Navigator>
-        <Tab.Screen name="Map" component={TripViewerMap} />
+        <Tab.Screen name="Voyage" component={TripViewerMap} />
         <Tab.Screen name="Info" component={TripViewerInfo} />
       </Tab.Navigator>
   );
