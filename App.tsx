@@ -35,8 +35,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Auth" component={AuthNavigation} />
-        <Stack.Screen name="MapView" component={TripNavigation} />
+        <Stack.Screen name="Authentification" component={AuthNavigation} />
+        <Stack.Screen name="Planification" component={TripNavigation} />
       </Stack.Navigator>
     </NavigationContainer>
   );

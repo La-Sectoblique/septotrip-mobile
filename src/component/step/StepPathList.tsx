@@ -22,12 +22,12 @@ export const StepPathList = (props: StepPathListProps) => {
                   key={step.id}
                   coordinates={[
                     {
-                      longitude: step.localisation.coordinates[1], 
-                      latitude: step.localisation.coordinates[0]
+                      longitude: step.localisation.coordinates[0], 
+                      latitude: step.localisation.coordinates[1]
                     } as LatLng,
                     {
-                      longitude: steps[i + 1].localisation.coordinates[1],
-                      latitude: steps[i + 1].localisation.coordinates[0],
+                      longitude: steps[i + 1].localisation.coordinates[0],
+                      latitude: steps[i + 1].localisation.coordinates[1],
 
                     } as LatLng
                     
@@ -35,7 +35,7 @@ export const StepPathList = (props: StepPathListProps) => {
                   strokeColor= {i%2 ? "red": "blue"}
                   strokeWidth={6}
                   tappable={true}
-                  onPress={(e) => {console.log("Route cliqué")}}
+                  onPress={(e) => {alert("Tu viens de cliquer sur une route")}}
               />
               })
 
