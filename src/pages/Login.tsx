@@ -4,11 +4,10 @@ import { StyleSheet, TouchableOpacity, Text, TextInput, Dimensions} from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 
-import { addStep, login, register } from '@la-sectoblique/septoblique-service';
+import { login } from '@la-sectoblique/septoblique-service';
 import { LoginCredentials } from '@la-sectoblique/septoblique-service/dist/types/utils/Credentials';
 import { Error } from '../component/Error';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
-import { NavigationRouteContext } from '@react-navigation/native';
 
 
 const styles = StyleSheet.create({
