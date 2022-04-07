@@ -10,6 +10,8 @@ import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { Error } from '../component/Error';
 import { ApiResponse } from '@la-sectoblique/septoblique-service/dist/types/utils/Api';
 
+import {Loader} from './Loader';
+
 
 const styles = StyleSheet.create({
     page: {
@@ -101,7 +103,7 @@ export const Register = () => {
 
     if(loading)
       //TODO: Add Proper loading page
-      return <Text>ça charge bg tkt</Text>
+      return <Loader/>
 
     return (
         <SafeAreaView style={styles.page}>

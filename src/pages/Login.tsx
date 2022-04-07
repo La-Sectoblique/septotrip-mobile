@@ -10,6 +10,8 @@ import { Error } from '../component/Error';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { NavigationRouteContext } from '@react-navigation/native';
 
+import {Loader} from './Loader';
+
 
 const styles = StyleSheet.create({
     page: {
@@ -99,7 +101,7 @@ export const Login = ({navigation}: any) => {
 
     if(loading)
       //TODO: Add Proper loading page
-      return <Text>ça charge bg tkt</Text>
+      return <Loader/>
 
     return (
         <SafeAreaView style={styles.page}>
