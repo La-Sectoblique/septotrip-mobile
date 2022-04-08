@@ -16,9 +16,9 @@ export const StepPathList = (props: StepPathListProps) => {
     const [path, setPath] = useState<PathOutput>();
 
     const handleClick = (step: StepOutput) => {
+      console.log(step.pathId)
       if(step.pathId == null)
         return
-      
       setOrigin(step)
         
       getPathById(step.pathId)
@@ -54,7 +54,7 @@ export const StepPathList = (props: StepPathListProps) => {
                     } as LatLng
                     
                   ]}
-                  strokeColor= {i%2 ? "red": "blue"}
+                  strokeColor= {"blue"}
                   strokeWidth={6}
                   tappable={true}
                   onPress={(event) => { handleClick(step)}}

@@ -8,7 +8,6 @@ interface TripListProps {
 }
 
 export const TripList = (props: TripListProps) => {
-
     if(props.trips.length == 0)
         return (
             <View>
@@ -18,6 +17,8 @@ export const TripList = (props: TripListProps) => {
         )
     return (
         <View>
+            <Text>Liste des voyages</Text>
+
             {
                 props.trips.map((trip) => {
                     return <TripDetails key={trip.id} trip={trip} setActiveTrip={props.setActiveTrip} />

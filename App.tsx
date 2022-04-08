@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useState } from 'react';
 
 import { NavigationContainer, ParamListBase, } from '@react-navigation/native';
-import { createNativeStackNavigator  } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { init, login } from '@la-sectoblique/septoblique-service';
@@ -11,6 +11,7 @@ import { init, login } from '@la-sectoblique/septoblique-service';
 
 import TripNavigation from './src/navigation/TripNavigation';
 import AuthNavigation from './src/navigation/AuthNavigation';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 

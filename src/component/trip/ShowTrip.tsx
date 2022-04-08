@@ -22,7 +22,7 @@ import { Dropdown } from "../utils/Dropdown"
 import { dropdownItem } from "../../models/DropdownItem"
 
 interface TripListProps {
-    trip: TripOutput,
+    trip: TripOutput | undefined,
 }
 
 export const ShowTrip = (props: TripListProps) => {
@@ -52,29 +52,44 @@ export const ShowTrip = (props: TripListProps) => {
     });
 
     useEffect(() => {
-        setLoading(true)
-       
+        if(props.trip == undefined)
+            return
 
-        getTripSteps(props.trip.id)
-        .then((res: StepOutput[]) => {
-            initStep(res)
-            if(res.length > 0)
-                setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
-        })
-        getTripPoints(props.trip.id) .then((res: PointOutput[]) => initPoint(res))
-        .catch((err: ApiError) => console.log(JSON.stringify(err)))
-        .finally(() => setLoading(false))
+        setLoading(true)
+        
+        const trip_step = getTripSteps(props.trip.id)
+                            .then((res: StepOutput[]) => {
+                                initStep(res)
+                                if(res.length > 0)
+                                    setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
+                            })
+                            
+        const trip_point = getTripPoints(props.trip.id)
+            .then((res: PointOutput[]) => {
+                initPoint(res)
+            })
+
+
+        Promise.all([trip_step, trip_point])
+            .catch((err: ApiError) => console.log(JSON.stringify(err)))
+            .finally(() => setLoading(false))
     },[])
 
-    if(loading)
+
+    if(props.trip == undefined){
+        return <></>
+    }
+
+    if(loading){
         return <Text>ça charche bg tkt</Text>
+
+    }
 
     return (
         <View>
             <Text>Nom du voyage : {props.trip.name}</Text>
             
             <StepDetails step={activeElement} modalVisible={modalStepVisible} setModalVisible={setModalStepVisible}/>
-            <Text>{filter}</Text>
             <Dropdown items={[
                 {label: "Etape", value: "step"},
                 {label: "Point d'intérêts", value: "point"},
