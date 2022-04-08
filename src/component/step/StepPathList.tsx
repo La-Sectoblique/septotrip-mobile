@@ -1,5 +1,10 @@
+import { getPathById } from '@la-sectoblique/septoblique-service';
+import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
+import { PathOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Path';
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
+import { useEffect, useState } from 'react';
 import { LatLng, Polyline } from 'react-native-maps'
+import { PathDetails } from '../path/PathDetails';
 
 interface StepPathListProps {
     steps: StepOutput[], 
@@ -7,9 +12,26 @@ interface StepPathListProps {
 
 export const StepPathList = (props: StepPathListProps) => {
 
+    const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
+    const [path, setPath] = useState<PathOutput>();
+
+    const handleClick = (step: StepOutput) => {
+      if(step.pathId == null)
+        return
+      
+      setOrigin(step)
+        
+      getPathById(step.pathId)
+      .then((res: PathOutput) => setPath(res))
+      .catch((err: ApiError) => console.log(err))
+
+    }
 
     if(props.steps.length == 0)
       return <></>
+
+    if(path != null)
+      return <PathDetails origin={origin} path={path}/>
 
     return (
         <>
@@ -35,7 +57,7 @@ export const StepPathList = (props: StepPathListProps) => {
                   strokeColor= {i%2 ? "red": "blue"}
                   strokeWidth={6}
                   tappable={true}
-                  onPress={(e) => {alert("Tu viens de cliquer sur une route")}}
+                  onPress={(event) => { handleClick(step)}}
               />
               })
 

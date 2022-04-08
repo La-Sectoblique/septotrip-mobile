@@ -1464,10 +1464,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@la-sectoblique/septoblique-service@^0.5.2":
-  version "0.5.2"
-  resolved "https://npm.pkg.github.com/download/@la-sectoblique/septoblique-service/0.5.2/7a3c8d12f72d09c1a77d8e6657106b5e5a7b06272fee6945bf8c5347d146786b#13d15c563430131d62efa9e7e24ad88c577d9180"
-  integrity sha512-jMG/IajsSMZkBEnHWIcSttmsp4KbTIHC3k8sjKaHsHvnURtxl4sqY3i/cpTNhu1DO/HTKztC1Rgip84/OvhmnA==
+"@la-sectoblique/septoblique-service@^0.6.1":
+  version "0.6.1"
+  resolved "https://npm.pkg.github.com/download/@la-sectoblique/septoblique-service/0.6.1/31ef18e6bf4f9e356eb8eceba4553e0594556293e94ca0acfa8fa2ecfc6877d0#07cf3ba4ecd88eb276ebd184caad0737d50e4414"
+  integrity sha512-6TKK2ovTjYihyUdCSpBfsA1rfJmaTgB7ZuxLcx+qHDM4Ma5ONizCMcVUGEUKg9qMHl5u1f6z+FqJ/1QJqo93Zg==
   dependencies:
     axios "^0.26.0"
 
@@ -1620,6 +1620,11 @@
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
+
+"@react-native-picker/picker@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.2.1.tgz#32b9f540d8e88a73d8856f73cca88251cecb9614"
+  integrity sha512-EC7yv22QLHlTfnbC1ez9IUdXTOh1W31x96Oir0PfskSGFFJMWWdLTg4VrcE2DsGLzbfjjkBk123c173vf2a5MQ==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
@@ -5945,6 +5950,11 @@ react-native-codegen@^0.0.6:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
+
+react-native-dropdown-picker@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.0.tgz#8f5b16c44edf0e9aba152025c9c43683a0dbb32b"
+  integrity sha512-O5jlHb9+MRurVXNL3IrNK4f2HGODxYRoE1n+7MMA0NvrO0Mz7ICwrWZWC3qfbopTBy0ERjIWf+BRQiS2vFnaRQ==
 
 react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"

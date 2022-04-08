@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Dimensions} from "react-native"
 import MapView from "react-native-maps"
 
 
-import { getStepPoints, getTripSteps } from "@la-sectoblique/septoblique-service"
+import { getStepPoints, getTripPoints, getTripSteps } from "@la-sectoblique/septoblique-service"
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
@@ -17,6 +17,9 @@ import { StepList } from "../step/StepList"
 import { StepPathList } from "../step/StepPathList"
 import { StepDetails } from "../step/StepDetails"
 import { PointMarkerList } from "../point/PointMarkerList"
+import usePoints from "../../hook/usePoints"
+import { Dropdown } from "../utils/Dropdown"
+import { dropdownItem } from "../../models/DropdownItem"
 
 interface TripListProps {
     trip: TripOutput,
@@ -24,8 +27,14 @@ interface TripListProps {
 
 export const ShowTrip = (props: TripListProps) => {
     const [steps, initStep, addStep, removeStep] = useSteps();
+
+
     const [activeElement, setActiveElement] = useState<StepOutput>();
-    const [pointOfInterest, setPointOfInterest] = useState<PointOutput[]>([] as PointOutput[]);
+    const [modalStepVisible, setModalStepVisible] = useState<boolean>(true);
+
+    const [filter, setFilter] = useState<string>('all');
+
+    const [points, initPoint, addPoint, removePoint] = usePoints();
     //Default center the map on Paris coordinate
     const [focus, setFocus] = useState<LocalisationPoint>({type: "Point", coordinates: [2.349014, 48.864716]});
     const [loading, setLoading] = useState<boolean>(false)
@@ -52,18 +61,10 @@ export const ShowTrip = (props: TripListProps) => {
             if(res.length > 0)
                 setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
         })
+        getTripPoints(props.trip.id) .then((res: PointOutput[]) => initPoint(res))
         .catch((err: ApiError) => console.log(JSON.stringify(err)))
         .finally(() => setLoading(false))
     },[])
-
-
-    const handleMarkerPress = (stepTrigger: StepOutput) => {
-        setActiveElement(stepTrigger)
-
-        getStepPoints(stepTrigger.id)
-        .then((res: PointOutput[]) => setPointOfInterest(res))
-        .catch((err: ApiError) => console.log(JSON.stringify(err)))
-    }
 
     if(loading)
         return <Text>ça charche bg tkt</Text>
@@ -72,8 +73,15 @@ export const ShowTrip = (props: TripListProps) => {
         <View>
             <Text>Nom du voyage : {props.trip.name}</Text>
             
-            <StepDetails step={activeElement} />
-            
+            <StepDetails step={activeElement} modalVisible={modalStepVisible} setModalVisible={setModalStepVisible}/>
+            <Text>{filter}</Text>
+            <Dropdown items={[
+                {label: "Etape", value: "step"},
+                {label: "Point d'intérêts", value: "point"},
+                {label: "Tout", value: "all"}
+            ]} 
+            setCurrentValue={setFilter} 
+            currentValue={filter}/>
             <View style={styles.container}>
                 <MapView 
                     style={styles.map} 
@@ -82,10 +90,25 @@ export const ShowTrip = (props: TripListProps) => {
                     showsUserLocation={true} 
                     loadingEnabled={true} 
                     initialRegion={{latitude: focus.coordinates[1], longitude: focus.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
-                >
-                    <StepMarkerList steps={steps} handleMarkerPress={handleMarkerPress}/>
-                    <PointMarkerList points={pointOfInterest} />
-                    <StepPathList steps={steps} />
+                >   
+                    {filter == 'step' || filter == 'all' 
+                    ?
+                         <>
+                         <StepMarkerList steps={steps} />
+                         <StepPathList steps={steps} />
+                         </>
+                    :
+                    <></>
+                    }
+
+                    {filter == 'point' || filter == 'all' 
+                    ?
+                        <PointMarkerList points={points} />
+                    :
+                        <></>
+                    }
+                   
+
                 </MapView>
             </View>
             <StepList steps={steps}></StepList>

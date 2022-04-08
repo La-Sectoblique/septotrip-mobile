@@ -62,7 +62,7 @@ export const Login = ({navigation}: any) => {
       // }
       //DEBUG
 
-      // const data: LoginCredentials = {
+      // const data: LoginCredentials = {<
       //   email: "test@ladwein.fr",
       //   password: "1234"
       // }
