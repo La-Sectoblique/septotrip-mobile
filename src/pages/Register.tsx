@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { register } from '@la-sectoblique/septoblique-service';
 import { RegisterCredentials } from '@la-sectoblique/septoblique-service/dist/types/utils/Credentials';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError'
-import { Error } from '../component/Error';
+import { Error } from '../component/utils/Error';
 import { ApiResponse } from '@la-sectoblique/septoblique-service/dist/types/utils/Api';
 
 

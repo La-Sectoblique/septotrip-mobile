@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 
 import { addStep, login, register } from '@la-sectoblique/septoblique-service';
 import { LoginCredentials } from '@la-sectoblique/septoblique-service/dist/types/utils/Credentials';
-import { Error } from '../component/Error';
+import { Error } from '../component/utils/Error';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { NavigationRouteContext } from '@react-navigation/native';
 import { SuccessLoginResponse } from '@la-sectoblique/septoblique-service/dist/types/utils/Api';
