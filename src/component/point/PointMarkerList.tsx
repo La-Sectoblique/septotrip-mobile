@@ -5,7 +5,7 @@ import { LatLng, Marker} from 'react-native-maps'
 
 interface PointMarkerListProps {
     points: PointOutput[],
-    setActiveElement: (arg0: StepOutput | PathOutput | PointOutput) => void
+    setActiveElement: (arg0: StepOutput | {path: PathOutput, origin: StepOutput } | PointOutput) => void
     setModalVisible: (arg0: boolean) => void
 }
 

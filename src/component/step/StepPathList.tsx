@@ -9,7 +9,7 @@ import { PathDetails } from '../path/PathDetails';
 
 interface StepPathListProps {
     steps: StepOutput[],
-    setActiveElement: (arg0: StepOutput | PathOutput | PointOutput) => void
+    setActiveElement: (arg0: StepOutput | {path: PathOutput, origin: StepOutput } | PointOutput) => void
     setModalVisible: (arg0: boolean) => void
 
 }
@@ -25,7 +25,7 @@ export const StepPathList = (props: StepPathListProps) => {
         
       getPathById(step.pathId)
       .then((res: PathOutput) => {
-          props.setActiveElement(res)
+          props.setActiveElement({path:res, origin:step})
           props.setModalVisible(true)
       })
       .catch((err: ApiError) => console.log(err))

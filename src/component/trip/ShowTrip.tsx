@@ -15,7 +15,7 @@ import useSteps from "../../hook/useSteps"
 import { StepMarkerList } from "../step/StepMarkerList"
 import { StepList } from "../step/StepList"
 import { StepPathList } from "../step/StepPathList"
-import { StepDetails } from "../step/StepDetails"
+import { ModalDetails } from "../utils/ModalDetails"
 import { PointMarkerList } from "../point/PointMarkerList"
 import usePoints from "../../hook/usePoints"
 import { Dropdown } from "../utils/Dropdown"
@@ -30,7 +30,7 @@ export const ShowTrip = (props: TripListProps) => {
     const [steps, initStep, addStep, removeStep] = useSteps();
 
 
-    const [activeElement, setActiveElement] = useState<StepOutput | PointOutput | PathOutput>();
+    const [activeElement, setActiveElement] = useState<StepOutput | PointOutput | {path: PathOutput, origin: StepOutput}>();
     const [modalVisible, setModalVisible] = useState<boolean>(true);
 
     const [filter, setFilter] = useState<string>('all');
@@ -90,7 +90,7 @@ export const ShowTrip = (props: TripListProps) => {
         <View>
             <Text>Nom du voyage : {props.trip.name}</Text>
             
-            <StepDetails activeElement={activeElement} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+            <ModalDetails activeElement={activeElement} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
             <Dropdown items={[
                 {label: "Etape", value: "step"},
                 {label: "Point d'intérêts", value: "point"},

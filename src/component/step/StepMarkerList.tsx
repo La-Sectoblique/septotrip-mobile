@@ -5,7 +5,7 @@ import { EventActionType, LatLng, Marker, Point, Polyline } from 'react-native-m
 
 interface StepMarkerListProps {
     steps: StepOutput[],
-    setActiveElement: (arg0: StepOutput | PathOutput | PointOutput) => void
+    setActiveElement: (arg0: StepOutput | {path: PathOutput, origin: StepOutput }| PointOutput) => void
     setModalVisible: (arg0: boolean) => void
 }
 

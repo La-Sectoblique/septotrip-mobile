@@ -1,83 +1,31 @@
-import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path"
-import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point"
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import React from "react"
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Pressable } from "react-native"
+import MapView, { LatLng, Marker } from "react-native-maps"
 
 interface StepDetailsProps {
-    activeElement: StepOutput | PathOutput | PointOutput | undefined,
-    setModalVisible: (arg0: boolean) => void
-    modalVisible: boolean
+    step: StepOutput
 }
-
-const styles = StyleSheet.create({
-    centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 22
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: "white",
-      borderRadius: 20,
-      padding: 35,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5
-    },
-    button: {
-      borderRadius: 20,
-      padding: 10,
-      elevation: 2
-    },
-    buttonOpen: {
-      backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-      backgroundColor: "#2196F3",
-    },
-    textStyle: {
-      color: "white",
-      fontWeight: "bold",
-      textAlign: "center"
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: "center"
-    }
-  });
 
 export const StepDetails = (props: StepDetailsProps) => {
 
-    if(props.activeElement == null)
+    if(props.step == null)
         return <></>
     return (
-        <Modal
-        animationType="slide"
-        transparent={true}
-        visible={props.modalVisible}
-        onRequestClose={() => {
-          props.setModalVisible(!props.modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => props.setModalVisible(!props.modalVisible)}
+        <View>
+            <MapView
+                rotateEnabled={false} 
+                provider={null} 
+                showsUserLocation={true} 
+                loadingEnabled={true} 
+                initialRegion={{latitude: props.step.localisation.coordinates[1], longitude: props.step.localisation.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
+                <Marker key={props.step.id} 
+                coordinate={{longitude: props.step.localisation.coordinates[0], latitude: props.step.localisation.coordinates[1]} as LatLng} 
+                />        
+            </MapView>
+            <Text>Nom de l'étape: {props.step.name}</Text>
+            <Text>Durée de l'étape: {props.step.duration}</Text>
         </View>
-      </Modal>
     )
 }
