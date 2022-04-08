@@ -1,9 +1,11 @@
+import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path"
+import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point"
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import React from "react"
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Pressable } from "react-native"
 
 interface StepDetailsProps {
-    step: StepOutput | undefined,
+    activeElement: StepOutput | PathOutput | PointOutput | undefined,
     setModalVisible: (arg0: boolean) => void
     modalVisible: boolean
 }
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
 
 export const StepDetails = (props: StepDetailsProps) => {
 
-    if(props.step == null)
+    if(props.activeElement == null)
         return <></>
     return (
         <Modal

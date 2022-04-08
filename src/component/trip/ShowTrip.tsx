@@ -20,6 +20,7 @@ import { PointMarkerList } from "../point/PointMarkerList"
 import usePoints from "../../hook/usePoints"
 import { Dropdown } from "../utils/Dropdown"
 import { dropdownItem } from "../../models/DropdownItem"
+import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path"
 
 interface TripListProps {
     trip: TripOutput | undefined,
@@ -29,8 +30,8 @@ export const ShowTrip = (props: TripListProps) => {
     const [steps, initStep, addStep, removeStep] = useSteps();
 
 
-    const [activeElement, setActiveElement] = useState<StepOutput>();
-    const [modalStepVisible, setModalStepVisible] = useState<boolean>(true);
+    const [activeElement, setActiveElement] = useState<StepOutput | PointOutput | PathOutput>();
+    const [modalVisible, setModalVisible] = useState<boolean>(true);
 
     const [filter, setFilter] = useState<string>('all');
 
@@ -63,7 +64,7 @@ export const ShowTrip = (props: TripListProps) => {
                                 if(res.length > 0)
                                     setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
                             })
-                            
+
         const trip_point = getTripPoints(props.trip.id)
             .then((res: PointOutput[]) => {
                 initPoint(res)
@@ -89,7 +90,7 @@ export const ShowTrip = (props: TripListProps) => {
         <View>
             <Text>Nom du voyage : {props.trip.name}</Text>
             
-            <StepDetails step={activeElement} modalVisible={modalStepVisible} setModalVisible={setModalStepVisible}/>
+            <StepDetails activeElement={activeElement} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
             <Dropdown items={[
                 {label: "Etape", value: "step"},
                 {label: "Point d'intérêts", value: "point"},
@@ -109,8 +110,8 @@ export const ShowTrip = (props: TripListProps) => {
                     {filter == 'step' || filter == 'all' 
                     ?
                          <>
-                         <StepMarkerList steps={steps} />
-                         <StepPathList steps={steps} />
+                         <StepMarkerList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
+                         <StepPathList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
                          </>
                     :
                     <></>
@@ -118,7 +119,7 @@ export const ShowTrip = (props: TripListProps) => {
 
                     {filter == 'point' || filter == 'all' 
                     ?
-                        <PointMarkerList points={points} />
+                        <PointMarkerList points={points} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
                     :
                         <></>
                     }
