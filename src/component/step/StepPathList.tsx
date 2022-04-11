@@ -28,7 +28,7 @@ export const StepPathList = (props: StepPathListProps) => {
           props.setActiveElement({path:res, origin:step})
           props.setModalVisible(true)
       })
-      .catch((err: ApiError) => console.log(err))
+      .catch((err: ApiError) => console.log(JSON.stringify(err)))
 
     }
 

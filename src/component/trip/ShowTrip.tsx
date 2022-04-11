@@ -127,7 +127,7 @@ export const ShowTrip = (props: TripListProps) => {
 
                 </MapView>
             </View>
-            <StepList steps={steps}></StepList>
+            <StepList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}></StepList>
         </View>
     )
 }
