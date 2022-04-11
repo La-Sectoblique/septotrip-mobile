@@ -1,6 +1,6 @@
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import React from "react"
-import { View, Text, TouchableOpacity, Modal, StyleSheet, Pressable } from "react-native"
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Pressable, Dimensions } from "react-native"
 import MapView, { LatLng, Marker } from "react-native-maps"
 
 interface StepDetailsProps {
@@ -15,7 +15,8 @@ export const StepDetails = (props: StepDetailsProps) => {
         <View>
             <MapView
                 rotateEnabled={false} 
-                provider={null} 
+                provider={null}
+                style={{width: Dimensions.get('window').width * 50/100, height: Dimensions.get('window').width * 50/100}} 
                 showsUserLocation={true} 
                 loadingEnabled={true} 
                 initialRegion={{latitude: props.step.localisation.coordinates[1], longitude: props.step.localisation.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}

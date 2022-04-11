@@ -3,7 +3,7 @@ import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { PathOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Path'
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step'
 import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Dimensions } from 'react-native'
 import MapView, { EventActionType, LatLng, Marker, Point, Polyline } from 'react-native-maps'
 
 interface PathDetailsProps {
@@ -32,7 +32,8 @@ export const PathDetails = (props: PathDetailsProps) => {
             <MapView
                 rotateEnabled={false} 
                 provider={null} 
-                showsUserLocation={true} 
+                showsUserLocation={true}
+                style={{width: Dimensions.get('window').width * 50/100, height: Dimensions.get('window').width * 50/100}}  
                 loadingEnabled={true} 
                 initialRegion={{latitude: props.origin.localisation.coordinates[1], longitude: props.origin.localisation.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
             >

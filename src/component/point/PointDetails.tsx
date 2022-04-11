@@ -1,7 +1,7 @@
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point"
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import React from "react"
-import { View, Text } from "react-native"
+import { View, Text, Dimensions } from "react-native"
 import MapView, { LatLng, Marker } from "react-native-maps"
 
 interface PointDetailsProps {
@@ -17,7 +17,8 @@ export const PointDetails = (props: PointDetailsProps) => {
             <MapView
                 rotateEnabled={false} 
                 provider={null} 
-                showsUserLocation={true} 
+                showsUserLocation={true}
+                style={{width: Dimensions.get('window').width * 50/100, height: Dimensions.get('window').width * 50/100}}  
                 loadingEnabled={true} 
                 initialRegion={{latitude: props.point.localisation.coordinates[1], longitude: props.point.localisation.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
             >
