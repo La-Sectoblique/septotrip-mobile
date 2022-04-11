@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { View, Text, StyleSheet, Dimensions} from "react-native"
 import MapView from "react-native-maps"
+import * as Location from 'expo-location';
 
-
-import { getStepPoints, getTripPoints, getTripSteps } from "@la-sectoblique/septoblique-service"
+import { getTripPoints, getTripSteps } from "@la-sectoblique/septoblique-service"
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
@@ -19,7 +19,6 @@ import { ModalDetails } from "../utils/ModalDetails"
 import { PointMarkerList } from "../point/PointMarkerList"
 import usePoints from "../../hook/usePoints"
 import { Dropdown } from "../utils/Dropdown"
-import { dropdownItem } from "../../models/DropdownItem"
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path"
 
 interface TripListProps {
@@ -40,6 +39,9 @@ export const ShowTrip = (props: TripListProps) => {
     const [focus, setFocus] = useState<LocalisationPoint>({type: "Point", coordinates: [2.349014, 48.864716]});
     const [loading, setLoading] = useState<boolean>(false)
     
+
+    const [error, setError] = useState<string>();
+    const [location, setLocation] = useState<Location.LocationObject>();
     const styles = StyleSheet.create({
         container: {
             height: 300,
@@ -51,6 +53,19 @@ export const ShowTrip = (props: TripListProps) => {
           },
         
     });
+
+    useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setError('Permission to access location was denied');
+            return;
+          }
+    
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
+        })();
+      }, []);
 
     useEffect(() => {
         if(props.trip == undefined)
@@ -75,7 +90,6 @@ export const ShowTrip = (props: TripListProps) => {
             .catch((err: ApiError) => console.log(JSON.stringify(err)))
             .finally(() => setLoading(false))
     },[])
-
 
     if(props.trip == undefined){
         return <></>
