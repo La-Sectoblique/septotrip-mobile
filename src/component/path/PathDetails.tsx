@@ -13,7 +13,7 @@ interface PathDetailsProps {
 
 export const PathDetails = (props: PathDetailsProps) => {
     const [destination, setDestination] = useState<StepOutput>({} as StepOutput);
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
         setLoading(true)
@@ -23,7 +23,7 @@ export const PathDetails = (props: PathDetailsProps) => {
         .catch((err: ApiError) => console.log(err))
         .finally(() => setLoading(false))
     }, [])
-
+    
     if(loading)
         return <Text>ça charge bg tkt</Text>
 

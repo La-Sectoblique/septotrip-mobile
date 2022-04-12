@@ -71,9 +71,7 @@ export const ModalDetails = (props: StepDetailsProps) => {
         }}
       >
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            
+          <View style={styles.modalView}>            
             {isStepOutput(props.activeElement) ?
               <StepDetails step={props.activeElement}/>
             : isPointOutput(props.activeElement) ?
