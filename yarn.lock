@@ -1464,12 +1464,13 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@la-sectoblique/septoblique-service@^0.6.1":
-  version "0.6.1"
-  resolved "https://npm.pkg.github.com/download/@la-sectoblique/septoblique-service/0.6.1/31ef18e6bf4f9e356eb8eceba4553e0594556293e94ca0acfa8fa2ecfc6877d0#07cf3ba4ecd88eb276ebd184caad0737d50e4414"
-  integrity sha512-6TKK2ovTjYihyUdCSpBfsA1rfJmaTgB7ZuxLcx+qHDM4Ma5ONizCMcVUGEUKg9qMHl5u1f6z+FqJ/1QJqo93Zg==
+"@la-sectoblique/septoblique-service@^0.6.2":
+  version "0.6.2"
+  resolved "https://npm.pkg.github.com/download/@la-sectoblique/septoblique-service/0.6.2/55094ae55fa124f0a03478c83aa8834103d0bb00cf36ee1b80016d9b9bc69320#6b042a82c31ba2b0e60d6858bd908adaee23d211"
+  integrity sha512-nXCdFfK6vHB0nIbQ5m0lxKzXSh3OLEJkHHHaCjeKcAIexycOVWUaCc8TdPeRIZPT/86rzx994ykV4XgPCdhsrw==
   dependencies:
     axios "^0.26.0"
+    mime-types "^2.1.35"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -5299,7 +5300,7 @@ mime-db@1.52.0, "mime-db@>= 1.43.0 < 2":
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.52.0.tgz#bbabcdc02859f4987301c856e3387ce5ec43bf70"
   integrity sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==
 
-mime-types@^2.1.12, mime-types@^2.1.27, mime-types@~2.1.34:
+mime-types@^2.1.12, mime-types@^2.1.27, mime-types@^2.1.35, mime-types@~2.1.34:
   version "2.1.35"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.35.tgz#381a871b62a734450660ae3deee44813f70d959a"
   integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==
