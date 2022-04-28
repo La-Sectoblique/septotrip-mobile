@@ -4,11 +4,11 @@ import { StyleSheet, TouchableOpacity, Text, TextInput, Dimensions} from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 
-import { addStep, login, register } from '@la-sectoblique/septoblique-service';
+import { login } from '@la-sectoblique/septoblique-service';
 import { LoginCredentials } from '@la-sectoblique/septoblique-service/dist/types/utils/Credentials';
-import { Error } from '../component/Error';
+import { Error } from '../component/utils/Error';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
-import { NavigationRouteContext } from '@react-navigation/native';
+import { SuccessLoginResponse } from '@la-sectoblique/septoblique-service/dist/types/utils/Api';
 
 
 const styles = StyleSheet.create({
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   });
   
 export const Login = ({navigation}: any) => {
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('')
 
@@ -38,7 +39,11 @@ export const Login = ({navigation}: any) => {
     const [missingEmail, setMissingEmail] = useState<boolean>(false)
     const [missingPassword, setMissingPassword] = useState<boolean>(false)
 
-    
+
+    const handleRegisterButton = () => {
+      navigation.navigate('Register')
+    }
+
     const handleSubmitButton = () => {
       setLoading(true);
       setMissingEmail(false);
@@ -62,7 +67,7 @@ export const Login = ({navigation}: any) => {
       // }
       //DEBUG
 
-      // const data: LoginCredentials = {
+      // const data: LoginCredentials = {<
       //   email: "test@ladwein.fr",
       //   password: "1234"
       // }
@@ -75,9 +80,9 @@ export const Login = ({navigation}: any) => {
       //Execute register function after one second to see loading page
       setTimeout(() => {
         login(data)
-        .then(() => {
+        .then((res: SuccessLoginResponse) => {
+          navigation.navigate('Planification');
           setLoading(false)
-          navigation.navigate('Planification');         
         })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err))
@@ -124,6 +129,10 @@ export const Login = ({navigation}: any) => {
 
             <TouchableOpacity activeOpacity={0.5} onPress={handleSubmitButton} style={{borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1}}>
               <Text>Se connecter</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity activeOpacity={0.5} onPress={handleRegisterButton} style={{borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1}}>
+              <Text>S'inscrire</Text>
             </TouchableOpacity>
 
             <Text>{message}</Text>

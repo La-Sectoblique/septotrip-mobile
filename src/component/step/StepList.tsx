@@ -2,8 +2,12 @@ import React from 'react'
 import { Dimensions, Text, TouchableHighlight, StyleSheet, View } from 'react-native'
 
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step'
+import { PathOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Path'
+import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point'
 
 interface StepListProps {
+    setModalVisible: (arg0: boolean) => void
+    setActiveElement: (arg0: StepOutput | {path: PathOutput, origin: StepOutput }| PointOutput) => void
     steps: StepOutput[], 
 }
 
@@ -20,6 +24,11 @@ export const StepList = (props: StepListProps) => {
         }
     })
 
+    const handleClick = (step: StepOutput) => {
+        props.setActiveElement(step)
+        props.setModalVisible(true)
+    }
+
     if(props.steps.length == 0)
         return <Text style={{textAlign:'center', marginTop: 10}}>Ce voyage ne possède aucun étape</Text>
   
@@ -32,7 +41,7 @@ export const StepList = (props: StepListProps) => {
                         <TouchableHighlight
                             style = {styles.stepcircle}
                             underlayColor = '#ccc'
-                            onPress = { () => alert(step.name + "\n" + step.localisation.coordinates) }
+                            onPress = { (event) => handleClick(step) }
                         >
                             <Text></Text>
                         </TouchableHighlight>

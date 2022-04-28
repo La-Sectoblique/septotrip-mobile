@@ -1,10 +1,10 @@
-import * as SecureStore from 'expo-secure-store';
 
-import React, { useEffect, useState } from 'react';
-
+import React from 'react';
 import { NavigationContainer, ParamListBase, } from '@react-navigation/native';
-import { createNativeStackNavigator  } from '@react-navigation/native-stack';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
+import * as SecureStore from 'expo-secure-store';
 
 import { init, login } from '@la-sectoblique/septoblique-service';
 
@@ -33,12 +33,12 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
+  <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Authentification" component={AuthNavigation} />
         <Stack.Screen name="Planification" component={TripNavigation} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer>    
   );
 }
 

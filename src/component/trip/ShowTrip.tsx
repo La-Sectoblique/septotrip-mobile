@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { View, Text, StyleSheet, Dimensions} from "react-native"
 import MapView from "react-native-maps"
+import * as Location from 'expo-location';
 
-
-import { getStepPoints, getTripSteps } from "@la-sectoblique/septoblique-service"
+import { getTripPoints, getTripSteps } from "@la-sectoblique/septoblique-service"
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
@@ -15,21 +15,33 @@ import useSteps from "../../hook/useSteps"
 import { StepMarkerList } from "../step/StepMarkerList"
 import { StepList } from "../step/StepList"
 import { StepPathList } from "../step/StepPathList"
-import { StepDetails } from "../step/StepDetails"
+import { ModalDetails } from "../utils/ModalDetails"
 import { PointMarkerList } from "../point/PointMarkerList"
+import usePoints from "../../hook/usePoints"
+import { Dropdown } from "../utils/Dropdown"
+import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path"
 
 interface TripListProps {
-    trip: TripOutput,
+    trip: TripOutput | undefined,
 }
 
 export const ShowTrip = (props: TripListProps) => {
     const [steps, initStep, addStep, removeStep] = useSteps();
-    const [activeElement, setActiveElement] = useState<StepOutput>();
-    const [pointOfInterest, setPointOfInterest] = useState<PointOutput[]>([] as PointOutput[]);
+
+
+    const [activeElement, setActiveElement] = useState<StepOutput | PointOutput | {path: PathOutput, origin: StepOutput}>();
+    const [modalVisible, setModalVisible] = useState<boolean>(true);
+
+    const [filter, setFilter] = useState<string>('all');
+
+    const [points, initPoint, addPoint, removePoint] = usePoints();
     //Default center the map on Paris coordinate
     const [focus, setFocus] = useState<LocalisationPoint>({type: "Point", coordinates: [2.349014, 48.864716]});
     const [loading, setLoading] = useState<boolean>(false)
     
+
+    const [error, setError] = useState<string>();
+    const [location, setLocation] = useState<Location.LocationObject>();
     const styles = StyleSheet.create({
         container: {
             height: 300,
@@ -43,37 +55,63 @@ export const ShowTrip = (props: TripListProps) => {
     });
 
     useEffect(() => {
-        setLoading(true)
-       
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setError('Permission to access location was denied');
+            return;
+          }
+    
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
+        })();
+      }, []);
 
-        getTripSteps(props.trip.id)
-        .then((res: StepOutput[]) => {
-            initStep(res)
-            if(res.length > 0)
-                setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
-        })
-        .catch((err: ApiError) => console.log(JSON.stringify(err)))
-        .finally(() => setLoading(false))
+    useEffect(() => {
+        if(props.trip == undefined)
+            return
+
+        setLoading(true)
+        
+        const trip_step = getTripSteps(props.trip.id)
+                            .then((res: StepOutput[]) => {
+                                initStep(res)
+                                if(res.length > 0)
+                                    setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
+                            })
+
+        const trip_point = getTripPoints(props.trip.id)
+            .then((res: PointOutput[]) => {
+                initPoint(res)
+            })
+
+
+        Promise.all([trip_step, trip_point])
+            .catch((err: ApiError) => console.log(JSON.stringify(err)))
+            .finally(() => setLoading(false))
     },[])
 
-
-    const handleMarkerPress = (stepTrigger: StepOutput) => {
-        setActiveElement(stepTrigger)
-
-        getStepPoints(stepTrigger.id)
-        .then((res: PointOutput[]) => setPointOfInterest(res))
-        .catch((err: ApiError) => console.log(JSON.stringify(err)))
+    if(props.trip == undefined){
+        return <></>
     }
 
-    if(loading)
+    if(loading){
         return <Text>ça charche bg tkt</Text>
+
+    }
 
     return (
         <View>
             <Text>Nom du voyage : {props.trip.name}</Text>
             
-            <StepDetails step={activeElement} />
-            
+            <ModalDetails activeElement={activeElement} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+            <Dropdown items={[
+                {label: "Etape", value: "step"},
+                {label: "Point d'intérêts", value: "point"},
+                {label: "Tout", value: "all"}
+            ]} 
+            setCurrentValue={setFilter} 
+            currentValue={filter}/>
             <View style={styles.container}>
                 <MapView 
                     style={styles.map} 
@@ -82,13 +120,28 @@ export const ShowTrip = (props: TripListProps) => {
                     showsUserLocation={true} 
                     loadingEnabled={true} 
                     initialRegion={{latitude: focus.coordinates[1], longitude: focus.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
-                >
-                    <StepMarkerList steps={steps} handleMarkerPress={handleMarkerPress}/>
-                    <PointMarkerList points={pointOfInterest} />
-                    <StepPathList steps={steps} />
+                >   
+                    {filter == 'step' || filter == 'all' 
+                    ?
+                         <>
+                         <StepMarkerList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
+                         <StepPathList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
+                         </>
+                    :
+                    <></>
+                    }
+
+                    {filter == 'point' || filter == 'all' 
+                    ?
+                        <PointMarkerList points={points} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
+                    :
+                        <></>
+                    }
+                   
+
                 </MapView>
             </View>
-            <StepList steps={steps}></StepList>
+            <StepList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}></StepList>
         </View>
     )
 }
