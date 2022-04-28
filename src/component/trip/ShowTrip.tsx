@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { View, Text, StyleSheet, Dimensions} from "react-native"
+import PTRView from 'react-native-pull-to-refresh'
 import MapView from "react-native-maps"
 import * as Location from 'expo-location';
 
@@ -22,7 +23,7 @@ import { Dropdown } from "../utils/Dropdown"
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path"
 
 interface TripListProps {
-    trip: TripOutput | undefined,
+    trip: TripOutput,
 }
 
 export const ShowTrip = (props: TripListProps) => {
@@ -37,11 +38,32 @@ export const ShowTrip = (props: TripListProps) => {
     const [points, initPoint, addPoint, removePoint] = usePoints();
     //Default center the map on Paris coordinate
     const [focus, setFocus] = useState<LocalisationPoint>({type: "Point", coordinates: [2.349014, 48.864716]});
-    const [loading, setLoading] = useState<boolean>(false)
+    const [refreshing, setRefreshing] = useState<boolean>(true)
     
 
     const [error, setError] = useState<string>();
     const [location, setLocation] = useState<Location.LocationObject>();
+    
+    const _refresh = (trip: TripOutput) => {
+        const trip_step = getTripSteps(trip.id)
+                            .then((res: StepOutput[]) => {
+                                initStep(res)
+                                if(res.length > 0)
+                                    setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
+                            })
+
+        const trip_point = getTripPoints(trip.id)
+            .then((res: PointOutput[]) => {
+                initPoint(res)
+            })
+
+
+        Promise.all([trip_step, trip_point])
+            .catch((err: ApiError) => console.log(JSON.stringify(err)))
+            .finally(() => setRefreshing(false))
+    }
+    
+    
     const styles = StyleSheet.create({
         container: {
             height: 300,
@@ -71,77 +93,61 @@ export const ShowTrip = (props: TripListProps) => {
         if(props.trip == undefined)
             return
 
-        setLoading(true)
-        
-        const trip_step = getTripSteps(props.trip.id)
-                            .then((res: StepOutput[]) => {
-                                initStep(res)
-                                if(res.length > 0)
-                                    setFocus({type: "Point", coordinates: res[0].localisation.coordinates })
-                            })
-
-        const trip_point = getTripPoints(props.trip.id)
-            .then((res: PointOutput[]) => {
-                initPoint(res)
-            })
-
-
-        Promise.all([trip_step, trip_point])
-            .catch((err: ApiError) => console.log(JSON.stringify(err)))
-            .finally(() => setLoading(false))
+        _refresh(props.trip)
     },[])
 
     if(props.trip == undefined){
         return <></>
     }
 
-    if(loading){
+    if(refreshing){
         return <Text>ça charche bg tkt</Text>
 
     }
 
     return (
-        <View>
-            <Text>Nom du voyage : {props.trip.name}</Text>
-            
-            <ModalDetails activeElement={activeElement} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
-            <Dropdown items={[
-                {label: "Etape", value: "step"},
-                {label: "Point d'intérêts", value: "point"},
-                {label: "Tout", value: "all"}
-            ]} 
-            setCurrentValue={setFilter} 
-            currentValue={filter}/>
-            <View style={styles.container}>
-                <MapView 
-                    style={styles.map} 
-                    rotateEnabled={false} 
-                    provider={null} 
-                    showsUserLocation={true} 
-                    loadingEnabled={true} 
-                    initialRegion={{latitude: focus.coordinates[1], longitude: focus.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
-                >   
-                    {filter == 'step' || filter == 'all' 
-                    ?
-                         <>
-                         <StepMarkerList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
-                         <StepPathList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
-                         </>
-                    :
-                    <></>
-                    }
-
-                    {filter == 'point' || filter == 'all' 
-                    ?
-                        <PointMarkerList points={points} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
-                    :
+        <PTRView onRefresh={() => _refresh(props.trip)}>
+            <View>
+                <Text>Nom du voyage : {props.trip.name}</Text>                
+                <ModalDetails activeElement={activeElement} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+                <Dropdown items={[
+                    {label: "Etape", value: "step"},
+                    {label: "Point d'intérêts", value: "point"},
+                    {label: "Tout", value: "all"}
+                ]}
+                setCurrentValue={setFilter}
+                currentValue={filter}/>
+                <View style={styles.container}>
+                    <MapView
+                        style={styles.map}
+                        rotateEnabled={false}
+                        provider={null}
+                        showsUserLocation={true}
+                        loadingEnabled={true}
+                        initialRegion={{latitude: focus.coordinates[1], longitude: focus.coordinates[0], latitudeDelta: 50, longitudeDelta: 50}}
+                    >
+                        {filter == 'step' || filter == 'all'
+                        ?
+                            <>
+                            <StepMarkerList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
+                            <StepPathList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
+                            </>
+                        :
                         <></>
-                    }
-                   
+                        }
 
-                </MapView>
+                        {filter == 'point' || filter == 'all' 
+                        ?
+                            <PointMarkerList points={points} setActiveElement={setActiveElement} setModalVisible={setModalVisible}/>
+                        :
+                            <></>
+                        }
+                    
+
+                    </MapView>
+                </View>
+                <StepList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}></StepList>
             </View>
-            <StepList steps={steps} setActiveElement={setActiveElement} setModalVisible={setModalVisible}></StepList>
-        </View>
+        </PTRView>
     )
 }

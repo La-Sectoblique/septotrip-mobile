@@ -27,18 +27,8 @@ const styles = StyleSheet.create({
   });
   
 export const TripViewerMap = ({navigation}: any) => {
-    const [trips, initTrip, addTrip, removeTrip] = useTrips();
-    const [activeTrip, setActiveTrip] = useState<TripOutput>();
+    const [activeTrip, setActiveTrip] = useState<TripOutput>({} as TripOutput);
     const [loading, setLoading] = useState<boolean>(false)
-
-    useEffect(() => { 
-      setLoading(true)
-
-      getUserTrips()
-        .then((res: TripOutput[]) => initTrip(res))
-        .catch((err: ApiError) => console.error(JSON.stringify(err)))
-        .finally(() => setLoading(false))
-    }, [])
 
     useEffect(() => {
       if(activeTrip != null)
@@ -56,7 +46,7 @@ export const TripViewerMap = ({navigation}: any) => {
     return (
       <Stack.Navigator>
         <Stack.Screen name="VoyageList" 
-          children={() => <TripList trips={trips} setActiveTrip={setActiveTrip}/>}/>
+          children={() => <TripList setActiveTrip={setActiveTrip}/>}/>
         <Stack.Screen name="ShowTrip"
           children={() => <ShowTrip trip={activeTrip} />} />
         <Stack.Screen name="Info" component={TripViewerInfo} />
