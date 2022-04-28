@@ -11,12 +11,13 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@la-sectoblique/septoblique-service": "^0.5.2",
+    "@la-sectoblique/septoblique-service": "^0.7.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.2",
     "expo": "~44.0.0",
+    "expo-image-picker": "~12.0.1",
     "expo-secure-store": "^11.1.1",
     "expo-status-bar": "~1.2.0",
     "expo-updates": "~0.11.6",

@@ -9,6 +9,7 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { init, login } from '@la-sectoblique/septoblique-service';
 import { TripViewerMap } from '../pages/trip_viewer/trip_viewer_map';
 import { TripViewerInfo } from '../pages/trip_viewer/trip_viewer_info';
+import { Gallery } from '../pages/Gallery';
 
 
 
@@ -22,8 +23,10 @@ export default function TripNavigation() {
       <Tab.Navigator>
         <Tab.Screen name="Voyage" component={TripViewerMap} />
         <Tab.Screen name="Info" component={TripViewerInfo} />
+        <Tab.Screen name="Gallery" component={Gallery}/>
       </Tab.Navigator>
   );
 }
+
 
 
