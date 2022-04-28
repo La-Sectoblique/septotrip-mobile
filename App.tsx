@@ -29,7 +29,6 @@ export default function App() {
     await SecureStore.setItemAsync('token', token);
   },
   platform: Platform.MOBILE,
-  context: 'development'
 })
   
 
