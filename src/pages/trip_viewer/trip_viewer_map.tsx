@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   });
   
 export const TripViewerMap = ({navigation}: any) => {
-    const [activeTrip, setActiveTrip] = useState<TripOutput>();
+    const [activeTrip, setActiveTrip] = useState<TripOutput>({} as TripOutput);
     const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
