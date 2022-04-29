@@ -81,7 +81,7 @@ export const Login = ({navigation}: any) => {
       setTimeout(() => {
         login(data)
         .then((res: SuccessLoginResponse) => {
-          navigation.navigate('Planification');
+          navigation.navigate('TripList');
           setLoading(false)
         })
         .catch((err: ApiError) => {

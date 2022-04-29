@@ -1,4 +1,4 @@
-import { getUserTrips } from "@la-sectoblique/septoblique-service"
+import { getUserTrips, params } from "@la-sectoblique/septoblique-service"
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
 import React, { useEffect, useState } from "react"
@@ -7,16 +7,13 @@ import useTrips from "../../hook/useTrips"
 import { DebugScript } from "../utils/DebugScript"
 import { TripDetails } from "./TripDetails"
 
-interface TripListProps {
-    setActiveTrip: (arg0: TripOutput) => void
-}
 
-export const TripList = (props: TripListProps) => {
+export const TripList = ({route, navigation}: any) => {
     const [trips, initTrip, addTrip, removeTrip] = useTrips();
     const [refreshing, setRefreshing] = useState<boolean>(true)
 
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
-        <TripDetails key={item.id} trip={item} setActiveTrip={props.setActiveTrip} />
+        <TripDetails key={item.id} trip={item} navigation={navigation} />
     )
     const fetchData = () => {
         getUserTrips()
@@ -24,7 +21,10 @@ export const TripList = (props: TripListProps) => {
             setRefreshing(false)  
             initTrip(res)
         })
-        .catch((err: ApiError) => console.error(JSON.stringify(err)))
+        .catch(async (err: ApiError) => {
+            console.error(JSON.stringify(err))
+        })
+
     }
     useEffect(() => { 
         fetchData()      

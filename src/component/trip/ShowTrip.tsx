@@ -22,11 +22,10 @@ import usePoints from "../../hook/usePoints"
 import { Dropdown } from "../utils/Dropdown"
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path"
 
-interface TripListProps {
-    trip: TripOutput,
-}
 
-export const ShowTrip = (props: TripListProps) => {
+export const ShowTrip = ({route, navigation}: any) => {
+
+    const { trip } = route.params
     const [steps, initStep, addStep, removeStep] = useSteps();
 
 
@@ -90,13 +89,13 @@ export const ShowTrip = (props: TripListProps) => {
       }, []);
 
     useEffect(() => {
-        if(props.trip == undefined)
+        if(trip == undefined)
             return
 
-        _refresh(props.trip)
+        _refresh(trip)
     },[])
 
-    if(props.trip == undefined){
+    if(trip == undefined){
         return <></>
     }
 
@@ -106,9 +105,9 @@ export const ShowTrip = (props: TripListProps) => {
     }
 
     return (
-        <PTRView onRefresh={() => _refresh(props.trip)}>
+        <PTRView onRefresh={() => _refresh(trip)}>
             <View>
-                <Text>Nom du voyage : {props.trip.name}</Text>                
+                <Text>Nom du voyage : {trip.name}</Text>                
                 <ModalDetails activeElement={activeElement} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
                 <Dropdown items={[
                     {label: "Etape", value: "step"},

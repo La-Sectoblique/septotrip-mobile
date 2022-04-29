@@ -1,27 +1,27 @@
-import * as SecureStore from 'expo-secure-store';
 
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 
-import { NavigationContainer, ParamListBase, } from '@react-navigation/native';
+import { ParamListBase, } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
-import { init, login } from '@la-sectoblique/septoblique-service';
-import { TripViewerMap } from '../pages/trip_viewer/trip_viewer_map';
-import { TripViewerInfo } from '../pages/trip_viewer/trip_viewer_info';
-
+import { TripViewerInfo } from '../pages/TripViewerInfo';
+import { TripViewerDay } from '../pages/TripViewerDay';
+import { ShowTrip } from '../component/trip/ShowTrip';
 
 
 
-export default function TripNavigation() {
+
+
+export default function TripNavigation({route, navigation}:any) {
 
   const Tab = createBottomTabNavigator<ParamListBase>();
 
 
   return (
       <Tab.Navigator>
-        <Tab.Screen name="Voyage" component={TripViewerMap} />
+        <Tab.Screen name="Voyage" component={ShowTrip}/>
         <Tab.Screen name="Info" component={TripViewerInfo} />
+        <Tab.Screen name="Day" component={TripViewerDay} />
       </Tab.Navigator>
   );
 }

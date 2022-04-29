@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     }
   });
   
-export const TripViewerInfo = () => {
+export const TripViewerInfo = ({route, navigation}:any) => {
 
     useEffect(() => { 
     }, [])

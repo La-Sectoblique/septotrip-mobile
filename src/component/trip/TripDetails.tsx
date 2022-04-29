@@ -3,13 +3,19 @@ import { View, Text, TouchableOpacity } from "react-native"
 
 interface TripDetailsProps {
     trip: TripOutput,
-    setActiveTrip: (arg0: TripOutput) => void
+    navigation: any
 }
 
 export const TripDetails = (props: TripDetailsProps) => {
 
     const handlePressEvent = () => {
-        props.setActiveTrip(props.trip)
+        console.log(props.navigation.getState())
+        props.navigation.navigate("Planification", {
+            screen: "Voyage",
+            params: {
+                trip: props.trip
+            }
+        })
     }
     return (
         <View>
