@@ -1,12 +1,10 @@
-import * as SecureStore from "expo-secure-store";
-
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 import { NavigationContainer, ParamListBase } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
-import { init, login } from "@la-sectoblique/septoblique-service";
+import * as SecureStore from "expo-secure-store";
+
+import { init, login, Platform } from "@la-sectoblique/septoblique-service";
 
 import TripNavigation from "./src/navigation/TripNavigation";
 import AuthNavigation from "./src/navigation/AuthNavigation";
@@ -22,6 +20,8 @@ export default function App() {
 
       return get_auth;
     },
+    context: "development",
+    platform: Platform.MOBILE,
     storeToken: (token: string) => {
       SecureStore.setItemAsync("auth_token", token);
     },

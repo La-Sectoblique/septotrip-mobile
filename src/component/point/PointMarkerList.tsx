@@ -1,11 +1,22 @@
+import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
+import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import { LatLng, Marker } from "react-native-maps";
 
 interface PointMarkerListProps {
   points: PointOutput[];
+  setActiveElement: (
+    arg0: StepOutput | { path: PathOutput; origin: StepOutput } | PointOutput
+  ) => void;
+  setModalVisible: (arg0: boolean) => void;
 }
 
 export const PointMarkerList = (props: PointMarkerListProps) => {
+  const handleClick = (point: PointOutput) => {
+    props.setActiveElement(point);
+    props.setModalVisible(true);
+  };
+
   if (props.points.length == 0) return <></>;
 
   return (
@@ -29,6 +40,7 @@ export const PointMarkerList = (props: PointMarkerListProps) => {
           />
         );
       })}
+      );
     </>
   );
 };

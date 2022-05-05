@@ -8,8 +8,14 @@ import {
 } from "react-native";
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
+import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
+import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 
 interface StepListProps {
+  setModalVisible: (arg0: boolean) => void;
+  setActiveElement: (
+    arg0: StepOutput | { path: PathOutput; origin: StepOutput } | PointOutput
+  ) => void;
   steps: StepOutput[];
 }
 
@@ -27,6 +33,11 @@ export const StepList = (props: StepListProps) => {
       alignItems: "center",
     },
   });
+
+  const handleClick = (step: StepOutput) => {
+    props.setActiveElement(step);
+    props.setModalVisible(true);
+  };
 
   if (props.steps.length == 0)
     return (

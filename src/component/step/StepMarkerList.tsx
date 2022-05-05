@@ -1,3 +1,5 @@
+import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
+import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import {
   EventActionType,
@@ -9,10 +11,18 @@ import {
 
 interface StepMarkerListProps {
   steps: StepOutput[];
-  handleMarkerPress: (arg0: StepOutput) => void;
+  setActiveElement: (
+    arg0: StepOutput | { path: PathOutput; origin: StepOutput } | PointOutput
+  ) => void;
+  setModalVisible: (arg0: boolean) => void;
 }
 
-export const StepMarkerList = (props: StepMarkerListProps) => {
+export const StepMarkerList = (props: StepMarkerListProps): JSX.Element => {
+  const handleClick = (step: StepOutput) => {
+    props.setActiveElement(step);
+    props.setModalVisible(true);
+  };
+
   if (props.steps.length == 0) return <></>;
 
   return (
@@ -27,7 +37,7 @@ export const StepMarkerList = (props: StepMarkerListProps) => {
                 latitude: step.localisation.coordinates[1],
               } as LatLng
             }
-            onPress={(event) => props.handleMarkerPress(step)}
+            onPress={(event) => handleClick(step)}
           />
         );
       })}
