@@ -16,12 +16,12 @@ export default function TripNavigation({route, navigation}:any) {
 
   const Tab = createBottomTabNavigator<ParamListBase>();
 
-
+  const { trip } = route.params
   return (
       <Tab.Navigator>
-        <Tab.Screen name="Voyage" component={ShowTrip}/>
+        <Tab.Screen name="Voyage" component={ShowTrip} initialParams={{trip: trip}}/>
         <Tab.Screen name="Info" component={TripViewerInfo} />
-        <Tab.Screen name="Day" component={TripViewerDay} />
+        <Tab.Screen name="Day" component={TripViewerDay} initialParams={{trip: trip}} />
       </Tab.Navigator>
   );
 }

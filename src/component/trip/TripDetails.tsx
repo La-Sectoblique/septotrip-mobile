@@ -11,10 +11,7 @@ export const TripDetails = (props: TripDetailsProps) => {
     const handlePressEvent = () => {
         console.log(props.navigation.getState())
         props.navigation.navigate("Planification", {
-            screen: "Voyage",
-            params: {
-                trip: props.trip
-            }
+            trip: props.trip
         })
     }
     return (

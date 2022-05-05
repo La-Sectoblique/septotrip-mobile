@@ -12,7 +12,6 @@ import { LocalisationPoint, PointOutput } from "@la-sectoblique/septoblique-serv
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError"
 
 import useSteps from "../../hook/useSteps"
-
 import { StepMarkerList } from "../step/StepMarkerList"
 import { StepList } from "../step/StepList"
 import { StepPathList } from "../step/StepPathList"
@@ -58,7 +57,9 @@ export const ShowTrip = ({route, navigation}: any) => {
 
 
         Promise.all([trip_step, trip_point])
-            .catch((err: ApiError) => console.log(JSON.stringify(err)))
+            .catch(async (err: ApiError) => {
+                console.log(JSON.stringify(err))
+            })
             .finally(() => setRefreshing(false))
     }
     
