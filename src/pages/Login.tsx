@@ -10,7 +10,7 @@ import { Error } from '../component/Error';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { NavigationRouteContext } from '@react-navigation/native';
 
-import {Loader} from './Loader';
+import {Loader} from '../component/Loader';
 
 
 const styles = StyleSheet.create({

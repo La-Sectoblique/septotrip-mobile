@@ -10,7 +10,7 @@ import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { Error } from '../component/Error';
 import { ApiResponse } from '@la-sectoblique/septoblique-service/dist/types/utils/Api';
 
-import {Loader} from './Loader';
+import {Loader} from '../component/Loader';
 
 
 const styles = StyleSheet.create({
