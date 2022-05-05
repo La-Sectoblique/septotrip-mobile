@@ -4,45 +4,45 @@ import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native';
+import PTRView from 'react-native-pull-to-refresh';
 
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { StepDayList } from '../component/step/StepDayList';
 
 
 export const TripViewerDay = ({route, navigation}: any) => {
     const { trip } = route.params
 
-    const [days, setDays] = useState<DayOutput[]>([] as DayOutput[])
-    useEffect(() => {
+    const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[])
+    
+    const _refresh = () => {
         getTripSteps(trip.id)
         .then((steps: StepOutput[]) => {
-            steps.map((step, index) => {
-                getStepDays(step.id)
-                .then((days: DayOutput[]) => {
-                    setDays(days)
-                })
-                .catch((err: ApiError) => {
-                    console.log("ici")
-                    console.log(JSON.stringify(err))
-                })
-            })
+            setSteps(steps)
         })
         .catch((err: ApiError) => {
-            console.log("labas")
             console.log(JSON.stringify(err))
         })
-        
+    }
+
+
+    
+    useEffect(() => {
+        _refresh()
     }, [])
 
-    if(days.length < 1)
-        return <Text>Aucun jour disponible</Text>
+    if(steps.length < 1)
+        return <Text>Aucune étape n'est disponible, veuillez planifier votre voyage d'abord sur le site internet</Text>
         
     return (
+        <PTRView onRefresh={() => _refresh()}>
           <SafeAreaView style={{}}>
               {
-                  days.map((day) => {
-                      return <Text key={day.id}>{day.number}: {day.description}</Text>
+                  steps.map((step) => {
+                      return <StepDayList key={step.id} step={step} />
                   })
               }
           </SafeAreaView>
+        </PTRView>
     )
 }
