@@ -15,6 +15,8 @@ import { RegisterCredentials } from "@la-sectoblique/septoblique-service/dist/ty
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { Error } from "../component/utils/Error";
 import { ApiResponse } from "@la-sectoblique/septoblique-service/dist/types/utils/Api";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../models/RootStackParamList";
 
 const styles = StyleSheet.create({
   page: {
@@ -32,7 +34,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Register = () => {
+type RegisterProps = NativeStackScreenProps<RootStackParamList, 'Register'>
+
+
+export const Register: React.FC<RegisterProps> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");

@@ -11,7 +11,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@la-sectoblique/septoblique-service": "^0.7.2",
+    "@la-sectoblique/septoblique-service": "^0.7.4",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-picker/picker": "2.2.1",
     "@react-navigation/bottom-tabs": "^6.2.0",

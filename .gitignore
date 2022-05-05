@@ -13,3 +13,4 @@ web-build/
 .npmrc
 # macOS
 .DS_Store
+.vscode

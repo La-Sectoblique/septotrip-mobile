@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -14,7 +15,8 @@ import { login } from "@la-sectoblique/septoblique-service";
 import { LoginCredentials } from "@la-sectoblique/septoblique-service/dist/types/utils/Credentials";
 import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
-import { SuccessLoginResponse } from "@la-sectoblique/septoblique-service/dist/types/utils/Api";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../models/RootStackParamList";
 
 const styles = StyleSheet.create({
   page: {
@@ -32,7 +34,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Login = ({ navigation }: any) => {
+type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>
+
+export const Login: React.FC<LoginProps> = (props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -43,7 +47,7 @@ export const Login = ({ navigation }: any) => {
   const [missingPassword, setMissingPassword] = useState<boolean>(false);
 
   const handleRegisterButton = () => {
-    navigation.navigate("Register");
+    props.navigation.navigate("Register");
   };
 
   const handleSubmitButton = () => {
@@ -57,7 +61,7 @@ export const Login = ({ navigation }: any) => {
     // if(email.length === 0)
     //   setMissingEmail(true)
 
-    // if(email.length === 0 || password.length === 0){
+    // if(email.length === 0 || password.length === 0){
     //   setLoading(false)
     //   return
     // }
@@ -81,9 +85,9 @@ export const Login = ({ navigation }: any) => {
     //Execute register function after one second to see loading page
     setTimeout(() => {
       login(data)
-        .then((res: SuccessLoginResponse) => {
-          navigation.navigate("Planification");
-          setLoading(false);
+        .then(() => {
+          props.navigation.navigate('TripList');
+          setLoading(false)
         })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err));
@@ -140,7 +144,7 @@ export const Login = ({ navigation }: any) => {
         onPress={handleRegisterButton}
         style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
       >
-        <Text>S'inscrire</Text>
+        <Text>Inscris toi</Text>
       </TouchableOpacity>
 
       <Text>{message}</Text>

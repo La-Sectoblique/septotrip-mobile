@@ -1,44 +1,38 @@
-import { getUserTrips } from "@la-sectoblique/septoblique-service";
-import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
-import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  ListRenderItem,
-  RefreshControl,
-} from "react-native";
-import useTrips from "../../hook/useTrips";
-import { DebugScript } from "../utils/DebugScript";
-import { TripDetails } from "./TripDetails";
+import { getUserTrips } from "@la-sectoblique/septoblique-service"
+import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError"
+import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import React, { useEffect, useState } from "react"
+import { View, Text, FlatList, ListRenderItem, RefreshControl } from "react-native"
+import useTrips from "../../hook/useTrips"
+import { RootStackParamList } from "../../models/RootStackParamList"
+import { DebugScript } from "../utils/DebugScript"
+import { TripDetails } from "./TripDetails"
 
-interface TripListProps {
-  setActiveTrip: (arg0: TripOutput) => void;
-}
+type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
-export const TripList = (props: TripListProps) => {
-  const [trips, initTrip, addTrip, removeTrip] = useTrips();
-  const [refreshing, setRefreshing] = useState<boolean>(true);
 
-  const renderItem: ListRenderItem<TripOutput> = ({ item }) => (
-    <TripDetails
-      key={item.id}
-      trip={item}
-      setActiveTrip={props.setActiveTrip}
-    />
-  );
-  const fetchData = () => {
-    getUserTrips()
-      .then((res: TripOutput[]) => {
-        setRefreshing(false);
-        initTrip(res);
-      })
-      .catch((err: ApiError) => console.error(JSON.stringify(err)));
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+export const TripList: React.FC<TripListProps> = (props) => {
+    const [trips, initTrip] = useTrips();
+    const [refreshing, setRefreshing] = useState<boolean>(true)
+
+    const renderItem: ListRenderItem<TripOutput> = ({item}) => (
+        <TripDetails key={item.id} trip={item} navigation={props.navigation} />
+    )
+    const fetchData = () => {
+        getUserTrips()
+          .then((res: TripOutput[]) => {
+            setRefreshing(false)  
+            initTrip(res)
+        })
+        .catch(async (err: ApiError) => {
+            console.error(JSON.stringify(err))
+        })
+
+    }
+    useEffect(() => { 
+        fetchData()      
+      }, [])
 
   if (trips.length == 0)
     return (
@@ -46,7 +40,7 @@ export const TripList = (props: TripListProps) => {
         <DebugScript />
 
         <Text>Aucun voyage existe pour ce compte</Text>
-        <Text>Utilisez l'application Web pour créer un voyage</Text>
+        <Text>Utilisez le service Web pour créer un voyage</Text>
       </View>
     );
   return (
@@ -59,7 +53,7 @@ export const TripList = (props: TripListProps) => {
       <FlatList
         data={trips}
         renderItem={renderItem}
-        keyExtractor={(item: TripOutput, index: number) => item.id.toString()}
+        keyExtractor={(item: TripOutput) => item.id.toString()}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
         }
