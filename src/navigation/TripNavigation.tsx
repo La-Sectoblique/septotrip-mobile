@@ -18,8 +18,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
 
   const { trip } = props.route.params
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
       <Tab.Navigator>
         <Tab.Screen name="Voyage" component={ShowTrip} initialParams={{trip: trip}}/>
         <Tab.Screen name="Info" component={TripViewerInfo} />

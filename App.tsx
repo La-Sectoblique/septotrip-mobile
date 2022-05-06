@@ -37,8 +37,6 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      { /*eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore */}
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
