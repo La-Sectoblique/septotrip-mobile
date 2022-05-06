@@ -1,15 +1,20 @@
-import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
-import { View, Text, TouchableOpacity } from "react-native"
+import React from 'react'
+import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
+import { View, Text, TouchableOpacity } from "react-native";
+import { RootStackParamList } from '../../models/NavigationParamList';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface TripDetailsProps {
     trip: TripOutput,
-    setActiveTrip: (arg0: TripOutput) => void
+    navigation: NativeStackNavigationProp<RootStackParamList, "TripList", undefined>
 }
 
 export const TripDetails = (props: TripDetailsProps) => {
 
     const handlePressEvent = () => {
-        props.setActiveTrip(props.trip)
+        props.navigation.navigate("Planification", {
+            trip: props.trip
+        })
     }
     return (
         <View>

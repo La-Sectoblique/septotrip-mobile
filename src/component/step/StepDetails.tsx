@@ -1,21 +1,44 @@
-import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
-import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
-import { View, Text, TouchableOpacity } from "react-native"
+import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
+import * as React from "react";
+import { View, Text, Dimensions } from "react-native";
+import MapView, { LatLng, Marker } from "react-native-maps";
 
 interface StepDetailsProps {
-    step: StepOutput | undefined,
+  step: StepOutput;
 }
 
 export const StepDetails = (props: StepDetailsProps) => {
-
-    if(props.step == null)
-        return <></>
-    return (
-        <View style={{borderWidth: 2, marginHorizontal: 5, marginVertical: 5}}>
-            <Text style={{marginVertical: 5, marginHorizontal: 5, textDecorationLine: "underline"}}>Détails de l'étape: </Text>
-
-            <Text style={{textAlign: "center", marginVertical: 5}}>{props.step.name}</Text>
-            <Text style={{textAlign: "center", marginVertical: 5}}>Etape: {props.step.order}</Text>
-        </View>
-    )
-}
+  if (props.step == null) return <></>;
+  return (
+    <View>
+      <MapView
+        rotateEnabled={false}
+        provider={null}
+        style={{
+          width: (Dimensions.get("window").width * 50) / 100,
+          height: (Dimensions.get("window").width * 50) / 100,
+        }}
+        showsUserLocation={true}
+        loadingEnabled={true}
+        initialRegion={{
+          latitude: props.step.localisation.coordinates[1],
+          longitude: props.step.localisation.coordinates[0],
+          latitudeDelta: 50,
+          longitudeDelta: 50,
+        }}
+      >
+        <Marker
+          key={props.step.id}
+          coordinate={
+            {
+              longitude: props.step.localisation.coordinates[0],
+              latitude: props.step.localisation.coordinates[1],
+            } as LatLng
+          }
+        />
+      </MapView>
+      <Text>{`Nom de l'étape: ${props.step.name}`}</Text>
+      <Text>{`Durée de l'étape: ${props.step.duration} `} </Text>
+    </View>
+  );
+};
