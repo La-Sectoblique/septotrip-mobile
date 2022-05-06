@@ -1,5 +1,4 @@
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point"
-import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import React from "react"
 import { View, Text, Dimensions } from "react-native"
 import MapView, { LatLng, Marker } from "react-native-maps"

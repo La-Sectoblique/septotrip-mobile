@@ -27,12 +27,16 @@ import {
   PointOutput,
 } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootTabParamList } from "../../models/NavigationParamList";
 
-interface TripListProps {
-  trip: TripOutput;
-}
 
-export const ShowTrip = (props: TripListProps) => {
+
+type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Voyage'>
+
+export const ShowTrip: React.FC<ShowTripProps> = (props) => {
+
+  const { trip } = props.route.params
   const [steps, initStep, addStep, removeStep] = useSteps();
 
   const [activeElement, setActiveElement] = useState<
@@ -97,12 +101,12 @@ export const ShowTrip = (props: TripListProps) => {
   }, []);
 
   useEffect(() => {
-    if (props.trip == undefined) return;
+    if (trip == undefined) return;
 
-    _refresh(props.trip);
+    _refresh(trip);
   }, []);
 
-  if (props.trip == undefined) {
+  if (trip == undefined) {
     return <></>;
   }
 
@@ -111,9 +115,9 @@ export const ShowTrip = (props: TripListProps) => {
   }
 
   return (
-    <PTRView onRefresh={() => _refresh(props.trip)}>
+    <PTRView onRefresh={() => _refresh(trip)}>
       <View>
-        <Text>Nom du voyage : {props.trip.name}</Text>
+        <Text>Nom du voyage : {trip.name}</Text>
         <ModalDetails
           activeElement={activeElement}
           modalVisible={modalVisible}

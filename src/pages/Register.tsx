@@ -14,9 +14,8 @@ import { register } from "@la-sectoblique/septoblique-service";
 import { RegisterCredentials } from "@la-sectoblique/septoblique-service/dist/types/utils/Credentials";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { Error } from "../component/utils/Error";
-import { ApiResponse } from "@la-sectoblique/septoblique-service/dist/types/utils/Api";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../models/RootStackParamList";
+import { RootStackParamList } from "../models/NavigationParamList";
 
 const styles = StyleSheet.create({
   page: {
@@ -85,7 +84,7 @@ export const Register: React.FC<RegisterProps> = () => {
     //Execute register function after one second to see loading page
     setTimeout(() => {
       register(data)
-        .then((res: ApiResponse) =>
+        .then(() =>
           setMessage("Utilisateur créer ! Connectez-vous !")
         )
         .catch((err: ApiError) => {
@@ -162,7 +161,7 @@ export const Register: React.FC<RegisterProps> = () => {
         onPress={handleSubmitButton}
         style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
       >
-        <Text>S'inscrire</Text>
+        <Text>{"S'inscrire"}</Text>
       </TouchableOpacity>
 
       <Text>{message}</Text>

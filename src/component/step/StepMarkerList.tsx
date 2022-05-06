@@ -1,12 +1,10 @@
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
+import React from "react";
 import {
-  EventActionType,
   LatLng,
   Marker,
-  Point,
-  Polyline,
 } from "react-native-maps";
 
 interface StepMarkerListProps {
@@ -27,7 +25,7 @@ export const StepMarkerList = (props: StepMarkerListProps): JSX.Element => {
 
   return (
     <>
-      {props.steps.map((step: StepOutput, i: number) => {
+      {props.steps.map((step: StepOutput) => {
         return (
           <Marker
             key={step.id}
@@ -37,7 +35,7 @@ export const StepMarkerList = (props: StepMarkerListProps): JSX.Element => {
                 latitude: step.localisation.coordinates[1],
               } as LatLng
             }
-            onPress={(event) => handleClick(step)}
+            onPress={() => handleClick(step)}
           />
         );
       })}

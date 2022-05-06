@@ -1,7 +1,7 @@
 import React from 'react'
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { View, Text, TouchableOpacity } from "react-native";
-import { RootStackParamList } from '../../models/RootStackParamList';
+import { RootStackParamList } from '../../models/NavigationParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface TripDetailsProps {

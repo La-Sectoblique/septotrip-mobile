@@ -5,5 +5,11 @@ export type RootStackParamList= {
     Register: undefined,
     Planification: { trip: TripOutput },
     TripList: undefined,
-    Info: undefined
+}
+
+
+export type RootTabParamList= {
+    Voyage: { trip: TripOutput },
+    Day: { trip: TripOutput },
+    Info: undefined,
 }

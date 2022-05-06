@@ -1,9 +1,9 @@
-import { getPointsByDay, getStepDays, getTripSteps } from '@la-sectoblique/septoblique-service';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { getPointsByDay } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Day';
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
-import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Text, View } from 'react-native';
 import usePoints from '../../hook/usePoints';
 
@@ -21,8 +21,7 @@ export const PointDayList = ({ day }: PointDayListProps) => {
             initPoint(points)
         })
         .catch((err: ApiError) => {
-            console.log("cc")
-            // console.log(JSON.stringify(err))
+            console.log(JSON.stringify(err))
         })
         
     }, [])

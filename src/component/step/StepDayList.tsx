@@ -1,11 +1,10 @@
-import { getStepDays, getTripSteps } from '@la-sectoblique/septoblique-service';
+import { getStepDays } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Day';
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
 import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { PointDayList } from '../point/PointDayList';
 
 interface StepDayListProps {

@@ -3,9 +3,9 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
-import { useEffect, useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { LatLng, Polyline } from "react-native-maps";
-import { PathDetails } from "../path/PathDetails";
 
 interface StepPathListProps {
   steps: StepOutput[];
@@ -18,6 +18,7 @@ interface StepPathListProps {
 export const StepPathList = (props: StepPathListProps) => {
   if (props.steps.length == 0) return <></>;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
 
   const handleClick = (step: StepOutput) => {
@@ -55,7 +56,7 @@ export const StepPathList = (props: StepPathListProps) => {
             strokeColor={"blue"}
             strokeWidth={6}
             tappable={true}
-            onPress={(event) => {
+            onPress={() => {
               handleClick(step);
             }}
           />

@@ -37,8 +37,8 @@ export const StepDetails = (props: StepDetailsProps) => {
           }
         />
       </MapView>
-      <Text>Nom de l'étape: {props.step.name}</Text>
-      <Text>Durée de l'étape: {props.step.duration}</Text>
+      <Text>{`Nom de l'étape: ${props.step.name}`}</Text>
+      <Text>{`Durée de l'étape: ${props.step.duration} `} </Text>
     </View>
   );
 };

@@ -3,7 +3,7 @@ import { Dimensions, Text, View, StyleSheet } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { RootStackParamList } from "../models/RootStackParamList";
+import { RootTabParamList } from "../models/NavigationParamList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const styles = StyleSheet.create({
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     }
   });
 
-type TripViewerInfoProps = NativeStackScreenProps<RootStackParamList, 'Info'>
+type TripViewerInfoProps = NativeStackScreenProps<RootTabParamList, 'Info'>
 
 export const TripViewerInfo: React.FC<TripViewerInfoProps> = () => {
 

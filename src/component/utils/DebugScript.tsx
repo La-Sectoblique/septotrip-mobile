@@ -1,18 +1,17 @@
 import {
   addPoint,
   addStep,
-  addTravelerToTrip,
   createTrip,
   getUserTrips,
 } from "@la-sectoblique/septoblique-service";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
-import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity, Text } from "react-native";
 import useTrips from "../../hook/useTrips";
 
-export const DebugScript: React.FC = ({ navigation }: any) => {
+export const DebugScript: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [trips, initTrip, addTrip, removeTrip] = useTrips();
 
   useEffect(() => {
@@ -22,12 +21,12 @@ export const DebugScript: React.FC = ({ navigation }: any) => {
   }, []);
 
   async function addData() {
-    if (trips.length > 0) {
-      alert(
-        "Vous avez déjà des données en place, nous ne pouvons pas effectuez les prochaine tache"
-      );
-      return;
-    }
+    // if (trips.length > 0) {
+    //   alert(
+    //     "Vous avez déjà des données en place, nous ne pouvons pas effectuez les prochaine tache"
+    //   );
+    //   return;
+    // }
 
     const trip = await createTrip({
       name: "Go to Korea",
@@ -152,7 +151,7 @@ export const DebugScript: React.FC = ({ navigation }: any) => {
   }
   return (
     <TouchableOpacity
-      onPress={(event) => {
+      onPress={() => {
         addData();
       }}
     >

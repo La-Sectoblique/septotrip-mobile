@@ -16,7 +16,7 @@ import { LoginCredentials } from "@la-sectoblique/septoblique-service/dist/types
 import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../models/RootStackParamList";
+import { RootStackParamList } from "../models/NavigationParamList";
 
 const styles = StyleSheet.create({
   page: {

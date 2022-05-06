@@ -51,7 +51,7 @@ export const StepList = (props: StepListProps) => {
       <Text style={{ marginVertical: 5, marginHorizontal: 5, fontSize: 18 }}>
         Liste des étapes:{" "}
       </Text>
-      {props.steps.map((step: StepOutput, i: number) => {
+      {props.steps.map((step: StepOutput) => {
         return (
           <View
             key={step.id}
@@ -67,7 +67,7 @@ export const StepList = (props: StepListProps) => {
               style={styles.stepcircle}
               underlayColor="#ccc"
               onPress={() =>
-                alert(step.name + "\n" + step.localisation.coordinates)
+                handleClick(step)
               }
             >
               <Text></Text>

@@ -8,7 +8,7 @@ import { TripViewerInfo } from "../pages/TripViewerInfo";
 import { ShowTrip } from "../component/trip/ShowTrip";
 import { TripViewerDay } from "../pages/TripViewerDay";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../models/RootStackParamList";
+import { RootStackParamList } from "../models/NavigationParamList";
 
 type TripNavigationProps = NativeStackScreenProps<RootStackParamList, 'Planification'>
 
@@ -17,8 +17,9 @@ export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
   const Tab = createBottomTabNavigator<ParamListBase>();
 
   const { trip } = props.route.params
-  console.log(trip)
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
       <Tab.Navigator>
         <Tab.Screen name="Voyage" component={ShowTrip} initialParams={{trip: trip}}/>
         <Tab.Screen name="Info" component={TripViewerInfo} />

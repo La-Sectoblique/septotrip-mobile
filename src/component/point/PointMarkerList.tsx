@@ -1,6 +1,7 @@
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
+import React from "react";
 import { LatLng, Marker } from "react-native-maps";
 
 interface PointMarkerListProps {
@@ -21,7 +22,7 @@ export const PointMarkerList = (props: PointMarkerListProps) => {
 
   return (
     <>
-      {props.points.map((point: PointOutput, i: number) => {
+      {props.points.map((point: PointOutput) => {
         return (
           <Marker
             key={point.id}
@@ -33,9 +34,7 @@ export const PointMarkerList = (props: PointMarkerListProps) => {
             }
             pinColor="blue"
             onPress={() => {
-              alert(
-                "Point d'intérêt: \n" + point.title + "\n\n" + point.description
-              );
+              handleClick(point)
             }}
           />
         );

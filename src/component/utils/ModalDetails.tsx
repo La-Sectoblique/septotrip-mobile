@@ -1,5 +1,4 @@
 import {
-  isPathOuput,
   PathOutput,
 } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import {
