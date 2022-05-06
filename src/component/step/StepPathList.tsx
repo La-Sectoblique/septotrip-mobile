@@ -41,25 +41,27 @@ export const StepPathList = (props: StepPathListProps) => {
         if (i == steps.length - 1) return;
 
         return (
-          <Polyline
-            key={step.id}
-            coordinates={[
-              {
-                longitude: step.localisation.coordinates[0],
-                latitude: step.localisation.coordinates[1],
-              } as LatLng,
-              {
-                longitude: steps[i + 1].localisation.coordinates[0],
-                latitude: steps[i + 1].localisation.coordinates[1],
-              } as LatLng,
-            ]}
-            strokeColor={"blue"}
-            strokeWidth={6}
-            tappable={true}
-            onPress={() => {
-              handleClick(step);
-            }}
-          />
+          <>
+            <Polyline
+              key={step.id}
+              coordinates={[
+                {
+                  longitude: step.localisation.coordinates[0],
+                  latitude: step.localisation.coordinates[1],
+                } as LatLng,
+                {
+                  longitude: steps[i + 1].localisation.coordinates[0],
+                  latitude: steps[i + 1].localisation.coordinates[1],
+                } as LatLng,
+              ]}
+              strokeColor={"blue"}
+              strokeWidth={6}
+              tappable={true}
+              onPress={() => {
+                handleClick(step);
+              }}
+            />
+          </>
         );
       })}
     </>

@@ -11,7 +11,7 @@ import { TripList } from './src/component/trip/TripList';
 import { init, Platform } from "@la-sectoblique/septoblique-service";
 
 import { TripNavigation } from "./src/navigation/TripNavigation";
-import { RootStackParamList } from "./src/models/RootStackParamList";
+import { RootStackParamList } from "./src/models/NavigationParamList";
 
 export default function App() {
 
