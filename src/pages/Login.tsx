@@ -17,6 +17,7 @@ import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
+import {Loader} from '../component/Loader';
 
 const styles = StyleSheet.create({
   page: {
@@ -104,8 +105,8 @@ export const Login: React.FC<LoginProps> = (props) => {
   };
 
   if (loading)
-    //TODO: Add Proper loading page
-    return <Text>ça charge bg tkt</Text>;
+    return <Loader/>
+
 
   return (
     <SafeAreaView style={styles.page}>
