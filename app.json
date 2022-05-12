@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mapbox_test",
-    "slug": "mapbox_test",
+    "name": "SeptoTrip Mobile",
+    "slug": "setoptrip",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,13 +17,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.septotrip.mobile",
+      "buildNumber": "0.1.2"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.septotrip.mobile",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
