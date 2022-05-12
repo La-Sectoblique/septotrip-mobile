@@ -16,7 +16,7 @@ import { RootStackParamList } from "./src/models/NavigationParamList";
 export default function App() {
 
   init({
-  url: 'http://api.septotrip.com',
+  url: 'https://api.septotrip.com',
   getToken: async () => {
     const get_auth = await SecureStore.getItemAsync('token');
     if (!get_auth) {

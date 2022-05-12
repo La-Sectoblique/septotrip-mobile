@@ -32,14 +32,14 @@ export const PointMarkerList = (props: PointMarkerListProps) => {
                 latitude: point.localisation.coordinates[1],
               } as LatLng
             }
-            pinColor="blue"
+            pinColor="purple"
             onPress={() => {
               handleClick(point)
             }}
           />
         );
-      })}
-      );
+      })
+      }
     </>
   );
 };

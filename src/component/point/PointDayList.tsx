@@ -17,7 +17,6 @@ export const PointDayList = ({ day }: PointDayListProps) => {
     useEffect(() => {
         getPointsByDay(day.id)
         .then((points: PointOutput[]) => {
-            console.log(points)
             initPoint(points)
         })
         .catch((err: ApiError) => {

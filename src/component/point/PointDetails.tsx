@@ -1,7 +1,6 @@
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point"
 import React from "react"
-import { View, Text, Dimensions } from "react-native"
-import MapView, { LatLng, Marker } from "react-native-maps"
+import { View, Text } from "react-native"
 
 interface PointDetailsProps {
     point: PointOutput
