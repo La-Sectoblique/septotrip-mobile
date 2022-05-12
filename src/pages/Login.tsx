@@ -17,7 +17,7 @@ import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
-import {Loader} from '../component/Loader';
+import {Loader} from '../component/utils/Loader';
 
 const styles = StyleSheet.create({
   page: {

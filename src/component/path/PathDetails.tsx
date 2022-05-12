@@ -9,7 +9,7 @@ import MapView, {
   Marker,
   Polyline,
 } from "react-native-maps";
-import { Loader } from "../Loader";
+import { Loader } from "../utils/Loader";
 
 interface PathDetailsProps {
   origin: StepOutput;

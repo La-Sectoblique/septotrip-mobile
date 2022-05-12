@@ -21,5 +21,10 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-    }
+
+    },
+    "ignorePatterns": [
+        ".eslintrc.js",
+        "babel.config.js"
+    ]
 }
