@@ -27,7 +27,7 @@ export const PointDayList = ({ day }: PointDayListProps) => {
     }, [])
 
     if(points.length < 1)
-        return <Text>Aucune étape liée à ce jour</Text>
+        return <Text>Aucun point lié à ce jour</Text>
         
     return (
           <View style={{}}>

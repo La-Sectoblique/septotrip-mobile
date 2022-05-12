@@ -9,6 +9,7 @@ import MapView, {
   Marker,
   Polyline,
 } from "react-native-maps";
+import { Loader } from "../Loader";
 
 interface PathDetailsProps {
   origin: StepOutput;
@@ -28,7 +29,7 @@ export const PathDetails = (props: PathDetailsProps) => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <Text>ça charge bg tkt</Text>;
+  if (loading) return <Loader />;
 
   return (
     <View>
