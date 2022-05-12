@@ -11,16 +11,25 @@ interface TripDetailsProps {
 
 export const TripDetails = (props: TripDetailsProps) => {
 
-    const handlePressEvent = () => {
+    const handlePressEvent = (isReadOnly: boolean) => {
         props.navigation.navigate("Planification", {
-            trip: props.trip
+            trip: props.trip,
+            isReadOnly: isReadOnly
         })
     }
     return (
-        <View>
-            <TouchableOpacity onPress={handlePressEvent}>
-                <Text>{props.trip.name}</Text>
-            </TouchableOpacity>
+        <View style={{width: "95%", padding: 5, margin: 5, borderWidth: 1}}>
+            
+            <Text style={{textAlign: 'center'}}>{props.trip.name}</Text>
+            
+            <View style={{width: "100%", flexDirection: 'row', justifyContent: 'space-around', marginTop: 5}}>
+                <TouchableOpacity onPress={() => handlePressEvent(true)} style={{backgroundColor: 'red'}}>
+                    <Text style={{margin: 5}}>Visualiser</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handlePressEvent(false)} style={{backgroundColor: 'green'}}>
+                    <Text style={{margin: 5}}>Commencer</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
