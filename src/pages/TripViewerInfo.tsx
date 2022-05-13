@@ -5,6 +5,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect } from "react";
+import { getTravelers } from "@la-sectoblique/septoblique-service";
+import { UserOutput } from "@la-sectoblique/septoblique-service/dist/types/models/User";
+import { useState } from "react";
 
 const styles = StyleSheet.create({
     page: {
@@ -39,20 +43,33 @@ const styles = StyleSheet.create({
 
 type TripViewerInfoProps = NativeStackScreenProps<RootTabParamList, 'Info'>
 
-export const TripViewerInfo: React.FC<TripViewerInfoProps> = () => {
-
+export const TripViewerInfo: React.FC<TripViewerInfoProps> = (props) => {
+  const [users, setUsers] = useState<UserOutput[]>([] as UserOutput[])
+  const { trip } = props.route.params
+  useEffect(() => {
+    getTravelers((trip.id))
+    .then((users: UserOutput[]) => {
+      setUsers(users)
+    })
+  },[])
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.mainContainer}>
         <View style={styles.container}>
-          <Text style={styles.containerTitle}>Liste des membres</Text>
+          {
+            users.length > 0 ?
+            users.map((user) => {
+              return  <Text key={user.id} style={styles.containerTitle}>{user.firstName} {user.lastName}</Text>
+            }):
+            <Text style={styles.containerTitle}>Aucun voyageur</Text>
+          }
         </View>
         <View style={styles.container}>
           <Text style={styles.containerTitle}>Liste des taches</Text>
         </View>
       </View>
       <View style={styles.container}>
-        <Text style={styles.containerTitle}>Liste des points du voyage</Text>
+        <Text style={styles.containerTitle}>Liste des fichiers du voyage</Text>
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>

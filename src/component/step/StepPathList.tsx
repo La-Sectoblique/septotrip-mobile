@@ -18,12 +18,8 @@ interface StepPathListProps {
 export const StepPathList = (props: StepPathListProps) => {
   if (props.steps.length == 0) return <></>;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
-
   const handleClick = (step: StepOutput) => {
     if (step.pathId == null) return;
-    setOrigin(step);
 
     getPathById(step.pathId)
       .then((res: PathOutput) => {
@@ -41,9 +37,8 @@ export const StepPathList = (props: StepPathListProps) => {
         if (i == steps.length - 1) return;
 
         return (
-          <>
             <Polyline
-              key={step.id}
+              key={step.pathId}
               coordinates={[
                 {
                   longitude: step.localisation.coordinates[0],
@@ -61,7 +56,6 @@ export const StepPathList = (props: StepPathListProps) => {
                 handleClick(step);
               }}
             />
-          </>
         );
       })}
     </>

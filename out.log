@@ -1,0 +1,40 @@
+touch all button below map
+on touch focus on point
+
+headerOptions enelver Voyage
+Mettre les logos
+
+style:
+TripDetails
+TripViewerDay un peu aérer le layout
+Planification mauvais titre
+
+Menu Day pas au bonne endroit 
+BottomTab => Case Voyage into Menu en haut Carte + Planning des jours
+Clique sur un voyage pour le visualiser puis cliquer sur commencer pas de retour en arriere 
+
+Liste des étapes + petit i pour afficher les infos
+
+!!! travailler les headers !!!
+
+Menu du bas: Voyage TodoList Depenses Fichiers
+
+filter de la map: un bouton qui afficher un composant qui monte vers le bas 
+
+
+
+cr 13/05
+
+mobile:
+
+clique sur commencer apapraitre sur showtrip
+permettre retoursur triplist et voir une difference entre commencer et visualiser
+journal qui a posté quoi et uand et ordre chronologique - todo List (a voir avec K)
+zoumer sur voyage   
+
+web:
+
+
+
+back:
+
