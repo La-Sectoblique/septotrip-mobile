@@ -18,7 +18,7 @@ export const TripList: React.FC<TripListProps> = (props) => {
     const [refreshing, setRefreshing] = useState<boolean>(true)
 
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
-        <TripDetails key={item.id} trip={item} navigation={props.navigation} />
+        <TripDetails key={item.id} trip={item} navigation={props.navigation} have_started_trip={started_trip !== null}/>
     )
     const fetchData = () => {
         getUserTrips()
@@ -61,6 +61,12 @@ export const TripList: React.FC<TripListProps> = (props) => {
       >
         Liste des voyages
       </Text>
+      {
+        started_trip ?
+          <TripDetails key={started_trip.id} trip={started_trip} navigation={props.navigation} started={true} have_started_trip={started_trip !== null}/>
+        :
+        <></>
+      }
       <FlatList
         data={trips}
         renderItem={renderItem}
