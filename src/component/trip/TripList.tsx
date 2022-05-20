@@ -33,7 +33,8 @@ export const TripList: React.FC<TripListProps> = (props) => {
     useEffect(() => { 
         fetchData()      
       }, [])
-
+  
+  
   if (trips.length == 0)
     return (
       <View>
@@ -43,8 +44,16 @@ export const TripList: React.FC<TripListProps> = (props) => {
         <Text>Utilisez le service Web pour créer un voyage</Text>
       </View>
     );
+  
+  const filtered_trips = trips.filter(trip => trip.startDate != undefined)
+  if (filtered_trips.length > 0){
+    console.log(filtered_trips)
+    props.navigation.navigate("Planification", {trip: filtered_trips[0], isReadOnly: false})
+  }
+  
   return (
     <>
+    {/* <DebugScript /> */}
       <Text
         style={{ textAlign: "center", marginVertical: 10, fontWeight: "bold" }}
       >
