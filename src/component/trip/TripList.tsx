@@ -14,6 +14,7 @@ type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
 export const TripList: React.FC<TripListProps> = (props) => {
     const [trips, initTrip] = useTrips();
+    const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
 
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
@@ -22,8 +23,10 @@ export const TripList: React.FC<TripListProps> = (props) => {
     const fetchData = () => {
         getUserTrips()
           .then((res: TripOutput[]) => {
-            setRefreshing(false)  
-            initTrip(res)
+            setRefreshing(false)
+            const filtered_trips = res.filter(trip => trip.startDate != undefined)
+            setStartedTrip(filtered_trips[0])
+            initTrip(res.filter(trip => trip.startDate == undefined))
         })
         .catch(async (err: ApiError) => {
             console.error(JSON.stringify(err))
@@ -45,12 +48,11 @@ export const TripList: React.FC<TripListProps> = (props) => {
       </View>
     );
   
-  const filtered_trips = trips.filter(trip => trip.startDate != undefined)
-  if (filtered_trips.length > 0){
-    console.log(filtered_trips)
-    props.navigation.navigate("Planification", {trip: filtered_trips[0], isReadOnly: false})
+  if (started_trip){
+    console.log(started_trip)
+    props.navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
   }
-  
+
   return (
     <>
     {/* <DebugScript /> */}
