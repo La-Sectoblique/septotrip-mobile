@@ -69,10 +69,6 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
 
       setLongitudeDelta(trip_sort_longitude[trip_sort_longitude.length - 1].localisation.coordinates[0] - trip_sort_longitude[0].localisation.coordinates[0])
       setLatitudeDelta(trip_sort_latitude[trip_sort_latitude.length - 1].localisation.coordinates[1] - trip_sort_latitude[0].localisation.coordinates[1])
-      
-      trip_sort_longitude.map((item) => console.log(item.localisation.coordinates))
-      console.log("---------")
-      trip_sort_latitude.map((item) => console.log(item.localisation.coordinates))
 
       if (res.length > 0)
         setFocus({
