@@ -20,10 +20,10 @@ export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
   return (
 
       <Tab.Navigator>
-        <Tab.Screen name="Voyage" component={ShowTrip} initialParams={{trip: trip}}/>
-        <Tab.Screen name="Info" component={TripViewerInfo} initialParams={{trip: trip}}/>
-        <Tab.Screen name="Day" component={TripViewerDay} initialParams={{trip: trip}} />
-        { !isReadOnly ? <Tab.Screen name="Fichier" component={ShowTrip} initialParams={{trip: trip}} />: <></> }
+        <Tab.Screen name="Voyage" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
+        <Tab.Screen name="Info" component={TripViewerInfo} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
+        <Tab.Screen name="Day" component={TripViewerDay} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
+        { !isReadOnly ? <Tab.Screen name="Fichier" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>: <></> }
       </Tab.Navigator>
   );
 }

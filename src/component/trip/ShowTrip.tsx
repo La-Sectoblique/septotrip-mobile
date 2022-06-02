@@ -47,6 +47,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
   const [filter, setFilter] = useState<string>("all");
 
   const [points, initPoint, addPoint, removePoint] = usePoints();
+  
   //Default center the map on Paris coordinate
   const [focus, setFocus] = useState<LocalisationPoint>({
     type: "Point",
@@ -127,7 +128,6 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
   return (
     <PTRView onRefresh={() => _refresh(trip)}>
       <View>
-        <Text>Nom du voyage : {trip.name}</Text>
         <ModalDetails
           activeElement={activeElement}
           modalVisible={modalVisible}
