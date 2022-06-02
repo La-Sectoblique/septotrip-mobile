@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, Text, View, StyleSheet } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { getTodoEntriesByTripId, getTravelers } from "@la-sectoblique/septoblique-service";
+import { UserOutput } from "@la-sectoblique/septoblique-service/dist/types/models/User";
+import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
+import PTRView from "react-native-pull-to-refresh";
+import { TodoEntryOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Todo";
 
 const styles = StyleSheet.create({
     page: {
@@ -39,22 +44,60 @@ const styles = StyleSheet.create({
 
 type TripViewerInfoProps = NativeStackScreenProps<RootTabParamList, 'Info'>
 
-export const TripViewerInfo: React.FC<TripViewerInfoProps> = () => {
+export const TripViewerInfo: React.FC<TripViewerInfoProps> = (props) => {
+  const { trip } = props.route.params;
+  
+  const [travelers, setTravelers] = useState<UserOutput[]>([] as UserOutput[]);
+  const [todoEntries, setTodoEntries] = useState<TodoEntryOutput[]>([] as TodoEntryOutput[]);
+
+  const _refresh = () => {
+    getTravelers(trip.id)
+    .then((res: UserOutput[]) => {
+      setTravelers(res)
+    })
+    .catch((err: ApiError) => {
+      console.error(err)
+    })
+
+    getTodoEntriesByTripId(trip.id)
+    .then((res: TodoEntryOutput[]) => {
+        setTodoEntries(res)
+    })
+    .catch((err: ApiError) => {
+      console.error(err)
+    })
+  }
+
+  useEffect(() => {
+    _refresh()
+  }, [])
 
   return (
-    <SafeAreaView style={styles.page}>
-      <View style={styles.mainContainer}>
-        <View style={styles.container}>
-          <Text style={styles.containerTitle}>Liste des membres</Text>
+    <PTRView onRefresh={() => {_refresh()}}>
+      <SafeAreaView style={styles.page}>
+        <View style={styles.mainContainer}>
+          <View style={styles.container}>
+            <Text style={{fontSize: 20}}>Liste des membres: </Text>
+            {
+              travelers.map((traveler) => {
+                return <Text key={traveler.id}>- {traveler.firstName} {traveler.lastName}</Text>
+              })
+            }
+          </View>
+          <View style={styles.container}>
+            <Text  style={{fontSize: 20}}>Liste des taches</Text>
+            {
+              todoEntries.map((todoEntry) => {
+                return <Text key={todoEntry.id}>- {todoEntry.description}</Text>
+              })
+            }
+          </View>
         </View>
         <View style={styles.container}>
-          <Text style={styles.containerTitle}>Liste des taches</Text>
+          <Text style={styles.containerTitle}>Liste des points du voyage</Text>
         </View>
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.containerTitle}>Liste des points du voyage</Text>
-      </View>
-      <StatusBar style="auto" />
-    </SafeAreaView>
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    </PTRView>
   );
 };

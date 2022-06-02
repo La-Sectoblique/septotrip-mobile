@@ -22,6 +22,7 @@ export const TripDetails = (props: TripDetailsProps) => {
                 isReadOnly: false
             }))
             .catch((err: ApiError) => console.error(JSON.stringify(err)))
+            // Remonter l'info du started_trip
         }
         props.navigation.navigate("Planification", {
             trip: props.trip,

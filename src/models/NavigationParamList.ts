@@ -11,6 +11,6 @@ export type RootStackParamList= {
 export type RootTabParamList= {
     Voyage: { trip: TripOutput },
     Day: { trip: TripOutput },
-    Info: undefined,
+    Info: { trip: TripOutput },
     Fichier: { trip: TripOutput}
 }

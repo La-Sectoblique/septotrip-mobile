@@ -18,7 +18,7 @@ export const TripList: React.FC<TripListProps> = (props) => {
     const [refreshing, setRefreshing] = useState<boolean>(true)
 
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
-        <TripDetails key={item.id} trip={item} navigation={props.navigation} have_started_trip={started_trip !== null}/>
+        <TripDetails key={item.id} trip={item} navigation={props.navigation} have_started_trip={started_trip !== undefined}/>
     )
     const fetchData = () => {
         getUserTrips()
@@ -49,7 +49,6 @@ export const TripList: React.FC<TripListProps> = (props) => {
     );
   
   if (started_trip){
-    console.log(started_trip)
     props.navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
   }
 
@@ -63,7 +62,7 @@ export const TripList: React.FC<TripListProps> = (props) => {
       </Text>
       {
         started_trip ?
-          <TripDetails key={started_trip.id} trip={started_trip} navigation={props.navigation} started={true} have_started_trip={started_trip !== null}/>
+          <TripDetails key={started_trip.id} trip={started_trip} navigation={props.navigation} started={true} have_started_trip={started_trip !== undefined}/>
         :
         <></>
       }
