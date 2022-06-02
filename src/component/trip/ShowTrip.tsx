@@ -52,6 +52,9 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
     type: "Point",
     coordinates: [2.349014, 48.864716],
   });
+  const [latitudeDelta, setLatitudeDelta] = useState<number>(0);
+  const [longitudeDelta, setLongitudeDelta] = useState<number>(0);
+
   const [refreshing, setRefreshing] = useState<boolean>(true);
 
   const [error, setError] = useState<string>();
@@ -60,6 +63,17 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
   const _refresh = (trip: TripOutput) => {
     const trip_step = getTripSteps(trip.id).then((res: StepOutput[]) => {
       initStep(res);
+      
+      const trip_sort_longitude = res.sort((a, b) => {return a.localisation.coordinates[0] - b.localisation.coordinates[0] } )
+      const trip_sort_latitude = res.sort((a, b) => {return a.localisation.coordinates[1] - b.localisation.coordinates[1] } )
+
+      setLongitudeDelta(trip_sort_longitude[trip_sort_longitude.length - 1].localisation.coordinates[0] - trip_sort_longitude[0].localisation.coordinates[0])
+      setLatitudeDelta(trip_sort_latitude[trip_sort_latitude.length - 1].localisation.coordinates[1] - trip_sort_latitude[0].localisation.coordinates[1])
+      
+      trip_sort_longitude.map((item) => console.log(item.localisation.coordinates))
+      console.log("---------")
+      trip_sort_latitude.map((item) => console.log(item.localisation.coordinates))
+
       if (res.length > 0)
         setFocus({
           type: "Point",
@@ -78,7 +92,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      height: 300,
+      height: Dimensions.get("window").height * 50/100,
       width: Dimensions.get("window").width,
       backgroundColor: "tomato",
     },
@@ -143,9 +157,10 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
             initialRegion={{
               latitude: focus.coordinates[1],
               longitude: focus.coordinates[0],
-              latitudeDelta: 50,
-              longitudeDelta: 50,
+              latitudeDelta: latitudeDelta*5,
+              longitudeDelta: longitudeDelta*5,
             }}
+            
           >
             {filter == "step" || filter == "all" ? (
               <>
