@@ -20,11 +20,23 @@ export const PathDetails = (props: PathDetailsProps) => {
   const [destination, setDestination] = useState<StepOutput>({} as StepOutput);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [latitudeDelta, setLatitudeDelta] = useState<number>(0);
+  const [longitudeDelta, setLongitudeDelta] = useState<number>(0);
+
   useEffect(() => {
     setLoading(true);
 
+
+    
+
     getStepById(props.path.destinationId)
-      .then((res: StepOutput) => setDestination(res))
+      .then((res: StepOutput) => {
+
+        setLongitudeDelta(Math.abs(res.localisation.coordinates[0] - props.origin.localisation.coordinates[0]))
+        setLatitudeDelta(Math.abs(res.localisation.coordinates[1] - props.origin.localisation.coordinates[1]))
+        
+        setDestination(res)
+      })
       .catch((err: ApiError) => console.log(err))
       .finally(() => setLoading(false));
   }, []);
@@ -45,8 +57,8 @@ export const PathDetails = (props: PathDetailsProps) => {
         initialRegion={{
           latitude: props.origin.localisation.coordinates[1],
           longitude: props.origin.localisation.coordinates[0],
-          latitudeDelta: 50,
-          longitudeDelta: 50,
+          latitudeDelta: latitudeDelta*5,
+          longitudeDelta: longitudeDelta*5,
         }}
       >
         <Marker
