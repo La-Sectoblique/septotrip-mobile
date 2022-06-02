@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.1.6",
+    "@expo/vector-icons": "^13.0.0",
     "@la-sectoblique/septoblique-service": "^0.7.9",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-picker/picker": "2.4.0",

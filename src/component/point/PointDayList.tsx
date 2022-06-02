@@ -26,13 +26,16 @@ export const PointDayList = ({ day }: PointDayListProps) => {
     }, [])
 
     if(points.length < 1)
-        return <Text>Aucun point lié à ce jour</Text>
+        return <Text></Text>
         
     return (
           <View style={{}}>
               {
                   points.map((point) => {
-                      return <Text key={point.id}>{point.title}: {point.description ? point.description : "Aucune description"}</Text>
+                      return <View key={point.id} style={{marginHorizontal: 2, marginVertical: 5}}>
+                            <Text>{point.title} </Text>
+                            { point.description ? <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> : <></> }
+                          </View>
                   })
               }
           </View>

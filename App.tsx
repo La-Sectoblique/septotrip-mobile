@@ -38,7 +38,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{headerTitle: "Se connecter"}}/>
+        <Stack.Screen name="Login" component={Login} options={{headerTitle: "Se connecter",}}/>
         <Stack.Screen name="Register" component={Register} options={{headerTitle: "Créer un compte"}}/>
         <Stack.Screen name="Planification" component={TripNavigation} />
         <Stack.Screen name="TripList" component={TripList} options={{headerTitle: "Liste de voyage"}}/>

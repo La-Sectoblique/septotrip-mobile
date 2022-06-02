@@ -29,15 +29,17 @@ export const StepDayList = ({ step }: StepDayListProps) => {
         
     return (
           <View style={{}}>
-              <Text>Etape: {step.order}: {step.name}</Text>
+              <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize:20}}>{step.order}: {step.name}</Text>
+              <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-around'}}>
               {
                   days.map((day) => {
-                      return <View key={day.id}>
-                      <Text>Jour: {day.number}</Text>
+                      return <View key={day.id} style={{borderWidth: 1, borderRadius: 15, padding: 10, margin: 10, width: "40%"}}>
+                      <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>Jour: {day.number}</Text>
                       <PointDayList day={day} />
                       </View>
                   })
               }
+              </View>
           </View>
     )
 }
