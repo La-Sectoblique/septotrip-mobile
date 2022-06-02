@@ -14,16 +14,19 @@ type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
 export const TripList: React.FC<TripListProps> = (props) => {
     const [trips, initTrip] = useTrips();
+    const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
 
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
-        <TripDetails key={item.id} trip={item} navigation={props.navigation} />
+        <TripDetails key={item.id} trip={item} navigation={props.navigation} have_started_trip={started_trip !== undefined}/>
     )
     const fetchData = () => {
         getUserTrips()
           .then((res: TripOutput[]) => {
-            setRefreshing(false)  
-            initTrip(res)
+            setRefreshing(false)
+            const filtered_trips = res.filter(trip => trip.startDate != undefined)
+            setStartedTrip(filtered_trips[0])
+            initTrip(res.filter(trip => trip.startDate == undefined))
         })
         .catch(async (err: ApiError) => {
             console.error(JSON.stringify(err))
@@ -33,7 +36,8 @@ export const TripList: React.FC<TripListProps> = (props) => {
     useEffect(() => { 
         fetchData()      
       }, [])
-
+  
+  
   if (trips.length == 0)
     return (
       <View>
@@ -43,13 +47,25 @@ export const TripList: React.FC<TripListProps> = (props) => {
         <Text>Utilisez le service Web pour créer un voyage</Text>
       </View>
     );
+  
+  if (started_trip){
+    props.navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
+  }
+
   return (
     <>
+    {/* <DebugScript /> */}
       <Text
         style={{ textAlign: "center", marginVertical: 10, fontWeight: "bold" }}
       >
         Liste des voyages
       </Text>
+      {
+        started_trip ?
+          <TripDetails key={started_trip.id} trip={started_trip} navigation={props.navigation} started={true} have_started_trip={started_trip !== undefined}/>
+        :
+        <></>
+      }
       <FlatList
         data={trips}
         renderItem={renderItem}

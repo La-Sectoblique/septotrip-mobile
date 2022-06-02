@@ -131,6 +131,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
           ]}
           setCurrentValue={setFilter}
           currentValue={filter}
+          key="dropdown"
         />
         <View style={styles.container}>
           <MapView
