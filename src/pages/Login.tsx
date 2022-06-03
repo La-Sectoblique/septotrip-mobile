@@ -56,32 +56,22 @@ export const Login: React.FC<LoginProps> = (props) => {
     setMissingEmail(false);
     setMissingPassword(false);
 
-    // if(password.length === 0)
-    //   setMissingPassword(true)
+    if(password.length === 0)
+      setMissingPassword(true)
 
-    // if(email.length === 0)
-    //   setMissingEmail(true)
+    if(email.length === 0)
+      setMissingEmail(true)
 
-    // if(email.length === 0 || password.length === 0){
-    //   setLoading(false)
-    //   return
-    // }
-
-    // const data: LoginCredentials = {
-    //   email: email,
-    //   password: password
-    // }
-    //DEBUG
-
-    // const data: LoginCredentials = {<
-    //   email: "test@ladwein.fr",
-    //   password: "1234"
-    // }
+    if(email.length === 0 || password.length === 0){
+      setLoading(false)
+      return
+    }
 
     const data: LoginCredentials = {
-      email: "jean",
-      password: "jean",
-    };
+      email: email,
+      password: password
+    }
+
 
     //Execute register function after one second to see loading page
     setTimeout(() => {
@@ -91,10 +81,9 @@ export const Login: React.FC<LoginProps> = (props) => {
           setLoading(false)
         })
         .catch((err: ApiError) => {
-          console.log(JSON.stringify(err));
           if (err.code === 404) setError("Utilisateur inexistant");
+          else if (err.code === 400) setError("Mot de passe faux");
           else setError("Une erreur s'est produite");
-          //TODO erreur 400 mauvais mdp
         })
         .finally(() => {
           setEmail("");
