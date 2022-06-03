@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 type RegisterProps = NativeStackScreenProps<RootStackParamList, 'Register'>
 
 
-export const Register: React.FC<RegisterProps> = () => {
+export const Register: React.FC<RegisterProps> = ({route, navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -103,6 +103,7 @@ export const Register: React.FC<RegisterProps> = () => {
           setLastName("");
 
           setLoading(false);
+          navigation.navigate('Login')
         });
     }, 1000);
   };
