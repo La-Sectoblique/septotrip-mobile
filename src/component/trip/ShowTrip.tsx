@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import PTRView from "react-native-pull-to-refresh";
-import MapView from "react-native-maps";
+import MapView, { Region } from "react-native-maps";
 import * as Location from "expo-location";
 
 import {
@@ -53,6 +53,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
     type: "Point",
     coordinates: [2.349014, 48.864716],
   });
+  const [region, setRegion] = useState<Region>();
   const [latitudeDelta, setLatitudeDelta] = useState<number>(0);
   const [longitudeDelta, setLongitudeDelta] = useState<number>(0);
 
@@ -97,6 +98,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
       .finally(() => setRefreshing(false));
   };
 
+ 
   const styles = StyleSheet.create({
     container: {
       height: Dimensions.get("window").height * 50/100,
@@ -166,6 +168,8 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
               latitudeDelta: latitudeDelta*5,
               longitudeDelta: longitudeDelta*5,
             }}
+            region={region}
+            
             
           >
             {filter == "step" || filter == "all" ? (
@@ -174,6 +178,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
                   steps={steps}
                   setActiveElement={setActiveElement}
                   setModalVisible={setModalVisible}
+                  setRegion={setRegion}
                 />
                 <StepPathList
                   steps={steps}
@@ -190,6 +195,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
                 points={points}
                 setActiveElement={setActiveElement}
                 setModalVisible={setModalVisible}
+                setRegion={setRegion}
               />
             ) : (
               <></>
@@ -200,6 +206,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
           steps={steps}
           setActiveElement={setActiveElement}
           setModalVisible={setModalVisible}
+          setRegion={setRegion}
         ></StepList>
       </View>
     </PTRView>

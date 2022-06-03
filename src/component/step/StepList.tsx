@@ -1,42 +1,35 @@
 import React from "react";
 import {
-  Dimensions,
   Text,
   TouchableHighlight,
-  StyleSheet,
   View,
 } from "react-native";
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
+import { Region } from "react-native-maps";
 
 interface StepListProps {
   setModalVisible: (arg0: boolean) => void;
   setActiveElement: (
     arg0: StepOutput | { path: PathOutput; origin: StepOutput } | PointOutput
   ) => void;
+  setRegion: (arg0: Region) => void;
   steps: StepOutput[];
 }
 
 export const StepList = (props: StepListProps) => {
-  const styles = StyleSheet.create({
-    stepcircle: {
-      borderRadius:
-        Math.round(
-          (Dimensions.get("window").width * 1) / (props.steps.length * 5)
-        ) / 2,
-      width: (Dimensions.get("window").width * 1) / (props.steps.length * 5),
-      height: (Dimensions.get("window").width * 1) / (props.steps.length * 5),
-      backgroundColor: "#999",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  });
-
+ 
   const handleClick = (step: StepOutput) => {
     props.setActiveElement(step);
     props.setModalVisible(true);
+    props.setRegion({
+      latitude: step.localisation.coordinates[1],
+      longitude: step.localisation.coordinates[0],
+      latitudeDelta: 1,
+      longitudeDelta: 1
+    })
   };
 
   if (props.steps.length == 0)
@@ -64,17 +57,15 @@ export const StepList = (props: StepListProps) => {
             }}
           >
             <TouchableHighlight
-              style={styles.stepcircle}
               underlayColor="#ccc"
               onPress={() =>
                 handleClick(step)
               }
             >
-              <Text></Text>
-            </TouchableHighlight>
             <Text style={{ textAlign: "center", marginHorizontal: 2 }}>
-              {step.name}
+              {step.order}: {step.name}
             </Text>
+             </TouchableHighlight>
           </View>
         );
       })}
