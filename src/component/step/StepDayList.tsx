@@ -4,7 +4,7 @@ import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
 import React, { useEffect, useState } from 'react'
-import { Text, View } from 'react-native';
+import { Text, TouchableHighlight, View } from 'react-native';
 
 import { PointDayList } from '../point/PointDayList';
 import { Loader } from '../utils/Loader';
@@ -19,6 +19,10 @@ export const StepDayList = ({ step, gotoMap }: StepDayListProps) => {
 
     const [loading, setLoading] = useState<boolean>(true)
 
+    const handleClick = (step: StepOutput): void => {
+        gotoMap(step)
+    }
+
     useEffect(() => {
         getStepDays(step.id)
         .then((days: DayOutput[]) => {
@@ -30,9 +34,9 @@ export const StepDayList = ({ step, gotoMap }: StepDayListProps) => {
         .finally(() => setLoading(false))
         
     }, [])
-    
+
     if(loading)
-            return <Loader />
+        return <Loader />
 
     if(days.length < 1)
         return <Text>Aucun jour disponible</Text>
@@ -41,7 +45,15 @@ export const StepDayList = ({ step, gotoMap }: StepDayListProps) => {
         
     return (
           <View style={{}}>
-              <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize:20}}>{step.order}: {step.name}</Text>
+                <TouchableHighlight
+                    underlayColor="#ccc"
+                    onPress={() =>
+                        handleClick(step)
+                    }
+                >
+                    <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize:20}}>{step.order}: {step.name}</Text>
+                </TouchableHighlight>
+              
               <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-around'}}>
               {
                   days.map((day) => {
@@ -55,3 +67,4 @@ export const StepDayList = ({ step, gotoMap }: StepDayListProps) => {
           </View>
     )
 }
+

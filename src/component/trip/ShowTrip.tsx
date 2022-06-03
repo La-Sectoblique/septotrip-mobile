@@ -128,9 +128,10 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
 
     _refresh(trip);
 
-    console.log(pointToFocus)
   }, []);
 
+
+  //WHen POI is click on Day page pointToFocus change and navigate to ShowTrip, so region have to change
   useEffect(() => {
     if(pointToFocus === undefined)
       return

@@ -32,8 +32,8 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
         })
     }
 
-    const gotoMap = (point: PointOutput) => {
-        navigation.navigate('Voyage', {trip: trip, pointToFocus: point})
+    const gotoMap = (point_or_step: PointOutput | StepOutput) => {
+        navigation.navigate('Voyage', {trip: trip, pointToFocus: point_or_step})
     }
     
     useEffect(() => {
@@ -49,6 +49,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
     return (
         <PTRView onRefresh={() => _refresh()}>
           <SafeAreaView style={{}}>
+              <Text style={{textAlign: 'center', marginBottom:10}}>Cliquez pour accédez sur la map</Text>
               {
                   steps.map((step) => {
                       return <StepDayList key={step.id} step={step} gotoMap={gotoMap} />
