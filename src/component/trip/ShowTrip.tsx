@@ -36,7 +36,7 @@ type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Voyage'>
 
 export const ShowTrip: React.FC<ShowTripProps> = (props) => {
 
-  const { trip } = props.route.params
+  const { trip, pointToFocus } = props.route.params
   const [steps, initStep, addStep, removeStep] = useSteps();
 
   const [activeElement, setActiveElement] = useState<
@@ -127,7 +127,20 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
     if (trip == undefined) return;
 
     _refresh(trip);
+
+    console.log(pointToFocus)
   }, []);
+
+  useEffect(() => {
+    if(pointToFocus === undefined)
+      return
+    setRegion({
+      longitude: pointToFocus.localisation.coordinates[0],
+      latitude: pointToFocus.localisation.coordinates[1],
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05
+    })
+  }, [pointToFocus])
 
   if (trip == undefined) {
     return <></>;

@@ -1,5 +1,6 @@
 import { getTripSteps } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
+import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react'
@@ -8,30 +9,39 @@ import PTRView from 'react-native-pull-to-refresh';
 
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StepDayList } from '../component/step/StepDayList';
+import { Loader } from '../component/utils/Loader';
 import { RootTabParamList } from '../models/NavigationParamList';
 
 type TripViewerDayProps = NativeStackScreenProps<RootTabParamList, 'Day'>
 
-export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, }) => {
+export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }) => {
     const { trip } = route.params
 
     const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[])
+
+    const [loading, setLoading] = useState<boolean>(true)
     
     const _refresh = () => {
         getTripSteps(trip.id)
         .then((steps: StepOutput[]) => {
             setSteps(steps)
+            setLoading(false)
         })
         .catch((err: ApiError) => {
             console.log(JSON.stringify(err))
         })
     }
 
-
+    const gotoMap = (point: PointOutput) => {
+        navigation.navigate('Voyage', {trip: trip, pointToFocus: point})
+    }
     
     useEffect(() => {
         _refresh()
     }, [])
+
+    if(loading)
+        return <Loader />
 
     if(steps.length < 1)
         return <Text>{"Aucune étape n'est disponible, veuillez planifier votre voyage d'abord sur le site internet"}</Text>
@@ -41,7 +51,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, }) => {
           <SafeAreaView style={{}}>
               {
                   steps.map((step) => {
-                      return <StepDayList key={step.id} step={step} />
+                      return <StepDayList key={step.id} step={step} gotoMap={gotoMap} />
                   })
               }
           </SafeAreaView>

@@ -3,17 +3,26 @@ import { getPointsByDay } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Day';
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
-import React, { useEffect } from 'react'
-import { Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Text, TouchableHighlight, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import usePoints from '../../hook/usePoints';
+import { Loader } from '../utils/Loader';
 
 interface PointDayListProps {
     day: DayOutput
+    gotoMap: (arg0: PointOutput) => void
 }
 
-export const PointDayList = ({ day }: PointDayListProps) => {
+export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
     const [points, initPoint, addPoint, removePoint] = usePoints();
-    
+
+    const [loading, setLoading] = useState<boolean>(true)
+
+    const handleClick = (point: PointOutput): void => {
+       gotoMap(point)
+    }
+
     useEffect(() => {
         getPointsByDay(day.id)
         .then((points: PointOutput[]) => {
@@ -22,8 +31,12 @@ export const PointDayList = ({ day }: PointDayListProps) => {
         .catch((err: ApiError) => {
             console.log(JSON.stringify(err))
         })
+        .finally(() => setLoading(false))
         
     }, [])
+
+    if(loading)
+        return <Loader />
 
     if(points.length < 1)
         return <Text></Text>
@@ -33,11 +46,22 @@ export const PointDayList = ({ day }: PointDayListProps) => {
               {
                   points.map((point) => {
                       return <View key={point.id} style={{marginHorizontal: 2, marginVertical: 5}}>
-                            <Text>{point.title} </Text>
-                            { point.description ? <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> : <></> }
+                        <TouchableHighlight
+                            underlayColor="#ccc"
+                            onPress={() =>
+                                handleClick(point)
+                            }
+                        >
+                            <>
+                                <Text>{point.title} </Text>
+                                { point.description ? <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> : <></> }
+                            </>
+                        </TouchableHighlight>
                           </View>
                   })
               }
           </View>
     )
 }
+
+

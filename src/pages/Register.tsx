@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 type RegisterProps = NativeStackScreenProps<RootStackParamList, 'Register'>
 
 
-export const Register: React.FC<RegisterProps> = ({route, navigation}) => {
+export const Register: React.FC<RegisterProps> = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
