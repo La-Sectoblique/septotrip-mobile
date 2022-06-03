@@ -41,7 +41,6 @@ export const StepPathList = (props: StepPathListProps) => {
         if (i == steps.length - 1) return;
 
         return (
-          <>
             <Polyline
               key={step.id}
               coordinates={[
@@ -61,7 +60,6 @@ export const StepPathList = (props: StepPathListProps) => {
                 handleClick(step);
               }}
             />
-          </>
         );
       })}
     </>

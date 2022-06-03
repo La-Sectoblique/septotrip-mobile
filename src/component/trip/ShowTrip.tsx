@@ -152,7 +152,6 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
   }
 
   return (
-    <PTRView onRefresh={() => _refresh(trip)}>
       <View>
         <ModalDetails
           activeElement={activeElement}
@@ -223,6 +222,5 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
           setRegion={setRegion}
         ></StepList>
       </View>
-    </PTRView>
   );
 };
