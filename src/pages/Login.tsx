@@ -18,6 +18,7 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
+import { SuccessLoginResponse } from "@la-sectoblique/septoblique-service/dist/types/utils/Api";
 
 const styles = StyleSheet.create({
   page: {
@@ -76,7 +77,7 @@ export const Login: React.FC<LoginProps> = (props) => {
     //Execute register function after one second to see loading page
     setTimeout(() => {
       login(data)
-        .then(() => {
+        .then((res: SuccessLoginResponse) => {
           props.navigation.navigate('TripList');
           setLoading(false)
         })
