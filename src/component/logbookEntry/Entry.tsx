@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, {  } from 'react'
 import { Text, View } from "react-native";
 import { LogbookEntryOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Logbook';
-import { Loader } from '../utils/Loader';
 import { UserOutput } from '@la-sectoblique/septoblique-service/dist/types/models/User';
 
 interface EntryProps {
@@ -11,19 +10,11 @@ interface EntryProps {
 
 export const Entry = (props: EntryProps) => {
 
-    const [loading, setLoading] = useState<boolean>(false);
-
-    useEffect(() => {
-        //
-    }, [])
-
-    if(loading)
-        return <Loader />
-
     return (
         <View style={{width: "95%", padding: 5, margin: 5, borderWidth: 1}}>
-            <Text>{props.entry.title} - 
-            {props.entry.text}</Text>
+            <Text style={{fontWeight: 'bold'}}>{props.entry.title}</Text>
+            <Text>{props.entry.text}</Text>
+            <Text style={{textAlign: 'right'}}>{props.user.firstName} {props.user.lastName}</Text>
         </View>
     )
 }
