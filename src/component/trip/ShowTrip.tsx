@@ -29,6 +29,7 @@ import {
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../../models/NavigationParamList";
+import { Loader } from "../utils/Loader";
 
 
 
@@ -148,7 +149,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
   }
 
   if (refreshing) {
-    return <Text>ça charche bg tkt</Text>;
+    return <Loader />;
   }
 
   return (

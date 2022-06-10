@@ -112,6 +112,7 @@ export const Login: React.FC<LoginProps> = (props) => {
         style={styles.input}
         onChangeText={(password) => setPassword(password)}
         placeholder="Mot de passe..."
+        autoCapitalize='none'
         blurOnSubmit={false}
         secureTextEntry={true}
       />
