@@ -26,6 +26,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD59RGojvvtL_uny6_E1j6X12P_Jc-dVxk"
+        }
+      },
       "package": "com.septotrip.mobile",
       "versionCode": 1
     },

@@ -82,8 +82,8 @@ export const Login: React.FC<LoginProps> = (props) => {
         })
         .catch((err: ApiError) => {
           if (err.code === 404) setError("Utilisateur inexistant");
-          else if (err.code === 400) setError("Mot de passe faux");
-          else setError("Une erreur s'est produite");
+          // else if (err.code === 400) setError("Mot de passe faux");
+          else setError("Une erreur s'est produite: " + JSON.stringify(err));
         })
         .finally(() => {
           setEmail("");
