@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Button, Image, ScrollView} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootTabParamList } from '../models/NavigationParamList';
-import { getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
+import { getFileLink, getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
 import { MobileFileFormat } from '@la-sectoblique/septoblique-service/dist/utils/FormData';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -29,7 +29,9 @@ type GalleryProps = NativeStackScreenProps<RootTabParamList, 'Gallery'>
   
 export const Gallery: React.FC<GalleryProps> = ({route}) => {
   const { trip } = route.params;
+
   const [images, setImages] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[]);
+  const [imageURL, setImagesUrl] = useState<string[]>([] as string[]);
 
   const [loading, setLoading] = useState<boolean>(true)
   
@@ -37,6 +39,10 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
     getTripFiles(trip.id)
     .then((res: FileMetadataOutput[]) => {
       setImages(res)
+      res.map((image, i) => {
+        getFileLink(trip.id, image.id)
+        .then((url) => setImagesUrl((prev) => { prev[i] = url; return prev }))
+      })
       setLoading(false)
     })
   }
@@ -54,13 +60,13 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
 
     console.log(res)
 
-    if(res.type === "cancel") return;
+    if(res.type === "cancel" || !res.mimeType) return;
 
     uploadFile({
-        name: "Photo lego",
-        extension: "jpg",
-        mimeType: "image/jpeg",
-        tripId: 1,
+        name: res.name,
+        extension: res.name.split(".")[res.name.split(".").length - 1 ],
+        mimeType: res.mimeType,
+        tripId: trip.id,
         visibility: "private"
     }, {
         name: res.name,
@@ -82,8 +88,8 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
       />
       <ScrollView>
       {
-        images.map((image) => {
-          return <Image key={image.id} source={{uri: "https://api.septotrip.com/files/" + image.tempFileId}} style={{width: 100, height: 100}}/>
+        images.map((image, i) => {
+          return <Image key={image.id} source={{uri: imageURL[i]}} style={{width: 100, height: 100}}/>
         })
       }
       </ScrollView>
