@@ -77,19 +77,17 @@ export const Login: React.FC<LoginProps> = (props) => {
     setTimeout(() => {
       login(data)
         .then(() => {
-          props.navigation.navigate('TripList');
+          setEmail("");
+          setPassword("");
           setLoading(false)
+          props.navigation.navigate('TripList');
+          
         })
         .catch((err: ApiError) => {
           if (err.code === 404) setError("Utilisateur inexistant");
           // else if (err.code === 400) setError("Mot de passe faux");
           else setError("Une erreur s'est produite: " + JSON.stringify(err));
         })
-        .finally(() => {
-          setEmail("");
-          setPassword("");
-          setLoading(false);
-        });
     }, 1000);
   };
 

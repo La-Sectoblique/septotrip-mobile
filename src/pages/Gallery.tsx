@@ -1,58 +1,92 @@
-import React, { useState, } from 'react'
-import { Button, StyleSheet, Image, ScrollView} from 'react-native';
-import { uploadFile } from '@la-sectoblique/septoblique-service';
-import { MobileFileFormat } from '@la-sectoblique/septoblique-service/dist/utils/FormData';
-import { FileMetadataAttributes } from '@la-sectoblique/septoblique-service/dist/types/models/File';
+import React from 'react'
+import * as DocumentPicker from 'expo-document-picker';
+import { Button, Image, ScrollView} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootTabParamList } from '../models/NavigationParamList';
+import { getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
+import { MobileFileFormat } from '@la-sectoblique/septoblique-service/dist/utils/FormData';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Loader } from '../component/utils/Loader';
+import { FileMetadataOutput } from '@la-sectoblique/septoblique-service/dist/types/models/File';
 
 
-const styles = StyleSheet.create({
-  carousel:{
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    margin: 10,
-  },
-  carousel_item:{
-    width: 100,
-    height:100,
-    margin: 5,
-  }
-});
+// const styles = StyleSheet.create({
+//   carousel:{
+//     flex: 1,
+//     flexDirection: 'row',
+//     flexWrap: 'wrap',
+//     margin: 10,
+//   },
+//   carousel_item:{
+//     width: 100,
+//     height:100,
+//     margin: 5,
+//   }
+// });
 type GalleryProps = NativeStackScreenProps<RootTabParamList, 'Gallery'>
 
   
-export const Gallery: React.FC<GalleryProps> = (props) => {
-    const [image, setImage] = useState<string>();
+export const Gallery: React.FC<GalleryProps> = ({route}) => {
+  const { trip } = route.params;
+  const [images, setImages] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[]);
 
-    const imageList = ["https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200", "https://picsum.photos/200"];
+  const [loading, setLoading] = useState<boolean>(true)
+  
+  const _refresh = () => {
+    getTripFiles(trip.id)
+    .then((res: FileMetadataOutput[]) => {
+      setImages(res)
+      setLoading(false)
+    })
+  }
 
-    const pickImage = async () => {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        quality: 1,
-      });
-  
-      console.log('result : ', result);
-  
-      if (!result.cancelled) {        
-        setImage(result.uri);
-        uploadFile({extension: "png", mimeType: "image/png", id: "42", name: "couscous", tripId: 1, visibility: 'public'} as FileMetadataAttributes,{name: "test", uri: result.uri, type: "image/png"} as MobileFileFormat)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(JSON.stringify(err)))
-      }
+  useEffect(() => {
+    _refresh()
+  },[])
 
-    };
-  
-    return (
+
+  const onPressPickAFile = async () => {
+    const res = await DocumentPicker.getDocumentAsync({
+        multiple: false,
+        type: "image/*"
+    });
+
+    console.log(res)
+
+    if(res.type === "cancel") return;
+
+    uploadFile({
+        name: "Photo lego",
+        extension: "jpg",
+        mimeType: "image/jpeg",
+        tripId: 1,
+        visibility: "private"
+    }, {
+        name: res.name,
+        type: res.mimeType,
+        uri: res.uri
+    } as MobileFileFormat)
+    .then(() => { _refresh() })
+  }
+
+
+  if(loading)
+    return <Loader />
+
+  return (
+    <>
+      <Button 
+          title="Choisir un fichier"
+          onPress={onPressPickAFile}
+      />
       <ScrollView>
-        <Button title="Pick an image from camera roll" onPress={pickImage} />
-        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-        <ImageCarousel imageList={imageList}/>
-        
+      {
+        images.map((image) => {
+          return <Image key={image.id} source={{uri: "https://api.septotrip.com/files/" + image.tempFileId}} style={{width: 100, height: 100}}/>
+        })
+      }
       </ScrollView>
-    );
+  </>
+  )
 }

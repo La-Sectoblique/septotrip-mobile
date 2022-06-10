@@ -3,7 +3,6 @@ import {
   ScrollView,
   Text,
   TouchableHighlight,
-  View,
 } from "react-native";
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
