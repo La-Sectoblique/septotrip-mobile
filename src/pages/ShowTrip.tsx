@@ -29,6 +29,7 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { Loader } from "../component/utils/Loader";
+import { PointList } from "../component/point/PointList";
 
 
 
@@ -215,12 +216,20 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
             )}
           </MapView>
         </View>
+        {filter == "step" || filter == "all" ?
         <StepList
           steps={steps}
           setActiveElement={setActiveElement}
           setModalVisible={setModalVisible}
           setRegion={setRegion}
-        ></StepList>
+        ></StepList>:
+        <PointList
+          points={points}
+          setActiveElement={setActiveElement}
+          setModalVisible={setModalVisible}
+          setRegion={setRegion}
+        ></PointList>
+            }
       </View>
   );
 };
