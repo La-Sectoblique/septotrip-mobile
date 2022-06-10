@@ -31,7 +31,7 @@ export default function App() {
   platform: Platform.MOBILE,
   context: "development"
 })
-  
+
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
 

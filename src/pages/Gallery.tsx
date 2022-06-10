@@ -8,7 +8,7 @@ import { MobileFileFormat } from '@la-sectoblique/septoblique-service/dist/utils
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Loader } from '../component/utils/Loader';
-import { FileMetadataOutput } from '@la-sectoblique/septoblique-service/dist/types/models/File';
+import { FileMetadataOutput, FileType } from '@la-sectoblique/septoblique-service/dist/types/models/File';
 
 
 // const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
   const [loading, setLoading] = useState<boolean>(true)
   
   const _refresh = () => {
-    getTripFiles(trip.id)
+    getTripFiles(trip.id, {type: FileType.PHOTO})
     .then((res: FileMetadataOutput[]) => {
       setImages(res)
       res.map((image, i) => {
@@ -63,11 +63,12 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
     if(res.type === "cancel" || !res.mimeType) return;
 
     uploadFile({
-        name: res.name,
-        extension: res.name.split(".")[res.name.split(".").length - 1 ],
-        mimeType: res.mimeType,
-        tripId: trip.id,
-        visibility: "private"
+      name: res.name,
+      extension: res.name.split(".")[res.name.split(".").length - 1],
+      mimeType: res.mimeType,
+      tripId: trip.id,
+      visibility: "private",
+      fileType: FileType.PHOTO
     }, {
         name: res.name,
         type: res.mimeType,

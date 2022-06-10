@@ -1490,10 +1490,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@la-sectoblique/septoblique-service@^0.8.1":
-  version "0.8.1"
-  resolved "https://npm.pkg.github.com/download/@la-sectoblique/septoblique-service/0.8.1/58f41e96302fa3414048dc81b3208ae5968e585d8b89466b479e7d1b944cee37#1aec96af85e5aa07248e6bd47bde496209cf7466"
-  integrity sha512-N0wXrIYl3C8f82U4rIi50mVv+BIkIVAjQXO1ZHeBtCBYN/HLdxkalmkTO06MhkGdc26cI0EiEIGawAiihe536w==
+"@la-sectoblique/septoblique-service@^0.8.":
+  version "0.8.3"
+  resolved "https://npm.pkg.github.com/download/@la-sectoblique/septoblique-service/0.8.3/81a3f044a976bf0b1a840320c819321065a5537359eca6da304ea88e1c69b941#0537cba8fda80ebbeaf3b5c6040cffda09545d47"
+  integrity sha512-+IBzw5+JxJhZLnxYE6kxEKxXLddGm6punXt0mK9xR4WNozukOeUOg9sbG3FkjqoH/hbhe6X1CfuzQVj7XHxf/g==
   dependencies:
     axios "^0.26.0"
     mime-types "^2.1.35"
@@ -7664,11 +7664,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
-
-uuid@7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.2.tgz#7ff5c203467e91f5e0d85cfcbaaf7d2ebbca9be6"
-  integrity sha512-vy9V/+pKG+5ZTYKf+VcphF5Oc6EFiu3W8Nv3P3zIh0EqVI80ZxOzuPfe9EHjkFNvf8+xuTHVeei4Drydlx4zjw==
 
 uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
