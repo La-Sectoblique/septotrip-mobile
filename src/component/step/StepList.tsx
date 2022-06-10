@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ScrollView,
   Text,
   TouchableHighlight,
   View,
@@ -44,31 +45,25 @@ export const StepList = (props: StepListProps) => {
       <Text style={{ marginVertical: 5, marginHorizontal: 5, fontSize: 18 }}>
         Liste des étapes:{" "}
       </Text>
+
+      <ScrollView>
       {props.steps.map((step: StepOutput) => {
         return (
-          <View
+          <TouchableHighlight
+            underlayColor="#ccc"
             key={step.id}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              marginHorizontal: 5,
-              marginVertical: 2,
-            }}
+            onPress={() =>
+              handleClick(step)
+            }
           >
-            <TouchableHighlight
-              underlayColor="#ccc"
-              onPress={() =>
-                handleClick(step)
-              }
-            >
-            <Text style={{ textAlign: "center", marginHorizontal: 2 }}>
+            <Text style={{ marginHorizontal: 10 }}>
               {step.order}: {step.name}
             </Text>
-             </TouchableHighlight>
-          </View>
+          </TouchableHighlight>
         );
+       
       })}
+      </ScrollView>
     </>
   );
 };
