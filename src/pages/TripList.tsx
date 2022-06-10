@@ -4,10 +4,10 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
 import { View, Text, FlatList, ListRenderItem, RefreshControl } from "react-native"
-import useTrips from "../../hook/useTrips"
-import { RootStackParamList } from "../../models/NavigationParamList"
-import { DebugScript } from "../utils/DebugScript"
-import { TripDetails } from "./TripDetails"
+import useTrips from "../hook/useTrips"
+import { RootStackParamList } from "../models/NavigationParamList"
+import { DebugScript } from "../component/utils/DebugScript"
+import { TripDetails } from "../component/trip/TripDetails"
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 

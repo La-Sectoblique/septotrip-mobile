@@ -6,7 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { Login } from './src/pages/Login';
 import { Register } from './src/pages/Register';
-import { TripList } from './src/component/trip/TripList';
+import { TripList } from './src/pages/TripList';
 
 import { init, Platform } from "@la-sectoblique/septoblique-service";
 

@@ -5,7 +5,7 @@ import { ParamListBase } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { TripViewerInfo } from "../pages/TripViewerInfo";
-import { ShowTrip } from "../component/trip/ShowTrip";
+import { ShowTrip } from "../pages/ShowTrip";
 import { TripViewerDay } from "../pages/TripViewerDay";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";

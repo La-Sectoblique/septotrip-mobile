@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import PTRView from "react-native-pull-to-refresh";
 import MapView, { Region } from "react-native-maps";
 import * as Location from "expo-location";
 
@@ -10,15 +9,15 @@ import {
   getTripSteps,
 } from "@la-sectoblique/septoblique-service";
 
-import useSteps from "../../hook/useSteps";
+import useSteps from "../hook/useSteps";
 
-import { StepMarkerList } from "../step/StepMarkerList";
-import { StepList } from "../step/StepList";
-import { StepPathList } from "../step/StepPathList";
-import { ModalDetails } from "../utils/ModalDetails";
-import { PointMarkerList } from "../point/PointMarkerList";
-import usePoints from "../../hook/usePoints";
-import { Dropdown } from "../utils/Dropdown";
+import { StepMarkerList } from "../component/step/StepMarkerList";
+import { StepList } from "../component/step/StepList";
+import { StepPathList } from "../component/step/StepPathList";
+import { ModalDetails } from "../component/utils/ModalDetails";
+import { PointMarkerList } from "../component/point/PointMarkerList";
+import usePoints from "../hook/usePoints";
+import { Dropdown } from "../component/utils/Dropdown";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
@@ -28,8 +27,8 @@ import {
 } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootTabParamList } from "../../models/NavigationParamList";
-import { Loader } from "../utils/Loader";
+import { RootTabParamList } from "../models/NavigationParamList";
+import { Loader } from "../component/utils/Loader";
 
 
 
