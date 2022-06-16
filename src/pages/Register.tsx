@@ -85,9 +85,17 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
     //Execute register function after one second to see loading page
     setTimeout(() => {
       register(data)
-        .then(() =>
+        .then(() => {
           setMessage("Utilisateur créer ! Connectez-vous !")
-        )
+
+          setEmail("");
+          setPassword("");
+          setFirstName("");
+          setLastName("");
+
+          setLoading(false);
+          navigation.navigate('Login')
+        })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err));
           if (err.code === 409) setError("L'utilisateur saisie existe déjà");
@@ -96,15 +104,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
               "Une erreur est survenue...Veuillez réessayer ultérieurement"
             );
         })
-        .finally(() => {
-          setEmail("");
-          setPassword("");
-          setFirstName("");
-          setLastName("");
-
-          setLoading(false);
-          navigation.navigate('Login')
-        });
+        
     }, 1000);
   };
 
@@ -121,11 +121,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         keyboardType="default"
         blurOnSubmit={false}
       />
-      {missingFirstName ? (
-        <Error error="Prénom invalide ou manquant..." />
-      ) : (
-        <></>
-      )}
+      {missingFirstName && <Error error="Prénom invalide ou manquant..." /> }
 
       <TextInput
         style={styles.input}
@@ -134,7 +130,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         keyboardType="default"
         blurOnSubmit={false}
       />
-      {missingLastName ? <Error error="Nom invalide ou manquant..." /> : <></>}
+      {missingLastName && <Error error="Nom invalide ou manquant..." />}
 
       <TextInput
         style={styles.input}
@@ -143,7 +139,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         keyboardType="email-address"
         blurOnSubmit={false}
       />
-      {missingEmail ? <Error error="Email invalide ou manquant..." /> : <></>}
+      {missingEmail && <Error error="Email invalide ou manquant..." />}
 
       <TextInput
         style={styles.input}
@@ -152,11 +148,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         blurOnSubmit={false}
         secureTextEntry={true}
       />
-      {missingPassword ? (
-        <Error error="Mot de passe invalide ou manquant..." />
-      ) : (
-        <></>
-      )}
+      {missingPassword && <Error error="Mot de passe invalide ou manquant..." /> }
 
       <TouchableOpacity
         activeOpacity={0.5}

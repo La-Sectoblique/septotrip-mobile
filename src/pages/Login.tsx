@@ -106,7 +106,7 @@ export const Login: React.FC<LoginProps> = (props) => {
         keyboardType="email-address"
         blurOnSubmit={false}
       />
-      {missingEmail ? <Error error="Email invalide ou manquant..." /> : <></>}
+      {missingEmail && <Error error="Email invalide ou manquant..." />}
 
       <TextInput
         style={styles.input}
@@ -116,11 +116,7 @@ export const Login: React.FC<LoginProps> = (props) => {
         blurOnSubmit={false}
         secureTextEntry={true}
       />
-      {missingPassword ? (
-        <Error error="Mot de passe manquant ou erroné..." />
-      ) : (
-        <></>
-      )}
+      {missingPassword && <Error error="Mot de passe manquant ou erroné..." /> }
 
       <TouchableOpacity
         activeOpacity={0.5}

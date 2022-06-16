@@ -95,8 +95,8 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
     });
 
     Promise.all([trip_step, trip_point])
-      .catch((err: ApiError) => console.log(JSON.stringify(err)))
-      .finally(() => setRefreshing(false));
+      .then(() => setRefreshing(false))
+      .catch((err: ApiError) => console.log(JSON.stringify(err)));
   };
 
  
@@ -186,7 +186,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
             
             
           >
-            {filter == "step" || filter == "all" ? (
+            {filter == "step" || filter == "all" && (
               <>
                 <StepMarkerList
                   steps={steps}
@@ -200,19 +200,15 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
                   setModalVisible={setModalVisible}
                 />
               </>
-            ) : (
-              <></>
             )}
 
-            {filter == "point" || filter == "all" ? (
+            {filter == "point" || filter == "all" && (
               <PointMarkerList
                 points={points}
                 setActiveElement={setActiveElement}
                 setModalVisible={setModalVisible}
                 setRegion={setRegion}
               />
-            ) : (
-              <></>
             )}
           </MapView>
         </View>

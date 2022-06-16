@@ -64,10 +64,8 @@ export const TripList: React.FC<TripListProps> = (props) => {
         Liste des voyages
       </Text>
       {
-        started_trip ?
+        started_trip &&
           <TripDetails key={started_trip.id} trip={started_trip} navigation={props.navigation} started={true} have_started_trip={started_trip !== undefined}/>
-        :
-        <></>
       }
       <FlatList
         data={trips}

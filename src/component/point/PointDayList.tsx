@@ -27,12 +27,12 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
         getPointsByDay(day.id)
         .then((points: PointOutput[]) => {
             initPoint(points)
+            setLoading(false)
         })
         .catch((err: ApiError) => {
             console.log(JSON.stringify(err))
-        })
-        .finally(() => setLoading(false))
-        
+            setLoading(false)
+        })        
     }, [])
 
     if(loading)
@@ -54,7 +54,7 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
                         >
                             <>
                                 <Text>{point.title} </Text>
-                                { point.description ? <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> : <></> }
+                                { point.description && <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> }
                             </>
                         </TouchableHighlight>
                           </View>
