@@ -8,6 +8,7 @@ import useTrips from "../hook/useTrips"
 import { RootStackParamList } from "../models/NavigationParamList"
 import { DebugScript } from "../component/utils/DebugScript"
 import { TripDetails } from "../component/trip/TripDetails"
+import PTRView from "react-native-pull-to-refresh"
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
@@ -41,10 +42,12 @@ export const TripList: React.FC<TripListProps> = (props) => {
   if (trips.length == 0)
     return (
       <View>
-        <DebugScript />
+        <PTRView onRefresh={fetchData}>
+          <DebugScript />
 
-        <Text>Aucun voyage existe pour ce compte</Text>
-        <Text>Utilisez le service Web pour créer un voyage</Text>
+          <Text>Aucun voyage existe pour ce compte</Text>
+          <Text>Utilisez le service Web pour créer un voyage</Text>
+        </PTRView>
       </View>
     );
   

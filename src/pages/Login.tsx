@@ -87,6 +87,8 @@ export const Login: React.FC<LoginProps> = (props) => {
           if (err.code === 404) setError("Utilisateur inexistant");
           // else if (err.code === 400) setError("Mot de passe faux");
           else setError("Une erreur s'est produite: " + JSON.stringify(err));
+
+          setLoading(false)
         })
     }, 1000);
   };
