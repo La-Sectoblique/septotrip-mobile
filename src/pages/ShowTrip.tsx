@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Region } from "react-native-maps";
 import * as Location from "expo-location";
 
@@ -12,7 +12,6 @@ import {
 import useSteps from "../hook/useSteps";
 
 import { StepMarkerList } from "../component/step/StepMarkerList";
-import { StepList } from "../component/step/StepList";
 import { StepPathList } from "../component/step/StepPathList";
 import { ModalDetails } from "../component/utils/ModalDetails";
 import { PointMarkerList } from "../component/point/PointMarkerList";
@@ -29,11 +28,10 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { Loader } from "../component/utils/Loader";
-import { PointList } from "../component/point/PointList";
 
 
 
-type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Voyage'>
+type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Carte'>
 
 export const ShowTrip: React.FC<ShowTripProps> = (props) => {
 
@@ -105,8 +103,9 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
  
   const styles = StyleSheet.create({
     container: {
-      height: Dimensions.get("window").height * 50/100,
       width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height,
+
       backgroundColor: "tomato",
     },
     map: {
@@ -219,20 +218,6 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
             )}
           </MapView>
         </View>
-        {filter == "step" || filter == "all" ?
-        <StepList
-          steps={steps}
-          setActiveElement={setActiveElement}
-          setModalVisible={setModalVisible}
-          setRegion={setRegion}
-        ></StepList>:
-        <PointList
-          points={points}
-          setActiveElement={setActiveElement}
-          setModalVisible={setModalVisible}
-          setRegion={setRegion}
-        ></PointList>
-            }
       </View>
   );
 };

@@ -3,34 +3,20 @@ import {
   ScrollView,
   Text,
   TouchableHighlight,
-  View,
 } from "react-native";
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
-import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
-import { Region } from "react-native-maps";
 
 interface StepListProps {
-  setModalVisible: (arg0: boolean) => void;
-  setActiveElement: (
-    arg0: StepOutput | { path: PathOutput; origin: StepOutput } | PointOutput
-  ) => void;
-  setRegion: (arg0: Region) => void;
+  gotoMap: (arg0: StepOutput | PointOutput) => void;
   steps: StepOutput[];
 }
 
 export const StepList = (props: StepListProps) => {
  
   const handleClick = (step: StepOutput) => {
-    props.setActiveElement(step);
-    props.setModalVisible(true);
-    props.setRegion({
-      latitude: step.localisation.coordinates[1],
-      longitude: step.localisation.coordinates[0],
-      latitudeDelta: 1,
-      longitudeDelta: 1
-    })
+    props.gotoMap(step)
   };
 
   if (props.steps.length == 0)

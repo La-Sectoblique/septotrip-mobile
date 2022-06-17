@@ -12,6 +12,7 @@ import { RootStackParamList } from "../models/NavigationParamList";
 
 
 import { FontAwesome, Entypo } from '@expo/vector-icons'; 
+import { TripViewerMarker } from "../pages/TripViewerMarker";
 
 type TripNavigationProps = NativeStackScreenProps<RootStackParamList, 'Planification'>
 
@@ -27,7 +28,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
           tabBarIcon: ({ focused }) => {
 
             const color = focused ? "blue" : "black"
-            if (route.name === 'Voyage') {
+            if (route.name === 'Carte') {
               return <FontAwesome name="plane" size={24} color={color} />
             } else if (route.name === 'Info') {
               return <Entypo name="info" size={24} color={color} />
@@ -39,7 +40,8 @@ export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
           },
           tabBarInactiveTintColor: 'gray',
       })}>
-        <Tab.Screen name="Voyage" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
+        <Tab.Screen name="Carte" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
+        <Tab.Screen name="Voyage" component={TripViewerMarker} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         <Tab.Screen name="Info" component={TripViewerInfo} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         <Tab.Screen name="Day" component={TripViewerDay} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         { !isReadOnly ? <Tab.Screen name="Fichier" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>: <></> }

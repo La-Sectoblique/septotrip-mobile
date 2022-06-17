@@ -5,31 +5,18 @@ import {
   ScrollView
 } from "react-native";
 
-import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
-import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
-import { Region } from "react-native-maps";
+import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 
 interface PointListProps {
-  setModalVisible: (arg0: boolean) => void;
-  setActiveElement: (
-    arg0: StepOutput | { path: PathOutput; origin: StepOutput } | PointOutput
-  ) => void;
-  setRegion: (arg0: Region) => void;
+  gotoMap: (arg0: PointOutput | StepOutput) => void;
   points: PointOutput[];
 }
 
 export const PointList = (props: PointListProps) => {
  
   const handleClick = (point: PointOutput) => {
-    props.setActiveElement(point);
-    props.setModalVisible(true);
-    props.setRegion({
-      latitude: point.localisation.coordinates[1],
-      longitude: point.localisation.coordinates[0],
-      latitudeDelta: 1,
-      longitudeDelta: 1
-    })
+    props.gotoMap(point)
   };
 
   if (props.points.length == 0)
