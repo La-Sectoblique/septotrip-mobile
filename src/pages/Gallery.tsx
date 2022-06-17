@@ -84,7 +84,7 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
   return (
     <>
       <Button 
-          title="Choisir un fichier"
+          title="Choisir une image"
           onPress={onPressPickAFile}
       />
       <ScrollView>
