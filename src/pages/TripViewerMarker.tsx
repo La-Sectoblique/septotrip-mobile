@@ -18,7 +18,7 @@ type TripViewerIMarkerProps = NativeStackScreenProps<RootTabParamList, 'Voyage'>
 export const TripViewerMarker: React.FC<TripViewerIMarkerProps> = (props) => {
   const { trip } = props.route.params;
   
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>("step");
 
   const [points, setPoints] = useState<PointOutput[]>([] as PointOutput[])
   const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[])
@@ -54,29 +54,30 @@ export const TripViewerMarker: React.FC<TripViewerIMarkerProps> = (props) => {
     return <Loader />
 
   return (
-    <PTRView style={{flex: 1}} onRefresh={() => {_refresh()}}>
       <SafeAreaView style={{}}>
       <Dropdown
           items={[
             { label: "Etape", value: "step" },
             { label: "Point d'intérêts", value: "point" },
-            { label: "Tout", value: "all" },
           ]}
           setCurrentValue={setFilter}
           currentValue={filter}
           key="dropdown"
         />
-      {filter == "step" || filter == "all" ?
-        <StepList
-          steps={steps}
-          gotoMap={gotoMap}
-        ></StepList>:
-        <PointList
-          points={points}
-          gotoMap={gotoMap}
-        ></PointList>
-        }
+        <PTRView style={{}} onRefresh={() => {_refresh()}}>
+            {filter == "step" ?
+            <StepList
+            steps={steps}
+            gotoMap={gotoMap}
+            ></StepList>
+            :
+            <PointList
+            points={points}
+            gotoMap={gotoMap}
+            ></PointList>
+            }
+            </PTRView>
       </SafeAreaView>
-    </PTRView>
+   
   );
 };

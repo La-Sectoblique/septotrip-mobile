@@ -7,6 +7,7 @@ interface DropdownProps {
   currentValue: string;
   setCurrentValue: Dispatch<SetStateAction<string>>;
   items: dropdownItem[];
+  map?: boolean
 }
 export const Dropdown = (props: DropdownProps) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export const Dropdown = (props: DropdownProps) => {
       items={props.items}
       setOpen={setOpen}
       setValue={props.setCurrentValue}
+      style={{width: props.map ? "50%" : "100%", position: props.map ? "absolute" : "relative", margin: 5,}}
     />
   );
 };

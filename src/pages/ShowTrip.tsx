@@ -161,6 +161,8 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
+    
+        <View style={styles.container}>
         <Dropdown
           items={[
             { label: "Etape", value: "step" },
@@ -169,9 +171,9 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
           ]}
           setCurrentValue={setFilter}
           currentValue={filter}
+          map={true}
           key="dropdown"
         />
-        <View style={styles.container}>
           <MapView
             style={styles.map}
             rotateEnabled={false}
