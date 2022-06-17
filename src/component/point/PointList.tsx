@@ -29,23 +29,28 @@ export const PointList = (props: PointListProps) => {
 
   return (
     <>
-      <Text style={{ marginVertical: 5, marginHorizontal: 5, fontSize: 18 }}>
+      <Text style={{ marginVertical: 5, marginHorizontal: 5, fontSize: 24, textAlign: "center", fontWeight: "bold"}}>
           {/* eslint-disable-next-line react/no-unescaped-entities */}
-          Liste des points d'intérêts:{" "}
+          Liste des points d'intérêts
       </Text>
     
       <ScrollView>
-      {props.points.map((point: PointOutput, index) => {
+      {props.points.map((point: PointOutput, i) => {
         return (
             <TouchableHighlight
                 underlayColor="#ccc"
                 key={point.id}
-                onPress={() =>
-                handleClick(point)
-                }
+                style={{ 
+                  padding: 5, 
+                  flexDirection: 'row', 
+                  alignContent: 'center', 
+                  justifyContent: 'flex-start', 
+                  backgroundColor: i%2 === 0 ? 'rgba(8, 182, 238, .2)': 'none'
+                }}
+                onPress={ () => handleClick(point) }
             >
-              <Text style={{ marginHorizontal: 10 }}>
-                  {++index}: {point.title}
+              <Text style={{marginLeft: 5, fontSize: 20, textAlign:'center'}}>
+                  {++i}: {point.title}
               </Text>
             </TouchableHighlight>
         );

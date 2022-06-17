@@ -28,21 +28,26 @@ export const StepList = (props: StepListProps) => {
 
   return (
     <>
-      <Text style={{ marginVertical: 5, marginHorizontal: 5, fontSize: 18 }}>
-        Liste des étapes:{" "}
+      <Text style={{ marginVertical: 5, marginHorizontal: 5, fontSize: 24, textAlign: "center", fontWeight: "bold" }}>
+        Liste des étapes
       </Text>
 
       <ScrollView>
-      {props.steps.map((step: StepOutput) => {
+      {props.steps.map((step: StepOutput, i) => {
         return (
           <TouchableHighlight
             underlayColor="#ccc"
             key={step.id}
-            onPress={() =>
-              handleClick(step)
-            }
+            style={{ 
+              padding: 5, 
+              flexDirection: 'row', 
+              alignContent: 'center', 
+              justifyContent: 'flex-start', 
+              backgroundColor: i%2 === 0 ? 'rgba(8, 182, 238, .2)': 'none'
+            }}
+            onPress={() => handleClick(step)}
           >
-            <Text style={{ marginHorizontal: 10 }}>
+            <Text style={{marginLeft: 5, fontSize: 20, textAlign:'center'}}>
               {step.order}: {step.name}
             </Text>
           </TouchableHighlight>
