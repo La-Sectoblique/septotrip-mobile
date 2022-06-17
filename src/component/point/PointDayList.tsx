@@ -27,11 +27,12 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
         getPointsByDay(day.id)
         .then((points: PointOutput[]) => {
             initPoint(points)
+            setLoading(false)
         })
         .catch((err: ApiError) => {
             console.log(JSON.stringify(err))
+            setLoading(false)
         })
-        .finally(() => setLoading(false))
         
     }, [])
 

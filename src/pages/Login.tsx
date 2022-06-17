@@ -77,19 +77,19 @@ export const Login: React.FC<LoginProps> = (props) => {
     setTimeout(() => {
       login(data)
         .then(() => {
-          props.navigation.navigate('TripList');
+          setEmail("");
+          setPassword("");
           setLoading(false)
+          props.navigation.navigate('TripList');
+          
         })
         .catch((err: ApiError) => {
           if (err.code === 404) setError("Utilisateur inexistant");
           // else if (err.code === 400) setError("Mot de passe faux");
           else setError("Une erreur s'est produite: " + JSON.stringify(err));
+
+          setLoading(false)
         })
-        .finally(() => {
-          setEmail("");
-          setPassword("");
-          setLoading(false);
-        });
     }, 1000);
   };
 
@@ -106,7 +106,7 @@ export const Login: React.FC<LoginProps> = (props) => {
         keyboardType="email-address"
         blurOnSubmit={false}
       />
-      {missingEmail ? <Error error="Email invalide ou manquant..." /> : <></>}
+      {missingEmail && <Error error="Email invalide ou manquant..." />}
 
       <TextInput
         style={styles.input}
@@ -116,11 +116,7 @@ export const Login: React.FC<LoginProps> = (props) => {
         blurOnSubmit={false}
         secureTextEntry={true}
       />
-      {missingPassword ? (
-        <Error error="Mot de passe manquant ou erroné..." />
-      ) : (
-        <></>
-      )}
+      {missingPassword && <Error error="Mot de passe manquant ou erroné..." /> }
 
       <TouchableOpacity
         activeOpacity={0.5}

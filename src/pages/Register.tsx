@@ -85,9 +85,15 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
     //Execute register function after one second to see loading page
     setTimeout(() => {
       register(data)
-        .then(() =>
+        .then(() => {
           setMessage("Utilisateur créer ! Connectez-vous !")
-        )
+          setEmail("");
+          setPassword("");
+          setFirstName("");
+          setLastName("");
+
+          navigation.navigate('Login')
+        })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err));
           if (err.code === 409) setError("L'utilisateur saisie existe déjà");
@@ -95,16 +101,9 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
             setError(
               "Une erreur est survenue...Veuillez réessayer ultérieurement"
             );
-        })
-        .finally(() => {
-          setEmail("");
-          setPassword("");
-          setFirstName("");
-          setLastName("");
+            setLoading(false);
 
-          setLoading(false);
-          navigation.navigate('Login')
-        });
+        })
     }, 1000);
   };
 

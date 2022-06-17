@@ -36,9 +36,12 @@ export const PathDetails = (props: PathDetailsProps) => {
         setLatitudeDelta(Math.abs(res.localisation.coordinates[1] - props.origin.localisation.coordinates[1]))
         
         setDestination(res)
+        setLoading(false)
       })
-      .catch((err: ApiError) => console.log(err))
-      .finally(() => setLoading(false));
+      .catch((err: ApiError) => {
+        console.log(err)
+        setLoading(false)
+      })
   }, []);
 
   if (loading) return <Loader />;

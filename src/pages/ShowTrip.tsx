@@ -95,8 +95,11 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
     });
 
     Promise.all([trip_step, trip_point])
-      .catch((err: ApiError) => console.log(JSON.stringify(err)))
-      .finally(() => setRefreshing(false));
+      .then(() => setRefreshing(false))
+      .catch((err: ApiError) => {
+        console.log(JSON.stringify(err))
+        setRefreshing(false)
+      })
   };
 
  
