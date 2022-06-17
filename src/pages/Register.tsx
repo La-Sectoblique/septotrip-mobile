@@ -16,7 +16,8 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { Error } from "../component/utils/Error";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
-import {Loader} from '../component/utils/Loader';
+import { Loader } from "../component/utils/Loader";
+import { useTranslation, Trans } from "react-i18next";
 
 const styles = StyleSheet.create({
   page: {
@@ -34,10 +35,11 @@ const styles = StyleSheet.create({
   },
 });
 
-type RegisterProps = NativeStackScreenProps<RootStackParamList, 'Register'>
-
+type RegisterProps = NativeStackScreenProps<RootStackParamList, "Register">;
 
 export const Register: React.FC<RegisterProps> = () => {
+  const { t } = useTranslation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -85,9 +87,7 @@ export const Register: React.FC<RegisterProps> = () => {
     //Execute register function after one second to see loading page
     setTimeout(() => {
       register(data)
-        .then(() =>
-          setMessage("Utilisateur créer ! Connectez-vous !")
-        )
+        .then(() => setMessage("Utilisateur créé ! Connectez-vous !"))
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err));
           if (err.code === 409) setError("L'utilisateur saisie existe déjà");
@@ -107,9 +107,7 @@ export const Register: React.FC<RegisterProps> = () => {
     }, 1000);
   };
 
-  if (loading)
-    return <Loader/>
-
+  if (loading) return <Loader />;
 
   return (
     <SafeAreaView style={styles.page}>
@@ -152,7 +150,7 @@ export const Register: React.FC<RegisterProps> = () => {
         secureTextEntry={true}
       />
       {missingPassword ? (
-        <Error error="Mot de passe invalide ou manquant..." />
+        <Error error={t('wrongpassword')} />
       ) : (
         <></>
       )}
@@ -162,7 +160,9 @@ export const Register: React.FC<RegisterProps> = () => {
         onPress={handleSubmitButton}
         style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
       >
-        <Text>{"S'inscrire"}</Text>
+        <Text>
+          <Trans i18nKey="signup">{"S'inscrire"}</Trans>
+        </Text>
       </TouchableOpacity>
 
       <Text>{message}</Text>

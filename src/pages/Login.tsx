@@ -17,7 +17,8 @@ import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
-import {Loader} from '../component/utils/Loader';
+import { Loader } from "../component/utils/Loader";
+import { useTranslation, Trans } from "react-i18next";
 
 const styles = StyleSheet.create({
   page: {
@@ -35,9 +36,11 @@ const styles = StyleSheet.create({
   },
 });
 
-type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>
+type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
 
 export const Login: React.FC<LoginProps> = (props) => {
+  const { t, i18n } = useTranslation('locale');
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -87,8 +90,8 @@ export const Login: React.FC<LoginProps> = (props) => {
     setTimeout(() => {
       login(data)
         .then(() => {
-          props.navigation.navigate('TripList');
-          setLoading(false)
+          props.navigation.navigate("TripList");
+          setLoading(false);
         })
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err));
@@ -104,12 +107,12 @@ export const Login: React.FC<LoginProps> = (props) => {
     }, 1000);
   };
 
-  if (loading)
-    return <Loader/>
-
+  if (loading) return <Loader />;
 
   return (
     <SafeAreaView style={styles.page}>
+      <Text>{t("wrongpassword")}</Text>
+      
       <TextInput
         style={styles.input}
         onChangeText={(email) => setEmail(email)}
