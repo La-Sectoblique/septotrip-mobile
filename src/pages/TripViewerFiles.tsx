@@ -4,11 +4,10 @@ import * as DocumentPicker from 'expo-document-picker';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { getFileLink, getTripFiles, uploadFile } from "@la-sectoblique/septoblique-service";
+import { getTripFiles, uploadFile } from "@la-sectoblique/septoblique-service";
 import { FileMetadataOutput, FileType } from "@la-sectoblique/septoblique-service/dist/types/models/File";
 import { Loader } from "../component/utils/Loader";
 import { MobileFileFormat } from "@la-sectoblique/septoblique-service/dist/utils/FormData";
-import WebView from "react-native-webview";
 import { FileList } from "../component/trip/FileList";
 
 const styles = StyleSheet.create({
@@ -57,6 +56,7 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = (props) => {
       extension: res.name.split(".")[res.name.split(".").length - 1],
       mimeType: res.mimeType,
       tripId: trip.id,
+      stepId: 3,
       visibility: "private",
       fileType: FileType.DOCUMENT
     }, {
@@ -68,12 +68,6 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = (props) => {
   }
 
 
-
-const downloadFile = async (fileMetaData: FileMetadataOutput) => {
-    const url = await getFileLink(trip.id, fileMetaData.id)
-    setFileURL(url) 
-  }
-
   if(loading)
     return <Loader />
 
@@ -81,29 +75,14 @@ const downloadFile = async (fileMetaData: FileMetadataOutput) => {
       <SafeAreaView style={styles.page}>
         
         {
-            fileURL === "" 
-            ?
-            <View>
+            <View style={{flex: 1}}>
                 <Button 
                     title="Choisir un fichier"
                     onPress={onPress}
                 />
-                <FileList files={files} downloadFile={downloadFile} /> 
+                <FileList files={files} /> 
             </View>
-            :
-            <View style={{flex: 1}}>
-                <WebView
-                    source={{ uri: fileURL}}
-                    style={{ flex: 1 }}
-                    allowFileAccess={true}
-                    allowUniversalAccessFromFileURLs={true}
-                    originWhitelist={["*"]}
-                />
-                <Button 
-                title="Fermer"
-                onPress={() => setFileURL("")}
-                />
-            </View>
+            
         }
       </SafeAreaView>
   );
