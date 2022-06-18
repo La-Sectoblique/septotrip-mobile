@@ -3,11 +3,13 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
-import { View, Text, FlatList, ListRenderItem, RefreshControl } from "react-native"
+import { View, Text, FlatList, ListRenderItem, RefreshControl, Image } from "react-native"
 import useTrips from "../hook/useTrips"
 import { RootStackParamList } from "../models/NavigationParamList"
 import { DebugScript } from "../component/utils/DebugScript"
 import { TripDetails } from "../component/trip/TripDetails"
+
+import Logo from "../../assets/splash.png";
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
@@ -47,13 +49,15 @@ export const TripList: React.FC<TripListProps> = (props) => {
       }, [])
   
   
-  if (trips.length == 0)
+  if (trips.length == 0 && !started_trip)
     return (
-      <View>
+      <View style={{flex: 1, justifyContent: "space-evenly", alignItems: "center"}}>
         {/* <DebugScript /> */}
-
-        <Text>Aucun voyage existe pour ce compte</Text>
-        <Text>Utilisez le service Web pour créer un voyage</Text>
+        <Image source={Logo} style={{resizeMode: 'contain', aspectRatio: 4}}/>
+        <View>
+          <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Aucun voyage existe pour ce compte</Text>
+          <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Utilisez le service Web pour créer un voyage</Text>
+        </View>
       </View>
     );
   

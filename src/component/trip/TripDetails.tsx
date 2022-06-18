@@ -3,7 +3,7 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { View, Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from '../../models/NavigationParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { getUserTrips, updateTrip } from '@la-sectoblique/septoblique-service';
+import { updateTrip } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 
 interface TripDetailsProps {
