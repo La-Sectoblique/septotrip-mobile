@@ -6,6 +6,8 @@ import {
   Text,
   TextInput,
   Dimensions,
+  Image,
+  View,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,19 +21,22 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 
+import Logo from "../../assets/splash.png";
+
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#F5FCFF",
+    alignItems: "center",
+    justifyContent: "space-around"
   },
   input: {
-    padding: 5,
-    margin: 5,
+    padding: 10,
+    margin: 10,
     width: (Dimensions.get("window").width * 95) / 100,
     fontSize: 25,
     borderWidth: 1,
+    borderRadius: 10,
   },
 });
 
@@ -99,43 +104,58 @@ export const Login: React.FC<LoginProps> = (props) => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <TextInput
-        style={styles.input}
-        onChangeText={(email) => setEmail(email)}
-        placeholder="Email..."
-        keyboardType="email-address"
-        blurOnSubmit={false}
-      />
-      {missingEmail && <Error error="Email invalide ou manquant..." />}
+      <Image source={Logo} style={{resizeMode: 'contain', aspectRatio: 4}}/>
 
-      <TextInput
-        style={styles.input}
-        onChangeText={(password) => setPassword(password)}
-        placeholder="Mot de passe..."
-        autoCapitalize='none'
-        blurOnSubmit={false}
-        secureTextEntry={true}
-      />
-      {missingPassword && <Error error="Mot de passe manquant ou erroné..." /> }
+      <View style={{alignItems: "center"}}>
+        <View>
+        <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Adresse Mail: </Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(email) => setEmail(email)}
+          placeholder="Email..."
+          keyboardType="email-address"
+          blurOnSubmit={false}
+        />
+        {missingEmail && <Error error="Email invalide ou manquant..." />}
+        </View>
 
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={handleSubmitButton}
-        style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
-      >
-        <Text>Se connecter</Text>
-      </TouchableOpacity>
+        <View>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Mot de passe: </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(password) => setPassword(password)}
+            placeholder="Mot de passe..."
+            autoCapitalize='none'
+            blurOnSubmit={false}
+            secureTextEntry={true}
+          />
+          {missingPassword && <Error error="Mot de passe manquant ou erroné..." /> }
+        </View>
+        
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={handleSubmitButton}
+          style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+        >
+          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Se connecter</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={handleRegisterButton}
-        style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
-      >
-        <Text>Inscris toi</Text>
-      </TouchableOpacity>
+        
 
-      <Text>{message}</Text>
-      <Error error={error} />
+        <Text>{message}</Text>
+        <Error error={error} />
+      </View>
+
+      <View style={{flexDirection: "row", justifyContent: "center"}}>
+          <Text>Si vous ne possédez pas de compte: </Text>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={handleRegisterButton}
+            style={{}}
+          >
+            <Text style={{color: "blue", textDecorationLine: "underline"}}>Inscrivez vous</Text>
+          </TouchableOpacity>
+        </View>
       <StatusBar style="auto" />
     </SafeAreaView>
   );
