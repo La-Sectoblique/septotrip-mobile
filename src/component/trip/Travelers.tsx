@@ -89,7 +89,6 @@ export const Travelers = (props: TravelersProps) => {
                 style={{
                     padding: 10,
                     margin: 10,
-                    flex: 5,
                     fontSize: 20,
                     borderWidth: 1,
                     borderRadius: 10,

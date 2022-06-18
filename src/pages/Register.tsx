@@ -7,9 +7,10 @@ import {
   Dimensions,
   Image,
   View,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
 import { register } from "@la-sectoblique/septoblique-service";
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5FCFF",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-evenly"
   },
   input: {
     padding: 10,
@@ -55,6 +56,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
   const [missingPassword, setMissingPassword] = useState(false);
   const [missingFirstName, setMissingFirstName] = useState(false);
   const [missingLastName, setMissingLastName] = useState(false);
+
 
   useEffect(() => {
     setMissingEmail(false);
@@ -132,7 +134,10 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
 
 
   return (
-    <SafeAreaView style={styles.page}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.page}
+    >
 
       <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
       <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 32}}>Inscription</Text>
@@ -197,6 +202,6 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
 
       <Text>{message}</Text>
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };

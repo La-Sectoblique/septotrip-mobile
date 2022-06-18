@@ -8,6 +8,8 @@ import {
   Dimensions,
   Image,
   View,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5FCFF",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-evenly"
   },
   input: {
     padding: 10,
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
 
 type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>
 
-export const Login: React.FC<LoginProps> = (props) => {
+export const Login: React.FC<LoginProps> = ({route, navigation}) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -51,8 +53,9 @@ export const Login: React.FC<LoginProps> = (props) => {
   const [missingEmail, setMissingEmail] = useState<boolean>(false);
   const [missingPassword, setMissingPassword] = useState<boolean>(false);
 
+
   const handleRegisterButton = () => {
-    props.navigation.navigate("Register");
+    navigation.navigate("Register");
   };
 
   const handleSubmitButton = () => {
@@ -84,7 +87,7 @@ export const Login: React.FC<LoginProps> = (props) => {
           setEmail("");
           setPassword("");
           setLoading(false)
-          props.navigation.navigate('TripList');
+          navigation.navigate('TripList');
           
         })
         .catch((err: ApiError) => {
@@ -102,8 +105,11 @@ export const Login: React.FC<LoginProps> = (props) => {
 
 
   return (
-    <SafeAreaView style={styles.page}>
-      <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.page}
+    >      
+        <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
 
       <View style={{alignItems: "center"}}>
         <View>
@@ -156,6 +162,6 @@ export const Login: React.FC<LoginProps> = (props) => {
           </TouchableOpacity>
         </View>
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
