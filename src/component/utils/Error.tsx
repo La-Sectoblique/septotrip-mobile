@@ -14,6 +14,8 @@ export const Error = (props: ErrorProps) => {
 const style = StyleSheet.create({
   error: {
     color: "red",
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "normal"
   },
 });
