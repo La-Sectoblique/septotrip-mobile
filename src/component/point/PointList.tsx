@@ -13,13 +13,13 @@ interface PointListProps {
   points: PointOutput[];
 }
 
-export const PointList = (props: PointListProps) => {
+export const PointList = ({gotoMap, points}: PointListProps) => {
  
   const handleClick = (point: PointOutput) => {
-    props.gotoMap(point)
+    gotoMap(point)
   };
 
-  if (props.points.length == 0)
+  if (points.length == 0)
     return (
       <Text style={{ textAlign: "center", marginTop: 10 }}>
         {/* eslint-disable-next-line react/no-unescaped-entities */}
@@ -35,7 +35,7 @@ export const PointList = (props: PointListProps) => {
       </Text>
     
       <ScrollView>
-      {props.points.map((point: PointOutput, i) => {
+      {points.map((point: PointOutput, i) => {
         return (
             <TouchableHighlight
                 underlayColor="#ccc"

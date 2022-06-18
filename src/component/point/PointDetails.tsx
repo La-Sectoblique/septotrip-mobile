@@ -6,14 +6,14 @@ interface PointDetailsProps {
     point: PointOutput
 }
 
-export const PointDetails = (props: PointDetailsProps) => {
+export const PointDetails = ({point}: PointDetailsProps) => {
 
-    if(props.point == null)
+    if(point == null)
         return <></>
     return (
         <View>
-            <Text>Nom du point: {props.point.title}</Text>
-            <Text>Description: {props.point.description}</Text>
+            <Text>Nom du point: {point.title}</Text>
+            <Text>Description: {point.description}</Text>
         </View>
     )
 }

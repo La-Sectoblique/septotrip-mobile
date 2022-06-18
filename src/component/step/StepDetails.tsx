@@ -6,12 +6,12 @@ interface StepDetailsProps {
   step: StepOutput;
 }
 
-export const StepDetails = (props: StepDetailsProps) => {
-  if (props.step == null) return <></>;
+export const StepDetails = ({step}: StepDetailsProps) => {
+  if (step == null) return <></>;
   return (
     <View>
-      <Text>{`Nom de l'étape: ${props.step.name}`}</Text>
-      <Text>{`Durée de l'étape: ${props.step.duration} `} </Text>
+      <Text>{`Nom de l'étape: ${step.name}`}</Text>
+      <Text>{`Durée de l'étape: ${step.duration} `} </Text>
     </View>
   );
 };

@@ -17,11 +17,11 @@ interface StepMarkerListProps {
   setRegion: (arg0: Region) => void
 }
 
-export const StepMarkerList = (props: StepMarkerListProps): JSX.Element => {
+export const StepMarkerList = ({steps, setActiveElement, setModalVisible, setRegion}: StepMarkerListProps): JSX.Element => {
   const handleClick = (step: StepOutput) => {
-    props.setActiveElement(step);
-    props.setModalVisible(true);
-    props.setRegion({
+    setActiveElement(step);
+    setModalVisible(true);
+    setRegion({
       longitude: step.localisation.coordinates[0],
       latitude: step.localisation.coordinates[1],
       longitudeDelta: 0.05,
@@ -29,11 +29,11 @@ export const StepMarkerList = (props: StepMarkerListProps): JSX.Element => {
     })
   };
 
-  if (props.steps.length == 0) return <></>;
+  if (steps.length == 0) return <></>;
 
   return (
     <>
-      {props.steps.map((step: StepOutput) => {
+      {steps.map((step: StepOutput) => {
         return (
           <Marker
             key={step.id}

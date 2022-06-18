@@ -14,7 +14,7 @@ interface TravelersProps {
     trip: TripOutput,
 }
 
-export const Travelers = (props: TravelersProps) => {
+export const Travelers = ({trip}: TravelersProps) => {
     const [travelers, setTravelers] = useState<UserOutput[]>([] as UserOutput[]);
     const [emailNewTraveler, setEmailNewTraveler] = useState<string>();
     const [error, setError] = useState<string>("");
@@ -41,7 +41,7 @@ export const Travelers = (props: TravelersProps) => {
         
             
 
-        addTravelerToTrip(props.trip.id, emailNewTraveler)
+        addTravelerToTrip(trip.id, emailNewTraveler)
         .then((res: ApiResponse) => {
             setResponse(res.message)
             setEmailNewTraveler("")
@@ -56,7 +56,7 @@ export const Travelers = (props: TravelersProps) => {
     }
 
     const fetchData = () => {
-        getTravelers(props.trip.id)
+        getTravelers(trip.id)
         .then((res: UserOutput[]) => {
             setTravelers(res)
             setLoading(false)

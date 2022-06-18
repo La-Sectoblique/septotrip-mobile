@@ -13,13 +13,13 @@ interface StepListProps {
   steps: StepOutput[];
 }
 
-export const StepList = (props: StepListProps) => {
+export const StepList = ({gotoMap, steps}: StepListProps) => {
  
   const handleClick = (step: StepOutput) => {
-    props.gotoMap(step)
+    gotoMap(step)
   };
 
-  if (props.steps.length == 0)
+  if (steps.length == 0)
     return (
       <Text style={{ textAlign: "center", marginTop: 10 }}>
         Ce voyage ne possède aucun étape
@@ -33,7 +33,7 @@ export const StepList = (props: StepListProps) => {
       </Text>
 
       <ScrollView>
-      {props.steps.map((step: StepOutput, i) => {
+      {steps.map((step: StepOutput, i) => {
         return (
           <TouchableHighlight
             underlayColor="#ccc"

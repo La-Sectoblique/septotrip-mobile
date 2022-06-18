@@ -33,9 +33,9 @@ import { Loader } from "../component/utils/Loader";
 
 type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Carte'>
 
-export const ShowTrip: React.FC<ShowTripProps> = (props) => {
+export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
-  const { trip, pointToFocus } = props.route.params
+  const { trip, pointToFocus } = route.params
   const [steps, initStep, addStep, removeStep] = useSteps();
 
   const [activeElement, setActiveElement] = useState<

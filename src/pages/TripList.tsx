@@ -15,21 +15,21 @@ import { Loader } from "../component/utils/Loader"
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
 
-export const TripList: React.FC<TripListProps> = (props) => {
+export const TripList: React.FC<TripListProps> = ({navigation}) => {
     const [trips, initTrip] = useTrips();
     const [public_trips, setPublicTrips] = useState<TripOutput[]>([] as TripOutput[])
     const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
     
     useEffect(() => {
-        props.navigation.addListener('beforeRemove', (e) => {
+        navigation.addListener('beforeRemove', (e) => {
           // Prevent default behavior of leaving the screen
           e.preventDefault();
 
-        })}, [props.navigation]);
+        })}, [navigation]);
         
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
-        <TripDetails key={item.id} trip={item} navigation={props.navigation} have_started_trip={started_trip !== undefined}/>
+        <TripDetails key={item.id} trip={item} navigation={navigation} have_started_trip={started_trip !== undefined}/>
     )
 
     const fetchData = () => {
@@ -58,7 +58,7 @@ export const TripList: React.FC<TripListProps> = (props) => {
       }, [])
   
   if (started_trip){
-    props.navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
+    navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
   }
 
   if(refreshing)
@@ -86,7 +86,7 @@ export const TripList: React.FC<TripListProps> = (props) => {
         <View>
           <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Voyage commencé</Text>
 
-          <TripDetails key={started_trip.id} trip={started_trip} navigation={props.navigation} started={true} have_started_trip={started_trip !== undefined}/>
+          <TripDetails key={started_trip.id} trip={started_trip} navigation={navigation} started={true} have_started_trip={started_trip !== undefined}/>
         </View>
       }
       {

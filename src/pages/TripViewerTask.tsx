@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
 
 type TripViewerTaskProps = NativeStackScreenProps<RootTabParamList, 'Tache'>
 
-export const TripViewerTask: React.FC<TripViewerTaskProps> = (props) => {
-  const { trip } = props.route.params;
+export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
+  const { trip } = route.params;
   
   const [todoEntries, setTodoEntries] = useState<TodoEntryOutput[]>([] as TodoEntryOutput[]);
 

@@ -5,9 +5,9 @@ interface ErrorProps {
   error: string;
 }
 
-export const Error = (props: ErrorProps) => {
-  if (props.error.length > 0)
-    return <Text style={style.error}>{props.error}</Text>;
+export const Error = ({error}: ErrorProps) => {
+  if (error.length > 0)
+    return <Text style={style.error}>{error}</Text>;
   else return <></>;
 };
 

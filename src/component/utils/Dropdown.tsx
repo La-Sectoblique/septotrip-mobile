@@ -9,17 +9,17 @@ interface DropdownProps {
   items: dropdownItem[];
   map?: boolean
 }
-export const Dropdown = (props: DropdownProps) => {
+export const Dropdown = ({currentValue, setCurrentValue, items, map}: DropdownProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
     <DropDownPicker
       open={open}
-      value={props.currentValue}
-      items={props.items}
+      value={currentValue}
+      items={items}
       setOpen={setOpen}
-      setValue={props.setCurrentValue}
-      style={{width: props.map ? "50%" : "100%", position: props.map ? "absolute" : "relative", margin: 5,}}
+      setValue={setCurrentValue}
+      style={{width: map ? "50%" : "100%", position: map ? "absolute" : "relative", margin: 5,}}
     />
   );
 };

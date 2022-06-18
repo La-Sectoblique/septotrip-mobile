@@ -15,8 +15,8 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 
 type TripViewerIMarkerProps = NativeStackScreenProps<RootTabParamList, 'Voyage'>
 
-export const TripViewerMarker: React.FC<TripViewerIMarkerProps> = (props) => {
-  const { trip } = props.route.params;
+export const TripViewerMarker: React.FC<TripViewerIMarkerProps> = ({route, navigation}) => {
+  const { trip } = route.params;
   
   const [filter, setFilter] = useState<string>("step");
 
@@ -47,7 +47,7 @@ export const TripViewerMarker: React.FC<TripViewerIMarkerProps> = (props) => {
   }, [])
 
   const gotoMap = (point_or_step: PointOutput | StepOutput) => {
-    props.navigation.navigate('Carte', {trip: trip, pointToFocus: point_or_step})
+    navigation.navigate('Carte', {trip: trip, pointToFocus: point_or_step})
   }
 
   if(loading)
