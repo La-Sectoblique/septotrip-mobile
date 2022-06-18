@@ -14,6 +14,6 @@ export type RootTabParamList= {
     Carte: { trip: TripOutput, pointToFocus?: PointOutput | StepOutput },
     Voyage: { trip: TripOutput },
     Day: { trip: TripOutput },
-    Info: { trip: TripOutput },
+    Tache: { trip: TripOutput },
     Fichier: { trip: TripOutput}
 }

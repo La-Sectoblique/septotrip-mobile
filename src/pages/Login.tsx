@@ -21,7 +21,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 
-import Logo from "../../assets/splash.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -104,7 +103,7 @@ export const Login: React.FC<LoginProps> = (props) => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Image source={Logo} style={{resizeMode: 'contain', aspectRatio: 4}}/>
+      <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
 
       <View style={{alignItems: "center"}}>
         <View>

@@ -9,7 +9,7 @@ import { RootStackParamList } from "../models/NavigationParamList"
 import { DebugScript } from "../component/utils/DebugScript"
 import { TripDetails } from "../component/trip/TripDetails"
 
-import Logo from "../../assets/splash.png";
+import { Loader } from "../component/utils/Loader"
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
@@ -48,12 +48,18 @@ export const TripList: React.FC<TripListProps> = (props) => {
         fetchData()      
       }, [])
   
-  
+  if (started_trip){
+    props.navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
+  }
+
+  if(refreshing)
+    return <Loader />
+    
   if (trips.length == 0 && !started_trip)
     return (
       <View style={{flex: 1, justifyContent: "space-evenly", alignItems: "center"}}>
         {/* <DebugScript /> */}
-        <Image source={Logo} style={{resizeMode: 'contain', aspectRatio: 4}}/>
+        <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
         <View>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Aucun voyage existe pour ce compte</Text>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Utilisez le service Web pour créer un voyage</Text>
@@ -61,10 +67,7 @@ export const TripList: React.FC<TripListProps> = (props) => {
       </View>
     );
   
-  if (started_trip){
-    props.navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
-  }
-
+  
   return (
     <View>
     {/* <DebugScript /> */}

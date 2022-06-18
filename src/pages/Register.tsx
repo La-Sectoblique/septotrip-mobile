@@ -21,7 +21,6 @@ import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 
 
-import Logo from "../../assets/splash.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -135,7 +134,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
 
-      <Image source={Logo} style={{resizeMode: 'contain', aspectRatio: 4}}/>
+      <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
       <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 32}}>Inscription</Text>
 
       <View style={{}}>
