@@ -12,7 +12,7 @@ import { StepDayList } from '../component/step/StepDayList';
 import { Loader } from '../component/utils/Loader';
 import { RootTabParamList } from '../models/NavigationParamList';
 
-type TripViewerDayProps = NativeStackScreenProps<RootTabParamList, 'Day'>
+type TripViewerDayProps = NativeStackScreenProps<RootTabParamList, 'Planning'>
 
 export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }) => {
     const { trip } = route.params

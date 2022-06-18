@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react"
 import { View, Text, FlatList, ListRenderItem, RefreshControl, Image } from "react-native"
 import useTrips from "../hook/useTrips"
 import { RootStackParamList } from "../models/NavigationParamList"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DebugScript } from "../component/utils/DebugScript"
 import { TripDetails } from "../component/trip/TripDetails"
 
@@ -19,10 +20,18 @@ export const TripList: React.FC<TripListProps> = (props) => {
     const [public_trips, setPublicTrips] = useState<TripOutput[]>([] as TripOutput[])
     const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
+    
+    useEffect(() => {
+        props.navigation.addListener('beforeRemove', (e) => {
+          // Prevent default behavior of leaving the screen
+          e.preventDefault();
 
+        })}, [props.navigation]);
+        
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
         <TripDetails key={item.id} trip={item} navigation={props.navigation} have_started_trip={started_trip !== undefined}/>
     )
+
     const fetchData = () => {
         const get_user_trip = getUserTrips()
           .then((res: TripOutput[]) => {

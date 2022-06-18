@@ -1,5 +1,5 @@
 
-import React, {  } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 
 import { ParamListBase } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -16,11 +16,28 @@ import { TripViewerMarker } from "../pages/TripViewerMarker";
 
 type TripNavigationProps = NativeStackScreenProps<RootStackParamList, 'Planification'>
 
-export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
+export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation}) => {
 
   const Tab = createBottomTabNavigator<ParamListBase>();
 
-  const { trip, isReadOnly } = props.route.params
+  const { trip, isReadOnly } = route.params
+
+  const moveToParameters = () => {
+    navigation.navigate('Parametres', {trip: trip})
+  }
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      // Prevent default behavior of leaving the screen
+      e.preventDefault();
+    })
+  }, [navigation]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <FontAwesome onPress={() => moveToParameters()} name="gear" size={24} color="black" />,
+    });
+  }, [navigation]);
   return (
 
       <Tab.Navigator
@@ -32,7 +49,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
               return <FontAwesome name="plane" size={24} color={color} />
             } else if (route.name === 'Tache') {
               return <Entypo name="info" size={24} color={color} />
-            } else if (route.name === 'Day'){
+            } else if (route.name === 'Planning'){
               return <FontAwesome name="calendar" size={24} color={color}/>
             } else {
               return <FontAwesome name="file-o" size={24} color={color} />
@@ -43,7 +60,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = (props) => {
         <Tab.Screen name="Carte" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         <Tab.Screen name="Voyage" component={TripViewerMarker} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
-        <Tab.Screen name="Day" component={TripViewerDay} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
+        <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         { !isReadOnly ? <Tab.Screen name="Fichier" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>: <></> }
       </Tab.Navigator>
   );
