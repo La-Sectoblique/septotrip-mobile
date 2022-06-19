@@ -11,7 +11,7 @@ import { Loader } from '../utils/Loader';
 
 interface StepDayListProps {
     step: StepOutput
-    gotoMap: (arg0: PointOutput) => void
+    gotoMap: (arg0: PointOutput | StepOutput) => void
 }
 
 export const StepDayList = ({ step, gotoMap }: StepDayListProps) => {
@@ -27,11 +27,12 @@ export const StepDayList = ({ step, gotoMap }: StepDayListProps) => {
         getStepDays(step.id)
         .then((days: DayOutput[]) => {
             setDays(days)
+            setLoading(false)
         })
         .catch((err: ApiError) => {
             console.log(JSON.stringify(err))
+            setLoading(false)
         })
-        .finally(() => setLoading(false))
         
     }, [])
 

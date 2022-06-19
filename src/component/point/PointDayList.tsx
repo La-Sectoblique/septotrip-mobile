@@ -32,7 +32,7 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
         .catch((err: ApiError) => {
             console.log(JSON.stringify(err))
             setLoading(false)
-        })        
+        })
     }, [])
 
     if(loading)

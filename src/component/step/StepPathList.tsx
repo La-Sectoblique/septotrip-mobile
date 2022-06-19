@@ -1,4 +1,4 @@
-import { getPathById } from "@la-sectoblique/septoblique-service";
+import { getPathToStep } from "@la-sectoblique/septoblique-service";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
@@ -15,35 +15,33 @@ interface StepPathListProps {
   setModalVisible: (arg0: boolean) => void;
 }
 
-export const StepPathList = (props: StepPathListProps) => {
-  if (props.steps.length == 0) return <></>;
-
+export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPathListProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
 
   const handleClick = (step: StepOutput) => {
-    if (step.pathId == null) return;
+    if (step === null) return;
     setOrigin(step);
 
-    getPathById(step.pathId)
+    getPathToStep(step.id)
       .then((res: PathOutput) => {
-        props.setActiveElement({ path: res, origin: step });
-        props.setModalVisible(true);
+        setActiveElement({ path: res, origin: step });
+        setModalVisible(true);
       })
       .catch((err: ApiError) => console.log(JSON.stringify(err)));
   };
 
-  if (props.steps.length == 0) return <></>;
+  if (steps.length == 0) return <></>;
 
   return (
     <>
-      {props.steps.map((step: StepOutput, i: number, steps: StepOutput[]) => {
+      {steps.map((step: StepOutput, i: number, steps: StepOutput[]) => {
         if (i == steps.length - 1) return;
-
+        
         return (
             <Polyline
-              key={step.id}
-              coordinates={[
+              key={step.id + "_" + steps[i + 1].id}
+              coordinates={[ 
                 {
                   longitude: step.localisation.coordinates[0],
                   latitude: step.localisation.coordinates[1],

@@ -5,9 +5,12 @@ import {
   Text,
   TextInput,
   Dimensions,
+  Image,
+  View,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
 import { register } from "@la-sectoblique/septoblique-service";
@@ -18,19 +21,22 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 
+
+
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#F5FCFF",
+    alignItems: "center",
+    justifyContent: "space-evenly"
   },
   input: {
-    padding: 5,
-    margin: 5,
+    padding: 10,
+    margin: 10,
     width: (Dimensions.get("window").width * 95) / 100,
     fontSize: 25,
     borderWidth: 1,
+    borderRadius: 10,
   },
 });
 
@@ -51,6 +57,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
   const [missingFirstName, setMissingFirstName] = useState(false);
   const [missingLastName, setMissingLastName] = useState(false);
 
+
   useEffect(() => {
     setMissingEmail(false);
     setMissingFirstName(false);
@@ -66,14 +73,29 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
     setMissingFirstName(false);
     setMissingLastName(false);
 
+
+    if (firstName.length === 0) setMissingFirstName(true);
+
+    if (lastName.length === 0) setMissingLastName(true);
+
     if (password.length === 0) setMissingPassword(true);
 
     if (email.length === 0) setMissingEmail(true);
+    
 
     if (email.length === 0 || password.length === 0) {
       setLoading(false);
       return;
     }
+
+      // eslint-disable-next-line no-control-regex
+      const expression = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+  
+      if( !expression.test(String(email).toLowerCase())){
+        setError("L'email doit avoir un format valide")
+        setLoading(false)
+        return
+      }
 
     const data: RegisterCredentials = {
       firstName: firstName,
@@ -87,13 +109,10 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
       register(data)
         .then(() => {
           setMessage("Utilisateur créer ! Connectez-vous !")
-
           setEmail("");
           setPassword("");
           setFirstName("");
           setLastName("");
-
-          setLoading(false);
           navigation.navigate('Login')
         })
         .catch((err: ApiError) => {
@@ -103,8 +122,9 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
             setError(
               "Une erreur est survenue...Veuillez réessayer ultérieurement"
             );
+            setLoading(false);
+
         })
-        
     }, 1000);
   };
 
@@ -113,54 +133,73 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
 
 
   return (
-    <SafeAreaView style={styles.page}>
-      <TextInput
-        style={styles.input}
-        onChangeText={(firstName) => setFirstName(firstName)}
-        placeholder="Prénom..."
-        keyboardType="default"
-        blurOnSubmit={false}
-      />
-      {missingFirstName && <Error error="Prénom invalide ou manquant..." /> }
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.page}
+    >
 
-      <TextInput
-        style={styles.input}
-        onChangeText={(lastName) => setLastName(lastName)}
-        placeholder="Nom..."
-        keyboardType="default"
-        blurOnSubmit={false}
-      />
-      {missingLastName && <Error error="Nom invalide ou manquant..." />}
+      <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
+      <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 32}}>Inscription</Text>
 
-      <TextInput
-        style={styles.input}
-        onChangeText={(email) => setEmail(email)}
-        placeholder="Email..."
-        keyboardType="email-address"
-        blurOnSubmit={false}
-      />
-      {missingEmail && <Error error="Email invalide ou manquant..." />}
+      <View style={{}}>
+        <View>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Prénom: {missingFirstName && <Error error="Prénom invalide ou manquant..." /> }</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(firstName) => setFirstName(firstName)}
+            placeholder="Prénom..."
+            keyboardType="default"
+            blurOnSubmit={false}
+          />
+        </View>
 
-      <TextInput
-        style={styles.input}
-        onChangeText={(password) => setPassword(password)}
-        placeholder="Mot de passe..."
-        blurOnSubmit={false}
-        secureTextEntry={true}
-      />
-      {missingPassword && <Error error="Mot de passe invalide ou manquant..." /> }
+        <View>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Nom: {missingLastName && <Error error="Nom invalide ou manquant..." />}</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(lastName) => setLastName(lastName)}
+            placeholder="Nom..."
+            keyboardType="default"
+            blurOnSubmit={false}
+          />
+          
+        </View>
 
+        <View>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Email: {missingEmail && <Error error="Email invalide ou manquant..." />}</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(email) => setEmail(email)}
+            placeholder="Email..."
+            keyboardType="email-address"
+            blurOnSubmit={false}
+          />
+          
+        </View>
+
+        <View>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Mot de passe: {missingPassword && <Error error="Mot de passe invalide ou manquant..." />}</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(password) => setPassword(password)}
+            placeholder="Mot de passe..."
+            blurOnSubmit={false}
+            secureTextEntry={true}
+          />
+        
+        </View>
+      </View>
+      <Error error={error} />
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={handleSubmitButton}
-        style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
-      >
-        <Text>{"S'inscrire"}</Text>
+        style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+        >
+        <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}} >{"S'inscrire"}</Text>
       </TouchableOpacity>
 
       <Text>{message}</Text>
-      <Error error={error} />
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };

@@ -71,33 +71,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ModalDetails = (props: StepDetailsProps) => {
-  if (props.activeElement == null) return <></>;
+export const ModalDetails = ({activeElement, setModalVisible, modalVisible}: StepDetailsProps) => {
+  if (activeElement == null) return <></>;
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={props.modalVisible}
+      visible={modalVisible}
       onRequestClose={() => {
-        props.setModalVisible(!props.modalVisible);
+        setModalVisible(!modalVisible);
       }}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          {isStepOutput(props.activeElement) ? (
-            <StepDetails step={props.activeElement} />
-          ) : isPointOutput(props.activeElement) ? (
-            <PointDetails point={props.activeElement} />
+          {isStepOutput(activeElement) ? (
+            <StepDetails step={activeElement} />
+          ) : isPointOutput(activeElement) ? (
+            <PointDetails point={activeElement} />
           ) : (
             <PathDetails
-              path={props.activeElement.path}
-              origin={props.activeElement.origin}
+              path={activeElement.path}
+              origin={activeElement.origin}
             />
           )}
 
           <Pressable
             style={[styles.button, styles.buttonClose]}
-            onPress={() => props.setModalVisible(!props.modalVisible)}
+            onPress={() => setModalVisible(!modalVisible)}
           >
             <Text style={styles.textStyle}>Fermer</Text>
           </Pressable>

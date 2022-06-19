@@ -13,11 +13,11 @@ interface PointMarkerListProps {
   setRegion: (arg0: Region) => void
 }
 
-export const PointMarkerList = (props: PointMarkerListProps) => {
+export const PointMarkerList = ({points, setActiveElement, setModalVisible, setRegion}: PointMarkerListProps) => {
   const handleClick = (point: PointOutput) => {
-    props.setActiveElement(point);
-    props.setModalVisible(true);
-    props.setRegion({
+    setActiveElement(point);
+    setModalVisible(true);
+    setRegion({
       longitude: point.localisation.coordinates[0],
       latitude: point.localisation.coordinates[1],
       longitudeDelta: 0.05,
@@ -25,11 +25,11 @@ export const PointMarkerList = (props: PointMarkerListProps) => {
     })
   };
 
-  if (props.points.length == 0) return <></>;
+  if (points.length == 0) return <></>;
 
   return (
     <>
-      {props.points.map((point: PointOutput) => {
+      {points.map((point: PointOutput) => {
         return (
           <Marker
             key={point.id}

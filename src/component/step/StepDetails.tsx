@@ -9,6 +9,7 @@ interface StepDetailsProps {
   step: StepOutput;
 }
 
+
 export const StepDetails = (props: StepDetailsProps) => {
   if (props.step == null) return <></>;
 

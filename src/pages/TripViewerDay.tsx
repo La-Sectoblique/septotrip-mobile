@@ -12,7 +12,7 @@ import { StepDayList } from '../component/step/StepDayList';
 import { Loader } from '../component/utils/Loader';
 import { RootTabParamList } from '../models/NavigationParamList';
 
-type TripViewerDayProps = NativeStackScreenProps<RootTabParamList, 'Day'>
+type TripViewerDayProps = NativeStackScreenProps<RootTabParamList, 'Planning'>
 
 export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }) => {
     const { trip } = route.params
@@ -33,7 +33,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
     }
 
     const gotoMap = (point_or_step: PointOutput | StepOutput) => {
-        navigation.navigate('Voyage', {trip: trip, pointToFocus: point_or_step})
+        navigation.navigate('Carte', {trip: trip, pointToFocus: point_or_step})
     }
     
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { View, Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from '../../models/NavigationParamList';
@@ -13,49 +13,61 @@ interface TripDetailsProps {
     have_started_trip: boolean
 }
 
-export const TripDetails = (props: TripDetailsProps) => {
-    const handlePressEvent = (isReadOnly: boolean) => {
-        if(!props.started && !isReadOnly){
-            updateTrip(props.trip.id, {startDate: new Date(Date.now())})
-            .then((res: TripOutput) => props.navigation.navigate("Planification", {
+export const TripDetails = ({trip, navigation, started, have_started_trip}: TripDetailsProps) => {
+
+    const handlePressEvent = async (isReadOnly: boolean) => {
+        if(!started && !isReadOnly){
+            await updateTrip(trip.id, {startDate: new Date(Date.now())})
+            .then((res: TripOutput) => navigation.navigate("Planification", {
                 trip: res,
                 isReadOnly: false
             }))
             .catch((err: ApiError) => console.error(JSON.stringify(err)))
-            // Remonter l'info du started_trip
         }
-        props.navigation.navigate("Planification", {
-            trip: props.trip,
+
+        navigation.navigate("Planification", {
+            trip: trip,
             isReadOnly: isReadOnly
         })
     }
+
+    useEffect(() => {
+       //TODO: Get author 
+    }, [])
     return (
-        <View style={{width: "95%", padding: 5, margin: 5, borderWidth: 1}}>
+        <View style={{width: "95%", padding: 5, margin: 5, borderWidth: 1, borderRadius: 10, backgroundColor: "rgba(27,145,191, 0.5)", borderColor: "rgba(27,145,191, 0.5)"}}>
             
-            <Text style={{textAlign: 'center'}}>{props.trip.name}</Text>
+            <Text style={{textAlign: 'left', marginStart: 10, fontWeight: "600", textDecorationLine: 'underline', }}>{trip.name}</Text>
+            <Text></Text>
             
 
             {
-                props.started
+                started
                 ?
                 <View style={{width: "100%", flexDirection: 'row', justifyContent: 'space-around', marginTop: 5}}>
-                    <TouchableOpacity onPress={() => handlePressEvent(false)} style={{backgroundColor: 'green'}}>
-                        <Text style={{margin: 5}}>Continuer</Text>
+                    <TouchableOpacity 
+                        onPress={() => handlePressEvent(false)} 
+                        style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+                    >
+                        <Text style={{padding: 5, color: "white", textAlign: "center"}}>Continuer</Text>
                     </TouchableOpacity>
                 </View>
                 :
                 <View style={{width: "100%", flexDirection: 'row', justifyContent: 'space-around', marginTop: 5}}>
-                    <TouchableOpacity onPress={() => handlePressEvent(true)} style={{backgroundColor: 'red'}}>
-                        <Text style={{margin: 5}}>Visualiser</Text>
+                    <TouchableOpacity 
+                        onPress={() => handlePressEvent(true)} 
+                        style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+                        >
+                        <Text style={{padding: 5, color: "white", textAlign: "center"}}>Visualiser</Text>
                     </TouchableOpacity>
                     {
-                        !props.have_started_trip
-                        ?
-                        <TouchableOpacity onPress={() => handlePressEvent(false)} style={{backgroundColor: 'green'}}>
-                            <Text style={{margin: 5}}>Commencer</Text>
+                        !have_started_trip &&
+                        <TouchableOpacity 
+                            onPress={() => handlePressEvent(false)} 
+                            style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+                            >
+                            <Text style={{padding: 5, color: "white", textAlign: "center"}}>Commencer</Text>
                         </TouchableOpacity>
-                        :
-                        <></>
                     }
                    
                 </View>

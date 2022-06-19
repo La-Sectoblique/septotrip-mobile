@@ -18,7 +18,7 @@ interface PathDetailsProps {
   path: PathOutput;
 }
 
-export const PathDetails = (props: PathDetailsProps) => {
+export const PathDetails = ({origin, path}: PathDetailsProps) => {
   const [destination, setDestination] = useState<StepOutput>({} as StepOutput);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -28,13 +28,12 @@ export const PathDetails = (props: PathDetailsProps) => {
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
 
 
-  
   useEffect(() => {
     const step_id = getStepById(props.path.destinationId)
       .then((res: StepOutput) => {
 
-        setLongitudeDelta(Math.abs(res.localisation.coordinates[0] - props.origin.localisation.coordinates[0]))
-        setLatitudeDelta(Math.abs(res.localisation.coordinates[1] - props.origin.localisation.coordinates[1]))
+        setLongitudeDelta(Math.abs(res.localisation.coordinates[0] - origin.localisation.coordinates[0]))
+        setLatitudeDelta(Math.abs(res.localisation.coordinates[1] - origin.localisation.coordinates[1]))
         
         setDestination(res)
       })
@@ -48,7 +47,6 @@ export const PathDetails = (props: PathDetailsProps) => {
     Promise.all([step_id, trip_files])
     .then(() => setLoading(false))
     .catch(() => setLoading(false))
-
   }, []);
 
   if (loading) return <Loader />;
@@ -67,18 +65,18 @@ export const PathDetails = (props: PathDetailsProps) => {
         }}
         loadingEnabled={true}
         initialRegion={{
-          latitude: props.origin.localisation.coordinates[1],
-          longitude: props.origin.localisation.coordinates[0],
+          latitude: origin.localisation.coordinates[1],
+          longitude: origin.localisation.coordinates[0],
           latitudeDelta: latitudeDelta*5,
           longitudeDelta: longitudeDelta*5,
         }}
       >
         <Marker
-          key={props.origin.id}
+          key={origin.id}
           coordinate={
             {
-              longitude: props.origin.localisation.coordinates[0],
-              latitude: props.origin.localisation.coordinates[1],
+              longitude: origin.localisation.coordinates[0],
+              latitude: origin.localisation.coordinates[1],
             } as LatLng
           }
         />
@@ -94,8 +92,8 @@ export const PathDetails = (props: PathDetailsProps) => {
         <Polyline
           coordinates={[
             {
-              longitude: props.origin.localisation.coordinates[0],
-              latitude: props.origin.localisation.coordinates[1],
+              longitude: origin.localisation.coordinates[0],
+              latitude: origin.localisation.coordinates[1],
             } as LatLng,
             {
               longitude: destination.localisation.coordinates[0],
