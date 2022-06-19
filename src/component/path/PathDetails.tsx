@@ -5,6 +5,7 @@ import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions } from "react-native";
+import Toast from "react-native-toast-message"
 import MapView, {
   LatLng,
   Marker,
@@ -37,7 +38,11 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
         setDestination(res)
       })
       .catch((err: ApiError) => {
-        console.log(err)
+        Toast.show({
+          type: 'success',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
       })
     
     const trip_files = getTripFiles(origin.tripId, {path: path.id})

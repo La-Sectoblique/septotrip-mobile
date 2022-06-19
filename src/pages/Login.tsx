@@ -92,8 +92,10 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
           setEmail("");
           setPassword("");
           setLoading(false)
-          if (get_user_trips.filter(trip => trip.startDate != undefined).length > 0)
+          if (get_user_trips.filter(trip => trip.startDate != undefined).length > 0){
             navigation.navigate("Planification", {trip: get_user_trips[0], isReadOnly: false})
+          }
+            
           else
             navigation.navigate('TripList');
         })

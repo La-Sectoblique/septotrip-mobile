@@ -18,13 +18,14 @@ export const TripDetails = ({trip, navigation, started, have_started_trip}: Trip
     const handlePressEvent = async (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
             await updateTrip(trip.id, {startDate: new Date(Date.now())})
-            .then((res: TripOutput) => navigation.navigate("Planification", {
+            .then((res: TripOutput) => {    
+                navigation.navigate("Planification", {
                 trip: res,
                 isReadOnly: false
-            }))
+                })
+            })
             .catch((err: ApiError) => console.error(JSON.stringify(err)))
         }
-
         navigation.navigate("Planification", {
             trip: trip,
             isReadOnly: isReadOnly

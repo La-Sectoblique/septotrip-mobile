@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import Toast from "react-native-toast-message"
 import * as SecureStore from 'expo-secure-store';
 
 import { Login } from './src/pages/Login';
@@ -38,6 +38,7 @@ export default function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
+    <>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} options={{headerTitle: "Se connecter", headerBackVisible: false}}/>
@@ -47,6 +48,8 @@ export default function App() {
         <Stack.Screen name="Parametres" component={Parametres} options={{headerTitle: "Parametres",}}/>
       </Stack.Navigator>
     </NavigationContainer>
+    <Toast />
+    </>
   );
 }
 

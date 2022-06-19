@@ -38,6 +38,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: trip.name,
       headerRight: () => <FontAwesome onPress={() => moveToParameters()} name="gear" size={24} color="black" />,
     });
   }, [navigation]);
@@ -62,11 +63,11 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
           },
           tabBarInactiveTintColor: 'gray',
       })}>
-        <Tab.Screen name="Carte" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
-        <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
-        <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
-        { !isReadOnly && <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>}
-        { !isReadOnly && <Tab.Screen name="Gallery" component={Gallery} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>}
+        <Tab.Screen name="Carte" component={ShowTrip} initialParams={{trip: trip}} options={{headerShown: false}}/>
+        <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} options={{headerShown: false}}/>
+        <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} options={{headerShown: false}}/>
+        { !isReadOnly && <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} options={{headerShown: false}}/>}
+        { !isReadOnly && <Tab.Screen name="Gallery" component={Gallery} initialParams={{trip: trip}} options={{headerShown: false}}/>}
       </Tab.Navigator>
   );
 }
