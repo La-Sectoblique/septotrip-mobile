@@ -1,6 +1,6 @@
 import React from 'react'
 import * as DocumentPicker from 'expo-document-picker';
-import { Dimensions, FlatList, ListRenderItem, RefreshControl, Text, TouchableOpacity} from 'react-native';
+import { FlatList, ListRenderItem, RefreshControl, Text, TouchableOpacity} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootTabParamList } from '../models/NavigationParamList';
 import { getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
@@ -73,7 +73,8 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
             data={images}
             renderItem={renderItem}
             keyExtractor={(item: FileMetadataOutput) => item.id.toString()}
-            style={{borderWidth: 1, margin: 5, borderRadius: 10, flexDirection: 'row', flexWrap: 'wrap'}}
+            style={{borderWidth: 1, margin: 5}}
+            numColumns={4}
             refreshControl={
               <RefreshControl refreshing={loading} onRefresh={_refresh} />
             }

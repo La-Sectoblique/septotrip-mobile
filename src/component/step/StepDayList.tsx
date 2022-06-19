@@ -19,7 +19,6 @@ interface StepDayListProps {
 export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) => {
     const [days, setDays] = useState<DayOutput[]>([] as DayOutput[]);
     const [prettier_dates, setPrettierDate] = useState<string[]>([] as string[])
-    const [start_date, setStartDate] = useState<Date>({} as Date);
     const [loading, setLoading] = useState<boolean>(true)
 
     const handleClick = (step: StepOutput): void => {
@@ -33,15 +32,6 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
     }
 
     useEffect(() => {
-        const get_trip = getTripById(step.tripId)
-        .then((trip: TripOutput) => {
-            if(trip.startDate !== undefined)
-                setStartDate(trip.startDate)
-        }) 
-        .catch((err: ApiError) => {
-            console.log(err)
-        })
-
         const step_days = getStepDays(step.id)
         .then((days: DayOutput[]) => {
             setDays(days)
@@ -87,7 +77,7 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
             }
         });
 
-        Promise.all([get_trip, step_days, make_date])
+        Promise.all([step_days, make_date])
         .then(() => setLoading(false))
         .catch(() => setLoading(false))
         

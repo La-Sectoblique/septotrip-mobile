@@ -29,6 +29,7 @@ export const ImageCustom = ({image}: PathDetailsProps) => {
         style={{
             width: Dimensions.get("window").width * 25 / 100, 
             height: Dimensions.get("window").width * 25 / 100,
+            padding: 1
         }}
         >
             <Image source={{uri: url}} style={{flex: 1}}/>
