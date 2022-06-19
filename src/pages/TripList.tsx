@@ -84,7 +84,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   
   return (
     <View>
-    {/* <DebugScript /> */}
+    <DebugScript />
 
       {
         started_trip &&

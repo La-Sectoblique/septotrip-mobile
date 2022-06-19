@@ -86,7 +86,7 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
       <TouchableOpacity
           activeOpacity={0.5}
           onPress={onPressPickAFile}
-          style={{ position: 'absolute', bottom:5, right: 5,borderWidth: 1, borderRadius: 20, padding: 10, margin: 10, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+          style={{ position: 'absolute', bottom:10, right: 10, borderWidth: 1, borderRadius: 40, padding: 10, margin: 10, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
       >
           <FontAwesome name="photo" size={32} color="white" />
         </TouchableOpacity>

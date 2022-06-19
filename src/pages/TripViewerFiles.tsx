@@ -81,10 +81,10 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
                   onPress={onPress}
                   style={{ 
                     position: 'absolute', 
-                    bottom: 5, 
-                    right: 5,
+                    bottom: 10, 
+                    right: 10,
                     borderWidth: 1, 
-                    borderRadius: 20, 
+                    borderRadius: 40, 
                     padding: 10, 
                     margin: 10, 
                     backgroundColor: "#1B91BF", 
