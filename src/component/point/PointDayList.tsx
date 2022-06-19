@@ -5,8 +5,6 @@ import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableHighlight, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import usePoints from '../../hook/usePoints';
 import { Loader } from '../utils/Loader';
 
 interface PointDayListProps {
@@ -15,7 +13,7 @@ interface PointDayListProps {
 }
 
 export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
-    const [points, initPoint, addPoint, removePoint] = usePoints();
+    const [points, setPoints] = useState<PointOutput[]>([] as PointOutput[]);
 
     const [loading, setLoading] = useState<boolean>(true)
 
@@ -26,7 +24,7 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
     useEffect(() => {
         getPointsByDay(day.id)
         .then((points: PointOutput[]) => {
-            initPoint(points)
+            setPoints(points)
             setLoading(false)
         })
         .catch((err: ApiError) => {

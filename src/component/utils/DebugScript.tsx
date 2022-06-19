@@ -2,24 +2,11 @@ import {
   addPoint,
   addStep,
   createTrip,
-  getUserTrips,
 } from "@la-sectoblique/septoblique-service";
-import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
-import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
-import React, { useEffect } from "react";
+import React, {  } from "react";
 import { TouchableOpacity, Text } from "react-native";
-import useTrips from "../../hook/useTrips";
 
 export const DebugScript: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [trips, initTrip, addTrip, removeTrip] = useTrips();
-
-  useEffect(() => {
-    getUserTrips()
-      .then((res: TripOutput[]) => initTrip(res))
-      .catch((err: ApiError) => console.error(err));
-  }, []);
-
   async function addData() {
     // if (trips.length > 0) {
     //   alert(

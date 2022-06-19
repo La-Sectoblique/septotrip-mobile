@@ -9,13 +9,11 @@ import {
   getTripSteps,
 } from "@la-sectoblique/septoblique-service";
 
-import useSteps from "../hook/useSteps";
 
 import { StepMarkerList } from "../component/step/StepMarkerList";
 import { StepPathList } from "../component/step/StepPathList";
 import { ModalDetails } from "../component/utils/ModalDetails";
 import { PointMarkerList } from "../component/point/PointMarkerList";
-import usePoints from "../hook/usePoints";
 import { Dropdown } from "../component/utils/Dropdown";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
@@ -36,7 +34,7 @@ type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Carte'>
 export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
   const { trip, pointToFocus } = route.params
-  const [steps, initStep, addStep, removeStep] = useSteps();
+  const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[]);
 
   const [activeElement, setActiveElement] = useState<
     StepOutput | PointOutput | { path: PathOutput; origin: StepOutput }
@@ -45,7 +43,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
   const [filter, setFilter] = useState<string>("all");
 
-  const [points, initPoint, addPoint, removePoint] = usePoints();
+  const [points, setPoints] = useState<PointOutput[]>([] as PointOutput[]);
   
   //Default center the map on Paris coordinate
   const [focus, setFocus] = useState<LocalisationPoint>({
@@ -63,7 +61,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
   const _refresh = (trip: TripOutput) => {
     const trip_step = getTripSteps(trip.id).then((res: StepOutput[]) => {
-      initStep(res);
+      setSteps(res);
       
       const trip_sort_longitude = res.sort((a, b) => {return a.localisation.coordinates[0] - b.localisation.coordinates[0] } )
       const trip_sort_latitude = res.sort((a, b) => {return a.localisation.coordinates[1] - b.localisation.coordinates[1] } )
@@ -89,7 +87,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
     });
 
     const trip_point = getTripPoints(trip.id).then((res: PointOutput[]) => {
-      initPoint(res);
+      setPoints(res);
     });
 
     Promise.all([trip_step, trip_point])

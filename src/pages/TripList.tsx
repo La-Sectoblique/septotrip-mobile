@@ -4,7 +4,6 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
 import { View, Text, FlatList, ListRenderItem, RefreshControl, Image } from "react-native"
-import useTrips from "../hook/useTrips"
 import { RootStackParamList } from "../models/NavigationParamList"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DebugScript } from "../component/utils/DebugScript"
@@ -16,7 +15,7 @@ type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
 
 export const TripList: React.FC<TripListProps> = ({navigation}) => {
-    const [trips, initTrip] = useTrips();
+    const [trips, setTrips] = useState<TripOutput[]>([] as TripOutput[]);
     const [public_trips, setPublicTrips] = useState<TripOutput[]>([] as TripOutput[])
     const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
@@ -37,7 +36,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
           .then((res: TripOutput[]) => {
             const filtered_trips = res.filter(trip => trip.startDate != undefined)
             setStartedTrip(filtered_trips[0])
-            initTrip(res.filter(trip => trip.startDate == undefined))
+            setTrips(res.filter(trip => trip.startDate == undefined))
         })
         .catch((err: ApiError) => {
             console.error(JSON.stringify(err))
