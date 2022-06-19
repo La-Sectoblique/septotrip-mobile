@@ -61,7 +61,7 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
             <View style={{width: "100%"}}>
                 <TouchableOpacity
                     activeOpacity={0.5}
-                    onPress={() => navigation.navigate("TripList")}
+                    onPress={() => navigation.navigate('TripList')}
                     style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
                 <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Retour à la liste de voyage</Text>

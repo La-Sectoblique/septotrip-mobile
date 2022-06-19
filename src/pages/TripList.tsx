@@ -57,9 +57,6 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
         fetchData()      
       }, [])
   
-  if (started_trip){
-    navigation.navigate("Planification", {trip: started_trip, isReadOnly: false})
-  }
 
   if(refreshing)
     return <Loader />

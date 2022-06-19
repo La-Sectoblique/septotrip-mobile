@@ -16,8 +16,6 @@ interface StepPathListProps {
 }
 
 export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPathListProps) => {
-  if (steps.length == 0) return <></>;
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
 
@@ -39,11 +37,11 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
     <>
       {steps.map((step: StepOutput, i: number, steps: StepOutput[]) => {
         if (i == steps.length - 1) return;
-
+        
         return (
             <Polyline
-              key={step.id}
-              coordinates={[
+              key={step.id + "_" + steps[i + 1].id}
+              coordinates={[ 
                 {
                   longitude: step.localisation.coordinates[0],
                   latitude: step.localisation.coordinates[1],

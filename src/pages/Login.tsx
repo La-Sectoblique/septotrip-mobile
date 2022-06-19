@@ -15,13 +15,14 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
-import { login } from "@la-sectoblique/septoblique-service";
+import { getUserTrips, login } from "@la-sectoblique/septoblique-service";
 import { LoginCredentials } from "@la-sectoblique/septoblique-service/dist/types/utils/Credentials";
 import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
+import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
 
 
 const styles = StyleSheet.create({
@@ -81,13 +82,19 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
 
     //Execute register function after one second to see loading page
-    setTimeout(() => {
-      login(data)
-        .then(() => {
+    setTimeout(async () => {
+      await login(data)
+        .then(async (res) => {
+          const my_user = await me()
+          const get_user_trips = await getUserTrips()
+         
           setEmail("");
           setPassword("");
           setLoading(false)
-          navigation.navigate('TripList');
+          if (get_user_trips.filter(trip => trip.startDate != undefined).length > 0)
+            navigation.navigate("Planification", {trip: get_user_trips[0], isReadOnly: false})
+          else
+            navigation.navigate('TripList');
           
         })
         .catch((err: ApiError) => {

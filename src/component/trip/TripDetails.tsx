@@ -14,16 +14,17 @@ interface TripDetailsProps {
 }
 
 export const TripDetails = ({trip, navigation, started, have_started_trip}: TripDetailsProps) => {
-    const handlePressEvent = (isReadOnly: boolean) => {
+
+    const handlePressEvent = async (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
-            updateTrip(trip.id, {startDate: new Date(Date.now())})
+            await updateTrip(trip.id, {startDate: new Date(Date.now())})
             .then((res: TripOutput) => navigation.navigate("Planification", {
                 trip: res,
                 isReadOnly: false
             }))
             .catch((err: ApiError) => console.error(JSON.stringify(err)))
-            // Remonter l'info du started_trip
         }
+
         navigation.navigate("Planification", {
             trip: trip,
             isReadOnly: isReadOnly
