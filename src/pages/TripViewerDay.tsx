@@ -5,6 +5,7 @@ import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/model
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native';
+import Toast from "react-native-toast-message"
 import PTRView from 'react-native-pull-to-refresh';
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -28,7 +29,11 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
             setLoading(false)
         })
         .catch((err: ApiError) => {
-            console.log(JSON.stringify(err))
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+              })
         })
     }
 
@@ -56,7 +61,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
                         key={step.id} 
                         step={step} 
                         gotoMap={gotoMap} 
-                        started_trip={trip.startDate !== undefined} 
+                        started_trip={trip.startDate !== null} 
                         />
                   })
               }

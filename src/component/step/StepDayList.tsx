@@ -6,6 +6,7 @@ import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/model
 import { TripOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Trip';
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableHighlight, View } from 'react-native';
+import Toast from "react-native-toast-message"
 
 import { PointDayList } from '../point/PointDayList';
 import { Loader } from '../utils/Loader';
@@ -37,7 +38,11 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
             setDays(days)
         })
         .catch((err: ApiError) => {
-            console.log(JSON.stringify(err))
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+              })
         })
 
         const make_date =  getTripById(step.tripId)
@@ -71,10 +76,24 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
                     })
 
                 })
+                .catch((err: ApiError) => {
+                    Toast.show({
+                        type: 'error',
+                        text1: err.name,
+                        text2: err.code + " " + err.message
+                      })
+                })
                
                
               
             }
+        })
+        .catch((err: ApiError) => {
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+              })
         });
 
         Promise.all([step_days, make_date])
@@ -104,11 +123,11 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
               <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-around'}}>
               {
                   days.map((day, i) => {
-                      return <View key={day.id} style={{borderWidth: 1, borderRadius: 15, padding: 10, margin: 10, width: "40%"}}>
-                      {!started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>Jour: {day.number}</Text> }
-                      {started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>{ prettier_dates[i] }</Text> }
-                      <PointDayList day={day} gotoMap={gotoMap}/>
-                      </View>
+                    return <View key={day.id} style={{borderWidth: 1, borderRadius: 15, padding: 10, margin: 10, width: "40%"}}>
+                    {!started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>Jour: {day.number}</Text> }
+                    {started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>{ prettier_dates[i] }</Text> }
+                    <PointDayList day={day} gotoMap={gotoMap}/>
+                    </View>
                   })
               }
               </View>

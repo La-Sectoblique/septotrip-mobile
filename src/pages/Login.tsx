@@ -14,6 +14,7 @@ import {
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message"
 
 import { getUserTrips, login } from "@la-sectoblique/septoblique-service";
 import { LoginCredentials } from "@la-sectoblique/septoblique-service/dist/types/utils/Credentials";
@@ -50,7 +51,6 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
   const [missingEmail, setMissingEmail] = useState<boolean>(false);
   const [missingPassword, setMissingPassword] = useState<boolean>(false);
 
@@ -100,9 +100,11 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
             navigation.navigate('TripList');
         })
         .catch((err: ApiError) => {
-          if (err.code === 404) setError("Utilisateur inexistant");
-          // else if (err.code === 400) setError("Mot de passe faux");
-          else setError("Une erreur s'est produite: " + JSON.stringify(err));
+          Toast.show({
+            type: 'error',
+            text1: err.name,
+            text2: err.code + " " + err.message
+          })
 
           setLoading(false)
         })
@@ -157,7 +159,6 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
         
 
         <Text>{message}</Text>
-        <Error error={error} />
       </View>
 
       <View style={{flexDirection: "row", justifyContent: "center"}}>

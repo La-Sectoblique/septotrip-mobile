@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Region } from "react-native-maps";
+import Toast from "react-native-toast-message"
 import * as Location from "expo-location";
 
 import {
@@ -93,7 +94,11 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
     Promise.all([trip_step, trip_point])
       .then(() => setRefreshing(false))
       .catch((err: ApiError) => {
-        console.log(JSON.stringify(err))
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
         setRefreshing(false)
       })
   };

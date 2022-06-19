@@ -4,6 +4,7 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
 import { View, Text, FlatList, ListRenderItem, RefreshControl, Image } from "react-native"
+import Toast from "react-native-toast-message"
 import { RootStackParamList } from "../models/NavigationParamList"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DebugScript } from "../component/utils/DebugScript"
@@ -39,13 +40,21 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
             setTrips(res.filter(trip => trip.startDate == undefined))
         })
         .catch((err: ApiError) => {
-            console.error(JSON.stringify(err))
+          Toast.show({
+            type: 'error',
+            text1: err.name,
+            text2: err.code + " " + err.message
+          })
         })
 
         const get_public_trip = getAllPublicTrips()
         .then((res: TripOutput[]) => setPublicTrips(res))
-        .catch(async (err: ApiError) => {
-          console.error(JSON.stringify(err))
+        .catch((err: ApiError) => {
+          Toast.show({
+            type: 'error',
+            text1: err.name,
+            text2: err.code + " " + err.message
+          })
         })
 
         Promise.all([get_user_trip, get_public_trip])
@@ -87,7 +96,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       }
       {
         trips.length > 0 &&
-        <View style={{height: "40%"}}>
+        <View style={{height: "50%"}}>
           <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Mes voyages</Text>
           <FlatList
             data={trips}

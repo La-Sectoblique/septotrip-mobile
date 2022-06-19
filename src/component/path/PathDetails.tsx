@@ -39,7 +39,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
       })
       .catch((err: ApiError) => {
         Toast.show({
-          type: 'success',
+          type: 'error',
           text1: err.name,
           text2: err.code + " " + err.message
         })
@@ -47,6 +47,13 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
     
     const trip_files = getTripFiles(origin.tripId, {path: path.id})
     .then((res: FileMetadataOutput[]) => setFiles(res))
+    .catch((err: ApiError) => {
+      Toast.show({
+        type: 'error',
+        text1: err.name,
+        text2: err.code + " " + err.message
+      })
+    })
 
     Promise.all([step_id, trip_files])
     .then(() => setLoading(false))

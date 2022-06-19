@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Toast from "react-native-toast-message"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { View, Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from '../../models/NavigationParamList';
@@ -24,7 +25,13 @@ export const TripDetails = ({trip, navigation, started, have_started_trip}: Trip
                 isReadOnly: false
                 })
             })
-            .catch((err: ApiError) => console.error(JSON.stringify(err)))
+            .catch((err: ApiError) => {
+                Toast.show({
+                    type: 'error',
+                    text1: err.name,
+                    text2: err.code + " " + err.message
+                  })
+            })
         }
         navigation.navigate("Planification", {
             trip: trip,

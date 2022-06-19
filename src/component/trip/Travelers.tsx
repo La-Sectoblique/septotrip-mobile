@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Toast from "react-native-toast-message"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
@@ -47,10 +48,11 @@ export const Travelers = ({trip}: TravelersProps) => {
             setEmailNewTraveler("")
         })
         .catch((err: ApiError) => {
-            console.log(err)
-            if(err.code == 404)
-                setError("L'utilisateur n'existe pas")
-            
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+              })
             setEmailNewTraveler("")
         })
     }
@@ -63,7 +65,11 @@ export const Travelers = ({trip}: TravelersProps) => {
             setEmailNewTraveler("")
         })
         .catch((err: ApiError) => {
-            console.log(err)
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+              })
             setLoading(false)
         })
     }

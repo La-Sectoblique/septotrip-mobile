@@ -5,6 +5,7 @@ import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableHighlight, View } from 'react-native';
+import Toast from "react-native-toast-message"
 import { Loader } from '../utils/Loader';
 
 interface PointDayListProps {
@@ -28,7 +29,11 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
             setLoading(false)
         })
         .catch((err: ApiError) => {
-            console.log(JSON.stringify(err))
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+            })
             setLoading(false)
         })
     }, [])

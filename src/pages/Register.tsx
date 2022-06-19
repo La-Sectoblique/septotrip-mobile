@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import Toast from "react-native-toast-message"
 
 import { StatusBar } from "expo-status-bar";
 
@@ -116,12 +117,11 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
           navigation.navigate('Login')
         })
         .catch((err: ApiError) => {
-          console.log(JSON.stringify(err));
-          if (err.code === 409) setError("L'utilisateur saisie existe déjà");
-          else
-            setError(
-              "Une erreur est survenue...Veuillez réessayer ultérieurement"
-            );
+          Toast.show({
+            type: 'error',
+            text1: err.name,
+            text2: err.code + " " + err.message
+          })
             setLoading(false);
 
         })

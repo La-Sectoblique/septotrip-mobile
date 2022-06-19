@@ -5,6 +5,7 @@ import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/mode
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import React from "react";
 import { useState } from "react";
+import Toast from "react-native-toast-message"
 import { LatLng, Polyline } from "react-native-maps";
 
 interface StepPathListProps {
@@ -27,7 +28,13 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
         setActiveElement({ path: res, origin: step });
         setModalVisible(true);
       })
-      .catch((err: ApiError) => console.log(JSON.stringify(err)));
+      .catch((err: ApiError) => {
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
+      });
   };
 
   if (steps.length == 0) return <></>;
