@@ -1,4 +1,4 @@
-import { getStepDays, getTripById } from '@la-sectoblique/septoblique-service';
+import { getStepDays, getTripById, getTripSteps } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Day';
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
@@ -18,6 +18,7 @@ interface StepDayListProps {
 
 export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) => {
     const [days, setDays] = useState<DayOutput[]>([] as DayOutput[]);
+    const [prettier_dates, setPrettierDate] = useState<string[]>([] as string[])
     const [start_date, setStartDate] = useState<Date>({} as Date);
     const [loading, setLoading] = useState<boolean>(true)
 
@@ -55,6 +56,40 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
         
     }, [])
 
+    useEffect(() => {
+        getTripById(step.tripId)
+        .then(async (trip: TripOutput) => {
+            if(step.order === 1){
+                const days = await getStepDays(step.id)
+                days.map((day,i) => {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore 
+                    setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, day.number); return prev})
+                })
+            }
+            else{
+                const steps = (await getTripSteps(step.tripId)).filter((value) => value.order < step.order)
+                let daysToAdd = 0;
+                await steps.map(async (step) => {
+                    daysToAdd += (await getStepDays(step.id)).length
+                })
+                const days = await getStepDays(step.id);
+                days.map((day,i) => {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore 
+                    setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
+                })
+               
+              
+            }
+            console.log(prettier_dates)
+            console.log("==========")
+        });
+
+       
+        
+    },[])
+
     if(loading)
         return <Loader />
 
@@ -74,15 +109,10 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
               
               <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-around'}}>
               {
-                  days.map((day) => {
-                    const date = prettierDate(start_date, day.number);
-
-                    // if(i === days.length - 1)
-                    //     setBeginDate(new Date(date))
-
+                  days.map((day, i) => {
                       return <View key={day.id} style={{borderWidth: 1, borderRadius: 15, padding: 10, margin: 10, width: "40%"}}>
                       {!started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>Jour: {day.number}</Text> }
-                      {started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>{ date }</Text> }
+                      {started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>{ prettier_dates[i] }</Text> }
                       <PointDayList day={day} gotoMap={gotoMap}/>
                       </View>
                   })

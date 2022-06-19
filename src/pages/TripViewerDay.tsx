@@ -24,6 +24,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
         getTripSteps(trip.id)
         .then((steps: StepOutput[]) => {
             setSteps(steps)
+            
             setLoading(false)
         })
         .catch((err: ApiError) => {
