@@ -1,29 +1,17 @@
 import React from 'react'
 import * as DocumentPicker from 'expo-document-picker';
-import { Button, Image, ScrollView} from 'react-native';
+import { Dimensions, FlatList, ListRenderItem, RefreshControl, Text, TouchableOpacity} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootTabParamList } from '../models/NavigationParamList';
-import { getFileLink, getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
+import { getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
 import { MobileFileFormat } from '@la-sectoblique/septoblique-service/dist/utils/FormData';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Loader } from '../component/utils/Loader';
 import { FileMetadataOutput, FileType } from '@la-sectoblique/septoblique-service/dist/types/models/File';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ImageCustom } from '../component/gallery/ImageCustom';
 
-
-// const styles = StyleSheet.create({
-//   carousel:{
-//     flex: 1,
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     margin: 10,
-//   },
-//   carousel_item:{
-//     width: 100,
-//     height:100,
-//     margin: 5,
-//   }
-// });
 type GalleryProps = NativeStackScreenProps<RootTabParamList, 'Gallery'>
 
   
@@ -31,18 +19,16 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
   const { trip } = route.params;
 
   const [images, setImages] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[]);
-  const [imageURL, setImagesUrl] = useState<string[]>([] as string[]);
-
   const [loading, setLoading] = useState<boolean>(true)
   
+  const renderItem: ListRenderItem<FileMetadataOutput> = ({ item }) => (
+    <ImageCustom key={item.id} image={item}/>  
+  )
+
   const _refresh = () => {
     getTripFiles(trip.id, {type: FileType.PHOTO})
     .then((res: FileMetadataOutput[]) => {
       setImages(res)
-      res.map((image, i) => {
-        getFileLink(trip.id, image.id)
-        .then((url) => setImagesUrl((prev) => { prev[i] = url; return prev }))
-      })
       setLoading(false)
     })
   }
@@ -82,18 +68,24 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
     return <Loader />
 
   return (
-    <>
-      <Button 
-          title="Choisir une image"
-          onPress={onPressPickAFile}
+    <SafeAreaView>
+      <FlatList
+            data={images}
+            renderItem={renderItem}
+            keyExtractor={(item: FileMetadataOutput) => item.id.toString()}
+            style={{borderWidth: 1, margin: 5, borderRadius: 10, flexDirection: 'row', flexWrap: 'wrap'}}
+            refreshControl={
+              <RefreshControl refreshing={loading} onRefresh={_refresh} />
+            }
       />
-      <ScrollView>
-      {
-        images.map((image, i) => {
-          return <Image key={image.id} source={{uri: imageURL[i]}} style={{width: 100, height: 100}}/>
-        })
-      }
-      </ScrollView>
-  </>
+      <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={onPressPickAFile}
+          style={{ position: 'absolute', borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+        >
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
+          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Ajouter à l'album</Text>
+        </TouchableOpacity>
+  </SafeAreaView>
   )
 }
