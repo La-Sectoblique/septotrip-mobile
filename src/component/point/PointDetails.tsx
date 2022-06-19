@@ -9,20 +9,20 @@ interface PointDetailsProps {
     point: PointOutput
 }
 
-export const PointDetails = (props: PointDetailsProps) => {
-    if(props.point == null) return <></>
+export const PointDetails = ({point}: PointDetailsProps) => {
+    if(point == null) return <></>
     
     const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
 
     useEffect(() => {
-        getTripFiles(props.point.tripId, {point: props.point.id})
+        getTripFiles(point.tripId, {point: point.id})
         .then((res: FileMetadataOutput[]) => setFiles(res))
     }, [])
 
     return (
         <View style={{width: Dimensions.get('window').width * 75 / 100}}>
-        <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${props.point.title}`}</Text>
-        <Text>{props.point.description}</Text>
+        <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${point.title}`}</Text>
+        <Text>{point.description}</Text>
         {
             files.length > 0 
             ? <FileList files={files} showWebView={false}/>

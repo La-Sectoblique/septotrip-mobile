@@ -20,12 +20,10 @@ const styles = StyleSheet.create({
 
 type TripViewerFilesProps = NativeStackScreenProps<RootTabParamList, 'Fichier'>
 
-export const TripViewerFiles: React.FC<TripViewerFilesProps> = (props) => {
-  const { trip } = props.route.params;
+export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
+  const { trip } = route.params;
   
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[]);
-  const [fileURL, setFileURL] = useState<string>("")
-
 
   const [loading, setLoading] = useState<boolean>(true);
 

@@ -10,18 +10,18 @@ interface StepDetailsProps {
 }
 
 
-export const StepDetails = (props: StepDetailsProps) => {
-  if (props.step == null) return <></>;
+export const StepDetails = ({step}: StepDetailsProps) => {
+  if (step == null) return <></>;
 
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
 
   useEffect(() => {
-    getTripFiles(props.step.tripId, {step: props.step.id})
+    getTripFiles(step.tripId, {step: step.id})
     .then((res: FileMetadataOutput[]) => setFiles(res))
   }, [])
   return (
     <View style={{width: Dimensions.get('window').width * 75 / 100}}>
-      <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${props.step.name}`}</Text>
+      <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${step.name}`}</Text>
       {
             files.length > 0 
             ? <FileList files={files} showWebView={false}/>

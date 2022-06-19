@@ -10,16 +10,16 @@ interface FileListProps {
     showWebView?: boolean
 }
 
-export const FileList = (props: FileListProps) => {
+export const FileList = ({files, showWebView}: FileListProps) => {
     const [fileURL, setFileURL] = useState<string>("");
 
     const downloadFile = async (fileMetaData: FileMetadataOutput) => {
-        if(props.showWebView == false) return 
+        if(showWebView == false) return 
         const url = await getFileLink(fileMetaData.tripId, fileMetaData.id)
         setFileURL(url) 
     }
 
-    if(fileURL !== "" && props.showWebView != false)
+    if(fileURL !== "" && showWebView != false)
         return (
             <View style={{flex: 1}}>
                 <WebView
@@ -39,7 +39,7 @@ export const FileList = (props: FileListProps) => {
     return (
         <ScrollView style={{borderWidth: 1}}>
             {
-                props.files.map((file, i) => {
+                files.map((file, i) => {
                     return (
                     
                     <TouchableOpacity

@@ -29,7 +29,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
 
 
   useEffect(() => {
-    const step_id = getStepById(props.path.destinationId)
+    const step_id = getStepById(path.destinationId)
       .then((res: StepOutput) => {
 
         setLongitudeDelta(Math.abs(res.localisation.coordinates[0] - origin.localisation.coordinates[0]))
@@ -41,7 +41,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
         console.log(err)
       })
     
-    const trip_files = getTripFiles(props.origin.tripId, {path: props.path.id})
+    const trip_files = getTripFiles(origin.tripId, {path: path.id})
     .then((res: FileMetadataOutput[]) => setFiles(res))
 
     Promise.all([step_id, trip_files])
@@ -53,7 +53,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
 
   return (
     <View style={{width: Dimensions.get('window').width * 75 / 100}}>
-      <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${props.origin.name} - ${destination.name}`}</Text>
+      <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${origin.name} - ${destination.name}`}</Text>
 
       <MapView
         rotateEnabled={false}
@@ -104,7 +104,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
           strokeWidth={6}
         />
       </MapView>
-      <Text style={{margin: 10}}>{ props.path.description }</Text>
+      <Text style={{margin: 10}}>{ path.description }</Text>
       {
             files.length > 0 
             ? <FileList files={files} showWebView={false}/>
