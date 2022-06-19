@@ -62,12 +62,13 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
             }
           },
           tabBarInactiveTintColor: 'gray',
+          headerShown: false
       })}>
-        <Tab.Screen name="Carte" component={ShowTrip} initialParams={{trip: trip}} options={{headerShown: false}}/>
-        <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} options={{headerShown: false}}/>
-        <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} options={{headerShown: false}}/>
-        { !isReadOnly && <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} options={{headerShown: false}}/>}
-        { !isReadOnly && <Tab.Screen name="Gallery" component={Gallery} initialParams={{trip: trip}} options={{headerShown: false}}/>}
+        <Tab.Screen name="Carte" component={ShowTrip} initialParams={{trip: trip}} />
+        <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} />
+        <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} />
+        { !isReadOnly && <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} />}
+        { !isReadOnly && <Tab.Screen name="Gallery" component={Gallery} initialParams={{trip: trip}} />}
       </Tab.Navigator>
   );
 }
