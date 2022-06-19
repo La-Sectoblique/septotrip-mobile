@@ -50,14 +50,7 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
             console.log(JSON.stringify(err))
         })
 
-        Promise.all([get_trip, step_days])
-        .then(() => setLoading(false))
-        .catch(() => setLoading(false))
-        
-    }, [])
-
-    useEffect(() => {
-        getTripById(step.tripId)
+        const make_date =  getTripById(step.tripId)
         .then(async (trip: TripOutput) => {
             if(step.order === 1){
                 const days = await getStepDays(step.id)
@@ -67,28 +60,39 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
                     setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, day.number); return prev})
                 })
             }
-            else{
-                const steps = (await getTripSteps(step.tripId)).filter((value) => value.order < step.order)
-                let daysToAdd = 0;
-                await steps.map(async (step) => {
-                    daysToAdd += (await getStepDays(step.id)).length
+            else {
+                getTripSteps(step.tripId)
+                .then(async (steps: StepOutput[]) => {
+                    const filtered_steps = steps.filter((value) => value.order < step.order);
+                    let daysToAdd = 0;
+                    filtered_steps.map((filtered_step) => {
+                        getStepDays(filtered_step.id)
+                        .then(async (days: DayOutput[]) => {
+                            daysToAdd += days.length;
+                            if(filtered_step.order == step.order - 1){
+                                const days = await getStepDays(step.id);
+                                days.map((day,i) => {
+                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                    //@ts-ignore 
+                                    setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
+                                })
+                            }
+                        })
+                    })
+
                 })
-                const days = await getStepDays(step.id);
-                days.map((day,i) => {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    //@ts-ignore 
-                    setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
-                })
+               
                
               
             }
-            console.log(prettier_dates)
-            console.log("==========")
         });
 
-       
+        Promise.all([get_trip, step_days, make_date])
+        .then(() => setLoading(false))
+        .catch(() => setLoading(false))
         
-    },[])
+    }, [])
+
 
     if(loading)
         return <Loader />
