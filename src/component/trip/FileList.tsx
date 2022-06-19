@@ -21,7 +21,7 @@ export const FileList = ({files, showWebView}: FileListProps) => {
 
     if(fileURL !== "" && showWebView != false)
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, margin: 5}}>
                 <WebView
                     source={{ uri: fileURL}}
                     style={{ flex: 1 }}
@@ -37,7 +37,7 @@ export const FileList = ({files, showWebView}: FileListProps) => {
         )
 
     return (
-        <ScrollView style={{borderWidth: 1}}>
+        <ScrollView style={{borderWidth: 1, margin: 5}}>
             {
                 files.map((file, i) => {
                     return (

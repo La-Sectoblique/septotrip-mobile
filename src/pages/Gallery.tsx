@@ -1,6 +1,6 @@
 import React from 'react'
 import * as DocumentPicker from 'expo-document-picker';
-import { FlatList, ListRenderItem, RefreshControl, Text, TouchableOpacity} from 'react-native';
+import { FlatList, ListRenderItem, RefreshControl, TouchableOpacity} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootTabParamList } from '../models/NavigationParamList';
 import { getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
@@ -11,6 +11,7 @@ import { Loader } from '../component/utils/Loader';
 import { FileMetadataOutput, FileType } from '@la-sectoblique/septoblique-service/dist/types/models/File';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ImageCustom } from '../component/gallery/ImageCustom';
+import { FontAwesome } from '@expo/vector-icons';
 
 type GalleryProps = NativeStackScreenProps<RootTabParamList, 'Gallery'>
 
@@ -68,12 +69,15 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
     return <Loader />
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <FlatList
             data={images}
             renderItem={renderItem}
             keyExtractor={(item: FileMetadataOutput) => item.id.toString()}
-            style={{borderWidth: 1, margin: 5}}
+            style={{
+              borderWidth: 1, margin: 5, 
+              flex: 1,
+            }}
             numColumns={4}
             refreshControl={
               <RefreshControl refreshing={loading} onRefresh={_refresh} />
@@ -82,10 +86,9 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
       <TouchableOpacity
           activeOpacity={0.5}
           onPress={onPressPickAFile}
-          style={{ position: 'absolute', borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
-        >
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Ajouter à l'album</Text>
+          style={{ position: 'absolute', bottom:5, right: 5,borderWidth: 1, borderRadius: 20, padding: 10, margin: 10, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+      >
+          <FontAwesome name="photo" size={32} color="white" />
         </TouchableOpacity>
   </SafeAreaView>
   )

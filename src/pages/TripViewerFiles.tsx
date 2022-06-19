@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Button, View} from "react-native";
+import { StyleSheet, View, TouchableOpacity} from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootTabParamList } from "../models/NavigationParamList";
@@ -9,6 +9,7 @@ import { FileMetadataOutput, FileType } from "@la-sectoblique/septoblique-servic
 import { Loader } from "../component/utils/Loader";
 import { MobileFileFormat } from "@la-sectoblique/septoblique-service/dist/utils/FormData";
 import { FileList } from "../component/trip/FileList";
+import { Feather } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
     page: {
@@ -74,11 +75,23 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
         
         {
             <View style={{flex: 1}}>
-                <Button 
-                    title="Choisir un fichier"
-                    onPress={onPress}
-                />
-                <FileList files={files} /> 
+                <FileList files={files} />
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  onPress={onPress}
+                  style={{ 
+                    position: 'absolute', 
+                    bottom: 5, 
+                    right: 5,
+                    borderWidth: 1, 
+                    borderRadius: 20, 
+                    padding: 10, 
+                    margin: 10, 
+                    backgroundColor: "#1B91BF", 
+                    borderColor: "#1B91BF" }}
+                >
+                  <Feather name="file-plus" size={32} color="white" />
+                </TouchableOpacity>
             </View>
             
         }
