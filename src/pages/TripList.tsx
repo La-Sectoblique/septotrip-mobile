@@ -87,7 +87,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       }
       {
         trips.length > 0 &&
-        <View style={{height: "50%"}}>
+        <View style={{height: "40%"}}>
           <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Mes voyages</Text>
           <FlatList
             data={trips}
@@ -102,7 +102,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       }
       {
         public_trips.length > 0 &&
-        <View style={{height: "50%"}}>
+        <View style={{height: "40%"}}>
           <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Voyages publics</Text>
           <FlatList
             data={public_trips}

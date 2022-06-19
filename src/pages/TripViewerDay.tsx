@@ -18,7 +18,6 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
     const { trip } = route.params
 
     const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[])
-
     const [loading, setLoading] = useState<boolean>(true)
     
     const _refresh = () => {
@@ -52,7 +51,12 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
               <Text style={{textAlign: 'center', marginBottom:10}}>Cliquez pour accédez sur la map</Text>
               {
                   steps.map((step) => {
-                      return <StepDayList key={step.id} step={step} gotoMap={gotoMap} />
+                      return <StepDayList 
+                        key={step.id} 
+                        step={step} 
+                        gotoMap={gotoMap} 
+                        started_trip={trip.startDate !== undefined} 
+                        />
                   })
               }
           </SafeAreaView>
