@@ -33,7 +33,6 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
             console.log(JSON.stringify(err))
             setLoading(false)
         })
-        
     }, [])
 
     if(loading)
@@ -55,7 +54,7 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
                         >
                             <>
                                 <Text>{point.title} </Text>
-                                { point.description ? <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> : <></> }
+                                { point.description && <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> }
                             </>
                         </TouchableHighlight>
                           </View>

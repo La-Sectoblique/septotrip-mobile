@@ -17,4 +17,5 @@ export type RootTabParamList= {
     Planning: { trip: TripOutput },
     Tache: { trip: TripOutput },
     Fichier: { trip: TripOutput},
+    Gallery: {trip: TripOutput },
 }

@@ -12,7 +12,11 @@ import { RootStackParamList } from "../models/NavigationParamList";
 
 
 import { FontAwesome, Entypo } from '@expo/vector-icons'; 
+
 import { TripViewerMarker } from "../pages/TripViewerMarker";
+import { Gallery } from "../pages/Gallery";
+import { TripViewerFiles } from "../pages/TripViewerFiles";
+
 
 type TripNavigationProps = NativeStackScreenProps<RootStackParamList, 'Planification'>
 
@@ -61,7 +65,8 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
         <Tab.Screen name="Voyage" component={TripViewerMarker} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
         <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>
-        { !isReadOnly ? <Tab.Screen name="Fichier" component={ShowTrip} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>: <></> }
+        { !isReadOnly && <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>}
+        { !isReadOnly && <Tab.Screen name="Gallery" component={Gallery} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/>}
       </Tab.Navigator>
   );
 }

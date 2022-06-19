@@ -1,5 +1,6 @@
-import { getStepById } from "@la-sectoblique/septoblique-service";
+import { getStepById, getTripFiles } from "@la-sectoblique/septoblique-service";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
+import { FileMetadataOutput } from "@la-sectoblique/septoblique-service/dist/types/models/File";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import React, { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import MapView, {
   Marker,
   Polyline,
 } from "react-native-maps";
+import { FileList } from "../trip/FileList";
 import { Loader } from "../utils/Loader";
 
 interface PathDetailsProps {
@@ -23,31 +25,36 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
   const [latitudeDelta, setLatitudeDelta] = useState<number>(0);
   const [longitudeDelta, setLongitudeDelta] = useState<number>(0);
 
+  const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
+
+
   useEffect(() => {
-    setLoading(true);
-
-
-    
-
-    getStepById(path.destinationId)
+    const step_id = getStepById(props.path.destinationId)
       .then((res: StepOutput) => {
 
         setLongitudeDelta(Math.abs(res.localisation.coordinates[0] - origin.localisation.coordinates[0]))
         setLatitudeDelta(Math.abs(res.localisation.coordinates[1] - origin.localisation.coordinates[1]))
         
         setDestination(res)
-        setLoading(false)
       })
       .catch((err: ApiError) => {
         console.log(err)
-        setLoading(false)
       })
+    
+    const trip_files = getTripFiles(props.origin.tripId, {path: props.path.id})
+    .then((res: FileMetadataOutput[]) => setFiles(res))
+
+    Promise.all([step_id, trip_files])
+    .then(() => setLoading(false))
+    .catch(() => setLoading(false))
   }, []);
 
   if (loading) return <Loader />;
 
   return (
-    <View>
+    <View style={{width: Dimensions.get('window').width * 75 / 100}}>
+      <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${props.origin.name} - ${destination.name}`}</Text>
+
       <MapView
         rotateEnabled={false}
         provider={null}
@@ -97,7 +104,13 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
           strokeWidth={6}
         />
       </MapView>
-      <Text>Description: {path.description}</Text>
+      <Text style={{margin: 10}}>{ props.path.description }</Text>
+      {
+            files.length > 0 
+            ? <FileList files={files} showWebView={false}/>
+            // eslint-disable-next-line react/no-unescaped-entities
+            : <Text style={{textAlign: "center", margin: 5}}>Aucun fichier n'est lié à cette étape</Text>
+      }
     </View>
   );
 };

@@ -82,6 +82,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
 
     //Execute register function after one second to see loading page
+
     setTimeout(async () => {
       await login(data)
         .then(async (res) => {
@@ -95,7 +96,6 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
             navigation.navigate("Planification", {trip: get_user_trips[0], isReadOnly: false})
           else
             navigation.navigate('TripList');
-          
         })
         .catch((err: ApiError) => {
           if (err.code === 404) setError("Utilisateur inexistant");

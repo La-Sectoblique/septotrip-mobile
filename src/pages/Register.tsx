@@ -113,7 +113,6 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
           setPassword("");
           setFirstName("");
           setLastName("");
-
           navigation.navigate('Login')
         })
         .catch((err: ApiError) => {
@@ -190,7 +189,6 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         
         </View>
       </View>
-
       <Error error={error} />
       <TouchableOpacity
         activeOpacity={0.5}

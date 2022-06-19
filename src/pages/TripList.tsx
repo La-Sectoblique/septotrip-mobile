@@ -9,6 +9,7 @@ import { RootStackParamList } from "../models/NavigationParamList"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DebugScript } from "../component/utils/DebugScript"
 import { TripDetails } from "../component/trip/TripDetails"
+import PTRView from "react-native-pull-to-refresh"
 
 import { Loader } from "../component/utils/Loader"
 
@@ -116,8 +117,6 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
           />
         </View>
       }
-      
-      {/* <DebugScript /> */}
-    </View>
+      </View>
   );
 };

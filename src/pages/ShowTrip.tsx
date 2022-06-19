@@ -190,7 +190,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
             
             
           >
-            {filter == "step" || filter == "all" ? (
+            {filter == "step" || filter == "all" && (
               <>
                 <StepMarkerList
                   steps={steps}
@@ -204,19 +204,15 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
                   setModalVisible={setModalVisible}
                 />
               </>
-            ) : (
-              <></>
             )}
 
-            {filter == "point" || filter == "all" ? (
+            {filter == "point" || filter == "all" && (
               <PointMarkerList
                 points={points}
                 setActiveElement={setActiveElement}
                 setModalVisible={setModalVisible}
                 setRegion={setRegion}
               />
-            ) : (
-              <></>
             )}
           </MapView>
         </View>
