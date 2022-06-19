@@ -27,7 +27,8 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
 
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
 
-
+  console.log(origin.id)
+  console.log(path.destinationId)
   useEffect(() => {
     const step_id = getStepById(path.destinationId)
       .then((res: StepOutput) => {
@@ -52,7 +53,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
   if (loading) return <Loader />;
 
   return (
-    <View style={{width: Dimensions.get('window').width * 75 / 100}}>
+    <View style={{width: Dimensions.get('window').width * 75 / 100, alignItems: "center"}}>
       <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${origin.name} - ${destination.name}`}</Text>
 
       <MapView
