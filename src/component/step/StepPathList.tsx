@@ -19,11 +19,10 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
 
-  const handleClick = (step: StepOutput) => {
-    if (step === null) return;
+  const handleClick = (step: StepOutput, nextStep: StepOutput) => {
+    if (step === null || nextStep === null) return;
     setOrigin(step);
-
-    getPathToStep(step.id)
+    getPathToStep(nextStep.id)
       .then((res: PathOutput) => {
         setActiveElement({ path: res, origin: step });
         setModalVisible(true);
@@ -35,9 +34,8 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
 
   return (
     <>
-      {steps.map((step: StepOutput, i: number, steps: StepOutput[]) => {
+      {steps.sort((a, b) => a.order - b.order).map((step: StepOutput, i: number, steps: StepOutput[]) => {
         if (i == steps.length - 1) return;
-        
         return (
             <Polyline
               key={step.id + "_" + steps[i + 1].id}
@@ -55,7 +53,7 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
               strokeWidth={6}
               tappable={true}
               onPress={() => {
-                handleClick(step);
+                handleClick(step, steps[i + 1]);
               }}
             />
         );

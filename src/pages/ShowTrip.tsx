@@ -61,7 +61,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
   const _refresh = (trip: TripOutput) => {
     const trip_step = getTripSteps(trip.id).then((res: StepOutput[]) => {
-      setSteps(res);
+      setSteps(res.sort((a,b) => a.order - b.order));
       
       const trip_sort_longitude = res.sort((a, b) => {return a.localisation.coordinates[0] - b.localisation.coordinates[0] } )
       const trip_sort_latitude = res.sort((a, b) => {return a.localisation.coordinates[1] - b.localisation.coordinates[1] } )

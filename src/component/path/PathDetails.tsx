@@ -27,8 +27,6 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
 
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
 
-  console.log(origin.id)
-  console.log(path.destinationId)
   useEffect(() => {
     const step_id = getStepById(path.destinationId)
       .then((res: StepOutput) => {
