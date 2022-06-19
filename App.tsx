@@ -6,7 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { Login } from './src/pages/Login';
 import { Register } from './src/pages/Register';
-import { TripList } from './src/component/trip/TripList';
+import { TripList } from './src/pages/TripList';
 
 import { init, Platform } from "@la-sectoblique/septoblique-service";
 
@@ -29,19 +29,19 @@ export default function App() {
     await SecureStore.setItemAsync('token', token);
   },
   platform: Platform.MOBILE,
-  context: 'development'
+  context: "development"
 })
-  
+
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Login" component={Login} options={{headerTitle: "Se connecter",}}/>
+        <Stack.Screen name="Register" component={Register} options={{headerTitle: "Créer un compte"}}/>
         <Stack.Screen name="Planification" component={TripNavigation} />
-        <Stack.Screen name="TripList" component={TripList} />
+        <Stack.Screen name="TripList" component={TripList} options={{headerTitle: "Liste de voyage"}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

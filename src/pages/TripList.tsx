@@ -4,10 +4,11 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useEffect, useState } from "react"
 import { View, Text, FlatList, ListRenderItem, RefreshControl } from "react-native"
-import useTrips from "../../hook/useTrips"
-import { RootStackParamList } from "../../models/NavigationParamList"
-import { DebugScript } from "../utils/DebugScript"
-import { TripDetails } from "./TripDetails"
+import useTrips from "../hook/useTrips"
+import { RootStackParamList } from "../models/NavigationParamList"
+import { DebugScript } from "../component/utils/DebugScript"
+import { TripDetails } from "../component/trip/TripDetails"
+import PTRView from "react-native-pull-to-refresh"
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
@@ -41,10 +42,12 @@ export const TripList: React.FC<TripListProps> = (props) => {
   if (trips.length == 0)
     return (
       <View>
-        <DebugScript />
+        <PTRView onRefresh={fetchData}>
+          <DebugScript />
 
-        <Text>Aucun voyage existe pour ce compte</Text>
-        <Text>Utilisez le service Web pour créer un voyage</Text>
+          <Text>Aucun voyage existe pour ce compte</Text>
+          <Text>Utilisez le service Web pour créer un voyage</Text>
+        </PTRView>
       </View>
     );
   
@@ -61,10 +64,8 @@ export const TripList: React.FC<TripListProps> = (props) => {
         Liste des voyages
       </Text>
       {
-        started_trip ?
+        started_trip &&
           <TripDetails key={started_trip.id} trip={started_trip} navigation={props.navigation} started={true} have_started_trip={started_trip !== undefined}/>
-        :
-        <></>
       }
       <FlatList
         data={trips}

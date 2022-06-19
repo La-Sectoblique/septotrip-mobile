@@ -56,51 +56,40 @@ export const Login: React.FC<LoginProps> = (props) => {
     setMissingEmail(false);
     setMissingPassword(false);
 
-    // if(password.length === 0)
-    //   setMissingPassword(true)
+    if(password.length === 0)
+      setMissingPassword(true)
 
-    // if(email.length === 0)
-    //   setMissingEmail(true)
+    if(email.length === 0)
+      setMissingEmail(true)
 
-    // if(email.length === 0 || password.length === 0){
-    //   setLoading(false)
-    //   return
-    // }
-
-    // const data: LoginCredentials = {
-    //   email: email,
-    //   password: password
-    // }
-    //DEBUG
-
-    // const data: LoginCredentials = {<
-    //   email: "test@ladwein.fr",
-    //   password: "1234"
-    // }
+    if(email.length === 0 || password.length === 0){
+      setLoading(false)
+      return
+    }
 
     const data: LoginCredentials = {
-      email: "jean",
-      password: "jean",
-    };
+      email: email,
+      password: password
+    }
+
 
     //Execute register function after one second to see loading page
     setTimeout(() => {
       login(data)
         .then(() => {
-          props.navigation.navigate('TripList');
-          setLoading(false)
-        })
-        .catch((err: ApiError) => {
-          console.log(JSON.stringify(err));
-          if (err.code === 404) setError("Utilisateur inexistant");
-          else setError("Une erreur s'est produite");
-          //TODO erreur 400 mauvais mdp
-        })
-        .finally(() => {
           setEmail("");
           setPassword("");
-          setLoading(false);
-        });
+          setLoading(false)
+          props.navigation.navigate('TripList');
+          
+        })
+        .catch((err: ApiError) => {
+          if (err.code === 404) setError("Utilisateur inexistant");
+          // else if (err.code === 400) setError("Mot de passe faux");
+          else setError("Une erreur s'est produite: " + JSON.stringify(err));
+
+          setLoading(false)
+        })
     }, 1000);
   };
 
@@ -117,20 +106,17 @@ export const Login: React.FC<LoginProps> = (props) => {
         keyboardType="email-address"
         blurOnSubmit={false}
       />
-      {missingEmail ? <Error error="Email invalide ou manquant..." /> : <></>}
+      {missingEmail && <Error error="Email invalide ou manquant..." />}
 
       <TextInput
         style={styles.input}
         onChangeText={(password) => setPassword(password)}
         placeholder="Mot de passe..."
+        autoCapitalize='none'
         blurOnSubmit={false}
         secureTextEntry={true}
       />
-      {missingPassword ? (
-        <Error error="Mot de passe manquant ou erroné..." />
-      ) : (
-        <></>
-      )}
+      {missingPassword && <Error error="Mot de passe manquant ou erroné..." /> }
 
       <TouchableOpacity
         activeOpacity={0.5}

@@ -73,7 +73,7 @@ export const TripViewerInfo: React.FC<TripViewerInfoProps> = (props) => {
   }, [])
 
   return (
-    <PTRView onRefresh={() => {_refresh()}}>
+    <PTRView style={{flex: 1}} onRefresh={() => {_refresh()}}>
       <SafeAreaView style={styles.page}>
         <View style={styles.mainContainer}>
           <View style={styles.container}>
@@ -92,9 +92,6 @@ export const TripViewerInfo: React.FC<TripViewerInfoProps> = (props) => {
               })
             }
           </View>
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.containerTitle}>Liste des points du voyage</Text>
         </View>
         <StatusBar style="auto" />
       </SafeAreaView>
