@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import Toast from "react-native-toast-message"
 import * as Location from "expo-location";
 
@@ -182,7 +182,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
           <MapView
             style={styles.map}
             rotateEnabled={false}
-            provider={null}
+            provider={PROVIDER_GOOGLE}
             showsUserLocation={true}
             loadingEnabled={true}
             initialRegion={{

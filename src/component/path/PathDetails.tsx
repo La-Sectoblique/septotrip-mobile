@@ -10,6 +10,7 @@ import MapView, {
   LatLng,
   Marker,
   Polyline,
+  PROVIDER_GOOGLE,
 } from "react-native-maps";
 import { FileList } from "../trip/FileList";
 import { Loader } from "../utils/Loader";
@@ -70,7 +71,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
 
       <MapView
         rotateEnabled={false}
-        provider={null}
+        provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
         style={{
           width: (Dimensions.get("window").width * 50) / 100,

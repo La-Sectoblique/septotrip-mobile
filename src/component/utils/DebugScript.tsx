@@ -16,7 +16,7 @@ export const DebugScript: React.FC = () => {
     // }
 
     const trip = await createTrip({
-      name: "Go to Korea",
+      name: "Go to Korea 2",
       visibility: "private",
     });
     console.log("trip created: " + trip.name);

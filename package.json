@@ -12,7 +12,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.1.6",
     "@expo/vector-icons": "^13.0.0",
-    "@la-sectoblique/septoblique-service": "^0.8.6",
+    "@la-sectoblique/septoblique-service": "^0.8.7",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-picker/picker": "2.4.0",
     "@react-navigation/bottom-tabs": "^6.2.0",
