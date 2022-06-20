@@ -163,7 +163,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
       </View>
 
       <View style={{flexDirection: "row", justifyContent: "center"}}>
-          <Text>Si vous ne possédez pas de compte: </Text>
+          <Text>Si vous ne possédez pas de compte, </Text>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={handleRegisterButton}
