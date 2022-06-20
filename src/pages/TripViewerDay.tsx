@@ -8,7 +8,6 @@ import { Text, View } from 'react-native';
 import Toast from "react-native-toast-message"
 import PTRView from 'react-native-pull-to-refresh';
 
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { StepDayList } from '../component/step/StepDayList';
 import { Loader } from '../component/utils/Loader';
 import { RootTabParamList } from '../models/NavigationParamList';

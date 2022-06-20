@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Toast from "react-native-toast-message"
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";

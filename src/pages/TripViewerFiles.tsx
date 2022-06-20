@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Text} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Gallery } from "./Gallery";
@@ -39,7 +38,7 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
             <Text style={{fontSize: 24, color: "white", textAlign: "center"}}>Document</Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, backgroundColor: "red"}}>
+        <View style={{flex: 1}}>
           {isGallery && <Gallery trip={trip}/>}
           {(isGallery === false) && <Document trip={trip}/>}
         </View>

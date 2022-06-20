@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react'
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Entry } from '../component/logbookEntry/Entry';
 import { Loader } from '../component/utils/Loader';
 import { ModalAddLobBookentry } from '../component/utils/ModalAddLogBookEntry';
