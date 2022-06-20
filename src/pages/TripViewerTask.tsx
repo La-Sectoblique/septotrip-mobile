@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { getTodoEntriesByTripId } from "@la-sectoblique/septoblique-service";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { TodoEntryOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Todo";
+import { Todo } from "../component/todoEntry/Todo";
 
 const styles = StyleSheet.create({
     page: {
@@ -48,7 +49,7 @@ export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
         <View>
           {
             todoEntries.map((todoEntry) => {
-              return <Text key={todoEntry.id}>- {todoEntry.description}</Text>
+              return <Todo key={todoEntry.id} todo={todoEntry} refresh={_refresh}/>
             })
           }
         </View>

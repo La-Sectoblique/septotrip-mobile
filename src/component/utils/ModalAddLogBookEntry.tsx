@@ -4,7 +4,7 @@ import { LogbookEntryInput } from "@la-sectoblique/septoblique-service/dist/type
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { UserOutput } from "@la-sectoblique/septoblique-service/dist/types/models/User";
 import React, { useState } from "react";
-import { View, Modal, StyleSheet, Pressable, Text, TextInput, Dimensions, TouchableOpacity } from "react-native";
+import { View, Modal, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message"
   
   interface ModalAddLobBookentryProps {

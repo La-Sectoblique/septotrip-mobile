@@ -29,7 +29,8 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
 
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
 
-  useEffect(() => {
+
+  const _refresh = () => {
     const step_id = getStepById(path.destinationId)
       .then((res: StepOutput) => {
 
@@ -61,6 +62,10 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
     Promise.all([step_id, trip_files])
     .then(() => setLoading(false))
     .catch(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    _refresh()
   }, []);
 
   if (loading) return <Loader />;
@@ -121,7 +126,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
       <Text style={{margin: 10}}>{ path.description }</Text>
       {
             files.length > 0 
-            ? <FileList files={files} showWebView={false}/>
+            ? <FileList files={files} showWebView={false} refresh={_refresh}/>
             // eslint-disable-next-line react/no-unescaped-entities
             : <Text style={{textAlign: "center", margin: 5}}>Aucun fichier n'est lié à cette étape</Text>
       }
