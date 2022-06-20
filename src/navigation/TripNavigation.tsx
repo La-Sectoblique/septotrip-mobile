@@ -57,6 +57,8 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
               return <FontAwesome name="calendar" size={24} color={color}/>
             } else if (route.name === "Gallery"){
               return <FontAwesome name="photo" size={24} color={color} />
+            } else if (route.name === "Journal"){
+              return <FontAwesome name="newspaper-o" size={24} color={color} />
             } else {
               return <FontAwesome name="file-o" size={24} color={color} />
             }
