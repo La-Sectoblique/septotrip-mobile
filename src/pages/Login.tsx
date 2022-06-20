@@ -23,8 +23,8 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
-import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
 
+import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
 
 const styles = StyleSheet.create({
   page: {
@@ -82,7 +82,6 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
 
     //Execute register function after one second to see loading page
-
     login(data)
       .then(async (res) => {
         const my_user = await me()
