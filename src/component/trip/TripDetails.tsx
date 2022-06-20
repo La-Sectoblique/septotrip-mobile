@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Toast from "react-native-toast-message"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { View, Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from '../../models/NavigationParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { updateTrip } from '@la-sectoblique/septoblique-service';
+import { getAuthor, updateTrip } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
+import { Author } from '@la-sectoblique/septoblique-service/dist/types/models/User';
+import { Loader } from '../utils/Loader';
 
 interface TripDetailsProps {
     trip: TripOutput,
@@ -15,6 +17,9 @@ interface TripDetailsProps {
 }
 
 export const TripDetails = ({trip, navigation, started, have_started_trip}: TripDetailsProps) => {
+
+    const [author, setAuthor] = useState<Author>({} as Author);
+    const [loading, setLoading] = useState<boolean>(true)
 
     const handlePressEvent = async (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
@@ -42,14 +47,32 @@ export const TripDetails = ({trip, navigation, started, have_started_trip}: Trip
     }
 
     useEffect(() => {
-       //TODO: Get author 
+        getAuthor(trip.id)
+        .then((res: Author) => {
+            setLoading(false)
+            setAuthor(res)
+        })
+        .catch((err: ApiError) => {
+            console.error(err)
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+            })
+            setLoading(false)
+        })
     }, [])
+
+    if(loading)
+        return <Loader />
+
     return (
         <View style={{width: "95%", padding: 5, margin: 5, borderWidth: 1, borderRadius: 10, backgroundColor: "rgba(27,145,191, 0.5)", borderColor: "rgba(27,145,191, 0.5)"}}>
             
-            <Text style={{textAlign: 'left', marginStart: 10, fontWeight: "600", textDecorationLine: 'underline', }}>{trip.name}</Text>
-            <Text></Text>
-            
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'left', marginStart: 10, fontWeight: "600", textDecorationLine: 'underline', }}>{trip.name}</Text>
+                <Text style={{textAlign: 'right'}}>{author.firstName} {author.lastName}</Text>
+            </View>
 
             {
                 started
