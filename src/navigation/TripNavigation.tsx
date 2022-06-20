@@ -14,7 +14,6 @@ import { RootStackParamList } from "../models/NavigationParamList";
 import { FontAwesome, Entypo } from '@expo/vector-icons'; 
 import { TripViewerJournal } from "../pages/TripViewerJournal";
 
-import { Gallery } from "../pages/Gallery";
 import { TripViewerFiles } from "../pages/TripViewerFiles";
 
 
@@ -70,7 +69,6 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
         <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} />
         { !isReadOnly && <Tab.Screen name="Journal" component={TripViewerJournal} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/> }
         { !isReadOnly && <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} />}
-        { !isReadOnly && <Tab.Screen name="Gallery" component={Gallery} initialParams={{trip: trip}} />}
       </Tab.Navigator>
   );
 }

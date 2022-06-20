@@ -1,23 +1,21 @@
 import React from 'react'
 import * as DocumentPicker from 'expo-document-picker';
-import { FlatList, ListRenderItem, RefreshControl, TouchableOpacity} from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootTabParamList } from '../models/NavigationParamList';
+import { FlatList, ListRenderItem, RefreshControl, TouchableOpacity, View} from 'react-native';
 import { getTripFiles, uploadFile } from '@la-sectoblique/septoblique-service';
 import { MobileFileFormat } from '@la-sectoblique/septoblique-service/dist/utils/FormData';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Loader } from '../component/utils/Loader';
 import { FileMetadataOutput, FileType } from '@la-sectoblique/septoblique-service/dist/types/models/File';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ImageCustom } from '../component/gallery/ImageCustom';
 import { FontAwesome } from '@expo/vector-icons';
+import { TripOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Trip';
 
-type GalleryProps = NativeStackScreenProps<RootTabParamList, 'Gallery'>
-
+interface GalleryProps {
+  trip: TripOutput
+}
   
-export const Gallery: React.FC<GalleryProps> = ({route}) => {
-  const { trip } = route.params;
+export const Gallery: React.FC<GalleryProps> = ({trip}) => {
 
   const [images, setImages] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[]);
   const [loading, setLoading] = useState<boolean>(true)
@@ -69,7 +67,7 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
     return <Loader />
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <FlatList
             data={images}
             renderItem={renderItem}
@@ -90,6 +88,6 @@ export const Gallery: React.FC<GalleryProps> = ({route}) => {
       >
           <FontAwesome name="photo" size={32} color="white" />
         </TouchableOpacity>
-  </SafeAreaView>
+    </View>
   )
 }

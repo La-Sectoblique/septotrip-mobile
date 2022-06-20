@@ -5,7 +5,7 @@ import { LogbookEntryOutput } from '@la-sectoblique/septoblique-service/dist/typ
 import { UserOutput } from '@la-sectoblique/septoblique-service/dist/types/models/User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -81,7 +81,7 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
         return <Loader />
         
     return (
-          <SafeAreaView style={styles.page}>
+          <View style={styles.page}>
             <ModalAddLobBookentry modalVisible={modalVisible} setModalVisible={setModalVisible} trip={trip} user={user}/>
             
             <ScrollView 
@@ -98,6 +98,6 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
                 <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Ajouter</Text>
             </TouchableOpacity>
 
-          </SafeAreaView>
+          </View>
     )
 }

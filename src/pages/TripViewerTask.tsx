@@ -44,7 +44,7 @@ export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
   }, [])
 
   return (
-      <SafeAreaView style={styles.page}>
+      <View style={styles.page}>
         <Text style={{fontSize: 20, marginStart: 10}}>Liste des taches</Text>
         <View>
           {
@@ -54,6 +54,6 @@ export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
           }
         </View>
         <StatusBar style="auto" />
-      </SafeAreaView>
+      </View>
   );
 };

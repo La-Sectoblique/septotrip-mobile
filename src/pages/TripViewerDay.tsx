@@ -4,7 +4,7 @@ import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/mode
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react'
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import Toast from "react-native-toast-message"
 import PTRView from 'react-native-pull-to-refresh';
 
@@ -55,7 +55,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
         
     return (
         <PTRView onRefresh={() => _refresh()}>
-          <SafeAreaView style={{}}>
+          <View style={{}}>
               <Text style={{textAlign: 'center', marginBottom:10}}>Cliquez pour accédez sur la map</Text>
               {
                   steps.map((step) => {
@@ -67,7 +67,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
                         />
                   })
               }
-          </SafeAreaView>
+          </View>
         </PTRView>
     )
 }
