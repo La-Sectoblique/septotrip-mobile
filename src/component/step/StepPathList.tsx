@@ -29,6 +29,8 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
         setModalVisible(true);
       })
       .catch((err: ApiError) => {
+        console.error(err)
+
         Toast.show({
           type: 'error',
           text1: err.name,

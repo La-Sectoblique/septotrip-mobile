@@ -38,6 +38,8 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
             setDays(days)
         })
         .catch((err: ApiError) => {
+            console.error(err)
+
             Toast.show({
                 type: 'error',
                 text1: err.name,
@@ -77,6 +79,8 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
 
                 })
                 .catch((err: ApiError) => {
+                    console.error(err)
+
                     Toast.show({
                         type: 'error',
                         text1: err.name,
@@ -89,6 +93,8 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
             }
         })
         .catch((err: ApiError) => {
+            console.error(err)
+
             Toast.show({
                 type: 'error',
                 text1: err.name,

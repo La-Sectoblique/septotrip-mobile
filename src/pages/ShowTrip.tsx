@@ -94,6 +94,8 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
     Promise.all([trip_step, trip_point])
       .then(() => setRefreshing(false))
       .catch((err: ApiError) => {
+        console.error(err)
+
         Toast.show({
           type: 'error',
           text1: err.name,

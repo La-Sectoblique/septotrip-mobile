@@ -40,6 +40,8 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
             setTrips(res.filter(trip => trip.startDate == undefined))
         })
         .catch((err: ApiError) => {
+          console.error(err)
+
           Toast.show({
             type: 'error',
             text1: err.name,
@@ -50,6 +52,8 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
         const get_public_trip = getAllPublicTrips()
         .then((res: TripOutput[]) => setPublicTrips(res))
         .catch((err: ApiError) => {
+          console.error(err)
+
           Toast.show({
             type: 'error',
             text1: err.name,

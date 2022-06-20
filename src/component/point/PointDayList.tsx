@@ -29,6 +29,7 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
             setLoading(false)
         })
         .catch((err: ApiError) => {
+            console.error(err)
             Toast.show({
                 type: 'error',
                 text1: err.name,

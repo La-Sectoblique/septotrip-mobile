@@ -100,6 +100,8 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
             navigation.navigate('TripList');
         })
         .catch((err: ApiError) => {
+          console.error(err)
+
           Toast.show({
             type: 'error',
             text1: err.name,

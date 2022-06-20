@@ -117,6 +117,8 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
           navigation.navigate('Login')
         })
         .catch((err: ApiError) => {
+          console.error(err)
+
           Toast.show({
             type: 'error',
             text1: err.name,

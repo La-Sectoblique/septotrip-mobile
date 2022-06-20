@@ -26,6 +26,8 @@ export const TripDetails = ({trip, navigation, started, have_started_trip}: Trip
                 })
             })
             .catch((err: ApiError) => {
+                console.error(err)
+
                 Toast.show({
                     type: 'error',
                     text1: err.name,

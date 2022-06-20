@@ -48,6 +48,8 @@ export const Travelers = ({trip}: TravelersProps) => {
             setEmailNewTraveler("")
         })
         .catch((err: ApiError) => {
+            console.error(err)
+
             Toast.show({
                 type: 'error',
                 text1: err.name,
@@ -65,6 +67,8 @@ export const Travelers = ({trip}: TravelersProps) => {
             setEmailNewTraveler("")
         })
         .catch((err: ApiError) => {
+            console.error(err)
+
             Toast.show({
                 type: 'error',
                 text1: err.name,

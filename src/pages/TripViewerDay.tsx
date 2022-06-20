@@ -29,6 +29,8 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
             setLoading(false)
         })
         .catch((err: ApiError) => {
+            console.error(err)
+
             Toast.show({
                 type: 'error',
                 text1: err.name,

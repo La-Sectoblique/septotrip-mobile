@@ -29,6 +29,8 @@ export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
         setTodoEntries(res)
     })
     .catch((err: ApiError) => {
+      console.error(err)
+
       Toast.show({
         type: 'error',
         text1: err.name,
