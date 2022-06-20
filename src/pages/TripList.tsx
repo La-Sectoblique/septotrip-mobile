@@ -76,7 +76,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   if (trips.length == 0 && !started_trip)
     return (
       <View style={{flex: 1, justifyContent: "space-evenly", alignItems: "center"}}>
-        {/* <DebugScript /> */}
+        <DebugScript />
         <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
         <View>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Aucun voyage existe pour ce compte</Text>
@@ -88,7 +88,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   
   return (
     <View>
-    {/* <DebugScript /> */}
+    <DebugScript />
 
       {
         started_trip &&

@@ -4,8 +4,8 @@ import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { LogbookEntryOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Logbook';
 import { UserOutput } from '@la-sectoblique/septoblique-service/dist/types/models/User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useRef, useState } from 'react'
-import { Button, Dimensions, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -50,14 +50,15 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
 
     //I have to put any sorry i don"t find the correct type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const scrollview: any = useRef()
 
     const _refresh = () => {
 
         getTripLogbookEntries(trip.id)
-        .then((res: LogbookEntryOutput[]) => setEntries(res))
+        .then((res: LogbookEntryOutput[]) => {
+            setEntries(res)
+            setLoading(false)
+        })
         .catch((err: ApiError) => console.log(err))
-        .finally(() => setLoading(false))
 
     }
 
@@ -81,14 +82,22 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
         
     return (
           <SafeAreaView style={styles.page}>
-              <ModalAddLobBookentry modalVisible={modalVisible} setModalVisible={setModalVisible} trip={trip} user={user}/>
+            <ModalAddLobBookentry modalVisible={modalVisible} setModalVisible={setModalVisible} trip={trip} user={user}/>
+            
             <ScrollView 
                 style={styles.logbook}
-                ref={scrollview}
-                onContentSizeChange={() => scrollview.scrollToEnd()}>
+            >
              {entries.map((entry) => <Entry key={entry.id} entry={entry} user={user}/>)}
             </ScrollView>
-            <Button title='Ajouter' onPress={() => setModalVisible(true)}></Button>
+            
+            <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => setModalVisible(true)}
+            style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+            >
+                <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Ajouter</Text>
+            </TouchableOpacity>
+
           </SafeAreaView>
     )
 }
