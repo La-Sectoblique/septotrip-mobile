@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Text, TouchableOpacity, View } from "react-native";
 import { TodoEntryOutput, TodoState } from '@la-sectoblique/septoblique-service/dist/types/models/Todo';
 import { AntDesign } from '@expo/vector-icons';
@@ -13,9 +13,6 @@ interface EntryProps {
 }
 
 export const Todo = ({todo, refresh}: EntryProps) => {
-    const [open, setOpen] = useState<boolean>(false);
-    const [currentValue, setCurrentValue] = useState<TodoState>(todo.state);
-
     type Items = {
         label: string,
         value: TodoState
