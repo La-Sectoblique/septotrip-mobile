@@ -1,10 +1,11 @@
-  import { createLogbookEntry } from "@la-sectoblique/septoblique-service";
+import { createLogbookEntry } from "@la-sectoblique/septoblique-service";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { LogbookEntryInput } from "@la-sectoblique/septoblique-service/dist/types/models/Logbook";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { UserOutput } from "@la-sectoblique/septoblique-service/dist/types/models/User";
 import React, { useState } from "react";
-  import { View, Modal, StyleSheet, Pressable, Text, TextInput, Dimensions } from "react-native";
+import { View, Modal, StyleSheet, Pressable, Text, TextInput, Dimensions, TouchableOpacity } from "react-native";
+import Toast from "react-native-toast-message"
   
   interface ModalAddLobBookentryProps {
     setModalVisible: (arg0: boolean) => void;
@@ -52,11 +53,12 @@ import React, { useState } from "react";
         textAlign: "center",
     },
     input: {
-        padding: 5,
-        margin: 5,
-        width: (Dimensions.get("window").width * 50) / 100,
+        padding: 10,
+        margin: 10,
+        width: (Dimensions.get("window").width * 80) / 100,
         fontSize: 25,
         borderWidth: 1,
+        borderRadius: 10,
       },
   });
   
@@ -77,11 +79,19 @@ import React, { useState } from "react";
         }
         createLogbookEntry(data)
         .then(() => { 
-            setMessage("")
+            setMessage("");
+            setModalVisible(false)
             setTitle("");
         })
-        .catch((err: ApiError) => console.log(err))
-        .finally(() => setModalVisible(false))
+        .catch((err: ApiError) => {
+          setModalVisible(false)
+          console.log(err)
+          Toast.show({
+            type: 'error',
+            text1: err.name,
+            text2: err.code + " " + err.message
+          })
+        })
     }
     
     return (
@@ -91,6 +101,8 @@ import React, { useState } from "react";
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
+        }}
+        style={{
         }}
       >
         <View style={styles.centeredView}>
@@ -112,22 +124,26 @@ import React, { useState } from "react";
                 placeholder="Message..."
                 keyboardType="default"
                 blurOnSubmit={false}
+                multiline={true}
+                numberOfLines={4}
             />
              
             <View style={{flexDirection: "row"}}>
-                <Pressable
-                    style={[styles.button, styles.buttonOpen, {margin: 5}]}
-                    onPress={handleSendButton}
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  onPress={handleSendButton}
+                  style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
-                    <Text style={styles.textStyle}>Envoyer</Text>
-                </Pressable>
+                  <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Envoyer</Text>
+                </TouchableOpacity>
 
-                <Pressable
-                    style={[styles.button, styles.buttonClose, {margin: 5}]}
-                    onPress={() => setModalVisible(!modalVisible)}
+                <TouchableOpacity
+                  activeOpacity={0.5}
+                  onPress={() => setModalVisible(!modalVisible)}
+                  style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
-                    <Text style={styles.textStyle}>Fermer</Text>
-                </Pressable>
+                  <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Fermer</Text>
+                </TouchableOpacity>
             </View>
           </View>
         </View>
