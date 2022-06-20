@@ -75,7 +75,7 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
         
         {
             <View style={{flex: 1}}>
-                <FileList files={files} />
+                <FileList files={files} refresh={_refresh} />
                 <TouchableOpacity
                   activeOpacity={0.5}
                   onPress={onPress}

@@ -2,15 +2,16 @@ import React, { useState } from 'react'
 import { Button, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { FileMetadataOutput } from '@la-sectoblique/septoblique-service/dist/types/models/File';
 import WebView from 'react-native-webview';
-import { getFileLink } from '@la-sectoblique/septoblique-service';
+import { deleteFile, getFileLink } from '@la-sectoblique/septoblique-service';
 import { AntDesign, Entypo, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface FileListProps {
     files: FileMetadataOutput[],
     showWebView?: boolean
+    refresh: () => void
 }
 
-export const FileList = ({files, showWebView}: FileListProps) => {
+export const FileList = ({files, showWebView, refresh}: FileListProps) => {
     const [fileURL, setFileURL] = useState<string>("");
 
     const downloadFile = async (fileMetaData: FileMetadataOutput) => {
@@ -18,6 +19,13 @@ export const FileList = ({files, showWebView}: FileListProps) => {
         const url = await getFileLink(fileMetaData.tripId, fileMetaData.id)
         setFileURL(url) 
     }
+
+    const onPress = ((file: FileMetadataOutput) => {
+        deleteFile(file.tripId, file.id)
+        .then(() => {
+            refresh()
+        })
+    })
 
     if(fileURL !== "" && showWebView != false)
         return (
@@ -45,7 +53,7 @@ export const FileList = ({files, showWebView}: FileListProps) => {
                     <TouchableOpacity
                         key={file.id}
                         activeOpacity={0.5}
-                        style={{padding: 5, flexDirection: 'row', alignContent: 'center', justifyContent: 'flex-start', backgroundColor: i%2 === 0 ? 'rgba(8, 182, 238, .2)': 'none'}}
+                        style={{padding: 5, flexDirection: 'row', alignContent: 'center', justifyContent: 'space-between', backgroundColor: i%2 === 0 ? 'rgba(8, 182, 238, .2)': 'none'}}
                         onPress={() => downloadFile(file)}
                     >  
                         <View style={{width: 40}}>
@@ -55,7 +63,16 @@ export const FileList = ({files, showWebView}: FileListProps) => {
                             { file.extension === "png" && <MaterialCommunityIcons name="file-png-box" size={32} color="black" />} 
                             { file.extension === "mp4" && <Entypo name="video" size={32} color="black" /> }
                         </View>
-                        <Text key={file.id} style={{marginLeft: 5, fontSize: 20, textAlign:'center'}}>{ file.name }</Text>
+                        <Text key={file.id} numberOfLines={1} style={{marginHorizontal: 5, fontSize: 20, textAlign:'center', maxWidth: "40%" }}>{file.name}</Text>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: "#1B91BF",
+                                marginLeft: 5,
+                            }}
+                            onPress={() => onPress(file)}
+                        >
+                            <AntDesign name="delete" size={32} color="white" />
+                        </TouchableOpacity>
                     </TouchableOpacity>
                     )
                     })
