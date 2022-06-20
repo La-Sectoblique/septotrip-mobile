@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, FlatList, RefreshControl, ListRenderItem } from "react-native";
 import Toast from "react-native-toast-message"
 import { StatusBar } from "expo-status-bar";
 import { RootTabParamList } from "../models/NavigationParamList";
@@ -21,12 +21,18 @@ type TripViewerTaskProps = NativeStackScreenProps<RootTabParamList, 'Tache'>
 export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
   const { trip } = route.params;
   
+  const [loading, setLoading] = useState<boolean>(true)
   const [todoEntries, setTodoEntries] = useState<TodoEntryOutput[]>([] as TodoEntryOutput[]);
+
+  const renderItem: ListRenderItem<TodoEntryOutput> = ({ item }) => (
+    <Todo key={item.id} todo={item} refresh={_refresh}/>  
+  )
 
   const _refresh = () => {
     getTodoEntriesByTripId(trip.id)
     .then((res: TodoEntryOutput[]) => {
         setTodoEntries(res)
+        setLoading(false)
     })
     .catch((err: ApiError) => {
       console.error(err)
@@ -36,6 +42,7 @@ export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
         text1: err.name,
         text2: err.code + " " + err.message
       })
+      setLoading(false)
     })
   }
 
@@ -46,13 +53,16 @@ export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
   return (
       <View style={styles.page}>
         <Text style={{fontSize: 20, marginStart: 10}}>Liste des taches</Text>
-        <View>
-          {
-            todoEntries.map((todoEntry) => {
-              return <Todo key={todoEntry.id} todo={todoEntry} refresh={_refresh}/>
-            })
-          }
-        </View>
+        <FlatList
+            data={todoEntries}
+            renderItem={renderItem}
+            keyExtractor={(item: TodoEntryOutput) => item.id.toString()}
+            style={{
+            }}
+            refreshControl={
+              <RefreshControl refreshing={loading} onRefresh={_refresh} />
+            }
+        />
         <StatusBar style="auto" />
       </View>
   );
