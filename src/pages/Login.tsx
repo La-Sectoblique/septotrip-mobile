@@ -83,34 +83,33 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
     //Execute register function after one second to see loading page
 
-    setTimeout(async () => {
-      await login(data)
-        .then(async (res) => {
-          const my_user = await me()
-          const get_user_trips = await getUserTrips()
-         
-          setEmail("");
-          setPassword("");
-          setLoading(false)
-          if (get_user_trips.filter(trip => trip.startDate != undefined).length > 0){
-            navigation.navigate("Planification", {trip: get_user_trips[0], isReadOnly: false})
-          }
-            
-          else
-            navigation.navigate('TripList');
-        })
-        .catch((err: ApiError) => {
-          console.error(err)
+    login(data)
+      .then(async (res) => {
+        const my_user = await me()
+        const user_trips = await getUserTrips()
+        
+        setEmail("");
+        setPassword("");
+        setLoading(false)
+        if (user_trips.filter(trip => trip.startDate != undefined).length > 0){
+          navigation.navigate("Planification", {trip: user_trips[0], isReadOnly: false})
+        }
+          
+        else
+          navigation.navigate('TripList');
+      })
+      .catch((err: ApiError) => {
+        console.error(err)
 
-          Toast.show({
-            type: 'error',
-            text1: err.name,
-            text2: err.code + " " + err.message
-          })
-
-          setLoading(false)
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
         })
-    }, 1000);
+
+        setLoading(false)
+      })
+
   };
 
   if (loading)
