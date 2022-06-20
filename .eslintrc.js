@@ -25,6 +25,6 @@ module.exports = {
     },
     "ignorePatterns": [
         ".eslintrc.js",
-        "babel.config.js"
+        "babel.config.js",
     ]
 }

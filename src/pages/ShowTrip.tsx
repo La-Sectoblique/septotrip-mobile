@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import PTRView from "react-native-pull-to-refresh";
-import MapView, { Region } from "react-native-maps";
+import { View, StyleSheet, Dimensions } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
+import Toast from "react-native-toast-message"
 import * as Location from "expo-location";
 
 import {
@@ -10,15 +10,12 @@ import {
   getTripSteps,
 } from "@la-sectoblique/septoblique-service";
 
-import useSteps from "../../hook/useSteps";
 
-import { StepMarkerList } from "../step/StepMarkerList";
-import { StepList } from "../step/StepList";
-import { StepPathList } from "../step/StepPathList";
-import { ModalDetails } from "../utils/ModalDetails";
-import { PointMarkerList } from "../point/PointMarkerList";
-import usePoints from "../../hook/usePoints";
-import { Dropdown } from "../utils/Dropdown";
+import { StepMarkerList } from "../component/step/StepMarkerList";
+import { StepPathList } from "../component/step/StepPathList";
+import { ModalDetails } from "../component/utils/ModalDetails";
+import { PointMarkerList } from "../component/point/PointMarkerList";
+import { Dropdown } from "../component/utils/Dropdown";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
@@ -28,16 +25,17 @@ import {
 } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootTabParamList } from "../../models/NavigationParamList";
+import { RootTabParamList } from "../models/NavigationParamList";
+import { Loader } from "../component/utils/Loader";
 
 
 
-type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Voyage'>
+type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Carte'>
 
-export const ShowTrip: React.FC<ShowTripProps> = (props) => {
+export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
-  const { trip, pointToFocus } = props.route.params
-  const [steps, initStep, addStep, removeStep] = useSteps();
+  const { trip, pointToFocus } = route.params
+  const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[]);
 
   const [activeElement, setActiveElement] = useState<
     StepOutput | PointOutput | { path: PathOutput; origin: StepOutput }
@@ -46,7 +44,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
 
   const [filter, setFilter] = useState<string>("all");
 
-  const [points, initPoint, addPoint, removePoint] = usePoints();
+  const [points, setPoints] = useState<PointOutput[]>([] as PointOutput[]);
   
   //Default center the map on Paris coordinate
   const [focus, setFocus] = useState<LocalisationPoint>({
@@ -64,7 +62,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
 
   const _refresh = (trip: TripOutput) => {
     const trip_step = getTripSteps(trip.id).then((res: StepOutput[]) => {
-      initStep(res);
+      setSteps(res.sort((a,b) => a.order - b.order));
       
       const trip_sort_longitude = res.sort((a, b) => {return a.localisation.coordinates[0] - b.localisation.coordinates[0] } )
       const trip_sort_latitude = res.sort((a, b) => {return a.localisation.coordinates[1] - b.localisation.coordinates[1] } )
@@ -90,19 +88,29 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
     });
 
     const trip_point = getTripPoints(trip.id).then((res: PointOutput[]) => {
-      initPoint(res);
+      setPoints(res);
     });
 
     Promise.all([trip_step, trip_point])
-      .catch((err: ApiError) => console.log(JSON.stringify(err)))
-      .finally(() => setRefreshing(false));
+      .then(() => setRefreshing(false))
+      .catch((err: ApiError) => {
+        console.error(err)
+
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
+        setRefreshing(false)
+      })
   };
 
  
   const styles = StyleSheet.create({
     container: {
-      height: Dimensions.get("window").height * 50/100,
       width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height,
+
       backgroundColor: "tomato",
     },
     map: {
@@ -148,7 +156,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
   }
 
   if (refreshing) {
-    return <Text>ça charche bg tkt</Text>;
+    return <Loader />;
   }
 
   return (
@@ -158,6 +166,8 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
+    
+        <View style={styles.container}>
         <Dropdown
           items={[
             { label: "Etape", value: "step" },
@@ -166,13 +176,13 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
           ]}
           setCurrentValue={setFilter}
           currentValue={filter}
+          map={true}
           key="dropdown"
         />
-        <View style={styles.container}>
           <MapView
             style={styles.map}
             rotateEnabled={false}
-            provider={null}
+            provider={PROVIDER_GOOGLE}
             showsUserLocation={true}
             loadingEnabled={true}
             initialRegion={{
@@ -185,7 +195,7 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
             
             
           >
-            {filter == "step" || filter == "all" ? (
+            {(filter == "step" || filter == "all") && (
               <>
                 <StepMarkerList
                   steps={steps}
@@ -199,28 +209,18 @@ export const ShowTrip: React.FC<ShowTripProps> = (props) => {
                   setModalVisible={setModalVisible}
                 />
               </>
-            ) : (
-              <></>
             )}
 
-            {filter == "point" || filter == "all" ? (
+            {(filter == "point" || filter == "all") && (
               <PointMarkerList
                 points={points}
                 setActiveElement={setActiveElement}
                 setModalVisible={setModalVisible}
                 setRegion={setRegion}
               />
-            ) : (
-              <></>
             )}
           </MapView>
         </View>
-        <StepList
-          steps={steps}
-          setActiveElement={setActiveElement}
-          setModalVisible={setModalVisible}
-          setRegion={setRegion}
-        ></StepList>
       </View>
   );
 };

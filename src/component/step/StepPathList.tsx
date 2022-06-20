@@ -1,10 +1,11 @@
-import { getPathById } from "@la-sectoblique/septoblique-service";
+import { getPathToStep } from "@la-sectoblique/septoblique-service";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import React from "react";
 import { useState } from "react";
+import Toast from "react-native-toast-message"
 import { LatLng, Polyline } from "react-native-maps";
 
 interface StepPathListProps {
@@ -15,35 +16,39 @@ interface StepPathListProps {
   setModalVisible: (arg0: boolean) => void;
 }
 
-export const StepPathList = (props: StepPathListProps) => {
-  if (props.steps.length == 0) return <></>;
-
+export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPathListProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
 
-  const handleClick = (step: StepOutput) => {
-    if (step.pathId == null) return;
+  const handleClick = (step: StepOutput, nextStep: StepOutput) => {
+    if (step === null || nextStep === null) return;
     setOrigin(step);
-
-    getPathById(step.pathId)
+    getPathToStep(nextStep.id)
       .then((res: PathOutput) => {
-        props.setActiveElement({ path: res, origin: step });
-        props.setModalVisible(true);
+        setActiveElement({ path: res, origin: step });
+        setModalVisible(true);
       })
-      .catch((err: ApiError) => console.log(JSON.stringify(err)));
+      .catch((err: ApiError) => {
+        console.error(err)
+
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
+      });
   };
 
-  if (props.steps.length == 0) return <></>;
+  if (steps.length == 0) return <></>;
 
   return (
     <>
-      {props.steps.map((step: StepOutput, i: number, steps: StepOutput[]) => {
+      {steps.sort((a, b) => a.order - b.order).map((step: StepOutput, i: number, steps: StepOutput[]) => {
         if (i == steps.length - 1) return;
-
         return (
             <Polyline
-              key={step.id}
-              coordinates={[
+              key={step.id + "_" + steps[i + 1].id}
+              coordinates={[ 
                 {
                   longitude: step.localisation.coordinates[0],
                   latitude: step.localisation.coordinates[1],
@@ -57,7 +62,7 @@ export const StepPathList = (props: StepPathListProps) => {
               strokeWidth={6}
               tappable={true}
               onPress={() => {
-                handleClick(step);
+                handleClick(step, steps[i + 1]);
               }}
             />
         );

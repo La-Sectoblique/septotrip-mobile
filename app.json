@@ -10,6 +10,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-document-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -19,12 +27,20 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.septotrip.mobile",
-      "buildNumber": "0.1.2"
+      "buildNumber": "0.1.2",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDsrTq09CX_kXYS-BDG_dzFBjLUgr-CIMY"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD59RGojvvtL_uny6_E1j6X12P_Jc-dVxk"
+        }
       },
       "package": "com.septotrip.mobile",
       "versionCode": 1
@@ -34,3 +50,4 @@
     }
   }
 }
+

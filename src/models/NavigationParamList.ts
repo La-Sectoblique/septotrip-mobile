@@ -7,13 +7,15 @@ export type RootStackParamList= {
     Register: undefined,
     Planification: { trip: TripOutput, isReadOnly: boolean },
     TripList: undefined,
+    Parametres: {trip: TripOutput}
 }
 
 
 export type RootTabParamList= {
-    Voyage: { trip: TripOutput, pointToFocus?: PointOutput | StepOutput },
-    Day: { trip: TripOutput },
-    Info: { trip: TripOutput },
+    Carte: { trip: TripOutput, pointToFocus?: PointOutput | StepOutput },
+    Planning: { trip: TripOutput },
+    Tache: { trip: TripOutput },
     Fichier: { trip: TripOutput},
+    Gallery: {trip: TripOutput },
     Journal: {trip: TripOutput}
 }
