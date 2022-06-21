@@ -13,14 +13,15 @@ interface TripDetailsProps {
     trip: TripOutput,
     navigation: NativeStackNavigationProp<RootStackParamList, "TripList", undefined>,
     started?: boolean
-    have_started_trip: boolean
+    have_started_trip: boolean,
+    is_public?: boolean
 }
 
-export const TripDetails = ({trip, navigation, started, have_started_trip}: TripDetailsProps) => {
+export const TripDetails = ({trip, navigation, started, have_started_trip, is_public}: TripDetailsProps) => {
 
     const [author, setAuthor] = useState<Author>({} as Author);
     const [loading, setLoading] = useState<boolean>(true)
-
+    console.log(is_public)
     const handlePressEvent = async (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
             await updateTrip(trip.id, {startDate: new Date(Date.now())})
@@ -94,7 +95,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip}: Trip
                         <Text style={{padding: 5, color: "white", textAlign: "center"}}>Visualiser</Text>
                     </TouchableOpacity>
                     {
-                        !have_started_trip &&
+                        (!have_started_trip && is_public === false) &&
                         <TouchableOpacity 
                             onPress={() => handlePressEvent(false)} 
                             style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}

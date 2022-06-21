@@ -29,7 +29,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
         })}, [navigation]);
         
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
-        <TripDetails key={item.id} trip={item} navigation={navigation} have_started_trip={started_trip !== undefined}/>
+        <TripDetails key={item.id} trip={item} navigation={navigation} have_started_trip={started_trip !== undefined} is_public={item.visibility === "public"}/>
     )
 
     const fetchData = () => {
@@ -95,7 +95,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
         <View>
           <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Voyage commencé</Text>
 
-          <TripDetails key={started_trip.id} trip={started_trip} navigation={navigation} started={true} have_started_trip={started_trip !== undefined}/>
+          <TripDetails key={started_trip.id} trip={started_trip} navigation={navigation} started={true} have_started_trip={started_trip !== undefined} />
         </View>
       }
       {
