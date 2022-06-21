@@ -42,7 +42,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip}: Trip
         }
         navigation.navigate("Planification", {
             trip: trip,
-            isReadOnly: isReadOnly
+            isReadOnly: true
         })
     }
 
