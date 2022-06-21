@@ -4,13 +4,14 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useState, useLayoutEffect } from "react"
-import { View, Text, FlatList, ListRenderItem, RefreshControl, Image } from "react-native"
+import { View, Text, FlatList, ListRenderItem, RefreshControl, Image, TouchableOpacity } from "react-native"
 import Toast from "react-native-toast-message"
 import { RootStackParamList } from "../models/NavigationParamList"
 import { TripDetails } from "../component/trip/TripDetails"
 
 import { Loader } from "../component/utils/Loader"
 import { MaterialIcons } from "@expo/vector-icons"
+import { DebugScript } from "../component/utils/DebugScript";
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
@@ -85,17 +86,28 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   if (trips.length == 0 && !started_trip)
     return (
       <View style={{flex: 1, justifyContent: "space-evenly", alignItems: "center"}}>
+        {/* <DebugScript /> */}
         <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
         <View>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Aucun voyage existe pour ce compte</Text>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Utilisez le service Web pour créer un voyage</Text>
         </View>
+
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => fetchData()}
+          style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+        >
+          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Rafraîchir</Text>
+        </TouchableOpacity>
       </View>
     );
   
   
   return (
     <View>
+      {/* <DebugScript /> */}
+
       {
         started_trip &&
         <View>

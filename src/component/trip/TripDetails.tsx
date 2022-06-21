@@ -21,9 +21,9 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
 
     const [author, setAuthor] = useState<Author>({} as Author);
     const [loading, setLoading] = useState<boolean>(true)
-    const handlePressEvent = async (isReadOnly: boolean) => {
+    const handlePressEvent = (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
-            await updateTrip(trip.id, {startDate: new Date(Date.now())})
+            updateTrip(trip.id, {startDate: new Date(Date.now())})
             .then((res: TripOutput) => {    
                 navigation.navigate("Planification", {
                 trip: res,
