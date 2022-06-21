@@ -62,6 +62,8 @@ export const FileList = ({files, showWebView, refresh}: FileListProps) => {
                             style={{
                                 backgroundColor: "#1B91BF",
                                 marginLeft: 5,
+                                padding: 5,
+                                borderRadius: 10
                             }}
                             onPress={() => onPress(file)}
                         >
