@@ -84,7 +84,6 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
     //Execute register function after one second to see loading page
     login(data)
       .then(async (res) => {
-        const my_user = await me()
         const user_trips = await getUserTrips()
         
         setEmail("");
