@@ -114,7 +114,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
           setPassword("");
           setFirstName("");
           setLastName("");
-          navigation.navigate('Login')
+          navigation.replace('Login')
         })
         .catch((err: ApiError) => {
           console.error(err)

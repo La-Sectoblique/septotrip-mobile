@@ -45,8 +45,6 @@ export const Document: React.FC<DocumentProps> = ({trip}) => {
         type: "*/*"
     });
 
-    console.log(res)
-
     if(res.type === "cancel" || !res.mimeType) return;
 
     uploadFile({

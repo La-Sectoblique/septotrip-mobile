@@ -27,12 +27,14 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { Loader } from "../component/utils/Loader";
+import { useIsFocused } from "@react-navigation/native";
 
 
 
 type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Carte'>
 
 export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
+  const isFocused= useIsFocused()
 
   const { trip, pointToFocus } = route.params
   const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[]);
@@ -136,7 +138,8 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
     _refresh(trip);
 
-  }, []);
+  }, [isFocused]);
+
 
 
   //WHen POI is click on Day page pointToFocus change and navigate to ShowTrip, so region have to change

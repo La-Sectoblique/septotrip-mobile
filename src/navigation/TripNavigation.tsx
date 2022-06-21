@@ -26,7 +26,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
   const { trip, isReadOnly } = route.params
 
   const moveToParameters = () => {
-    navigation.navigate('Parametres', {trip: trip})
+    navigation.replace('Parametres', {trip: trip})
   }
 
 

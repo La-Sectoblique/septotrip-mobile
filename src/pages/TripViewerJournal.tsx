@@ -12,6 +12,8 @@ import { Entry } from '../component/logbookEntry/Entry';
 import { Loader } from '../component/utils/Loader';
 import { ModalAddLobBookentry } from '../component/utils/ModalAddLogBookEntry';
 import { RootTabParamList } from '../models/NavigationParamList';
+import Toast from "react-native-toast-message"
+
 
 type TripViewerJournalProps = NativeStackScreenProps<RootTabParamList, 'Journal'>
 
@@ -57,7 +59,14 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
             setEntries(res)
             setLoading(false)
         })
-        .catch((err: ApiError) => console.log(err))
+        .catch((err: ApiError) => {
+            console.error(err)
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+              })
+        })
 
     }
 
@@ -66,7 +75,14 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
 
         me()
         .then((res: UserOutput) => setUser(res))
-        .catch((err: ApiError) => console.log(err))
+        .catch((err: ApiError) => {
+            console.error(err)
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+              })
+        })
 
         _refresh()
     }, [])

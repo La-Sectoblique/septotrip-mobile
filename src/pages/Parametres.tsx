@@ -37,7 +37,7 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
 
     const disconnect = async () => {
         await SecureStore.deleteItemAsync('token');
-        navigation.navigate('Login')
+        navigation.replace('Login')
 
     }
 
@@ -57,7 +57,7 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
                 <TouchableOpacity
                     activeOpacity={0.5}
                     onPress={() => {
-                        navigation.navigate("TripList")
+                        navigation.replace("TripList")
                     }}
                     style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >

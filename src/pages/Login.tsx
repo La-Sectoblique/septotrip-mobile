@@ -56,7 +56,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
 
   const handleRegisterButton = () => {
-    navigation.navigate("Register");
+    navigation.replace("Register");
   };
 
   const handleSubmitButton = () => {
@@ -90,11 +90,11 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
         setPassword("");
         setLoading(false)
         if (user_trips.filter(trip => trip.startDate != undefined).length > 0){
-          navigation.navigate("Planification", {trip: user_trips[0], isReadOnly: false})
+          navigation.replace("Planification", {trip: user_trips[0], isReadOnly: false})
         }
           
         else
-          navigation.navigate('TripList');
+          navigation.replace('TripList');
       })
       .catch((err: ApiError) => {
         console.error(err)

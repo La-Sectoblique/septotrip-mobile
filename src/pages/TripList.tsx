@@ -24,7 +24,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
     
     const disconnect = async () => {
       await SecureStore.deleteItemAsync('token');
-      navigation.navigate('Login')
+      navigation.replace('Login')
 
     }
 

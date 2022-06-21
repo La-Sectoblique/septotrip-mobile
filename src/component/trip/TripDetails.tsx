@@ -8,6 +8,7 @@ import { getAuthor, updateTrip } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { Author } from '@la-sectoblique/septoblique-service/dist/types/models/User';
 import { Loader } from '../utils/Loader';
+import { NavigationActions } from 'react-navigation';
 
 interface TripDetailsProps {
     trip: TripOutput,
@@ -25,7 +26,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
         if(!started && !isReadOnly){
             updateTrip(trip.id, {startDate: new Date(Date.now())})
             .then((res: TripOutput) => {    
-                navigation.navigate("Planification", {
+                navigation.replace("Planification", {
                 trip: res,
                 isReadOnly: false
                 })
@@ -40,7 +41,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
                   })
             })
         }
-        navigation.navigate("Planification", {
+        navigation.replace("Planification", {
             trip: trip,
             isReadOnly: true
         })

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message"
 import * as SecureStore from 'expo-secure-store';
@@ -82,7 +82,7 @@ export default function App() {
      
   },[])
   const Stack = createNativeStackNavigator<RootStackParamList>();
-
+  
   if(loading)
     return <Loader />
 
@@ -92,7 +92,7 @@ export default function App() {
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen name="Login" component={Login} options={{headerTitle: "Se connecter", headerBackVisible: false}}/>
         <Stack.Screen name="Register" component={Register} options={{headerTitle: "Créer un compte",}}/>
-        <Stack.Screen name="Planification" component={TripNavigation} options={{headerBackVisible: false,}} initialParams={{trip: trip, isReadOnly: isReadOnly}}/>
+        <Stack.Screen name="Planification" component={TripNavigation} options={{headerBackVisible: false, }} initialParams={{trip: trip, isReadOnly: isReadOnly}}/>
         <Stack.Screen name="TripList" component={TripList} options={{headerTitle: "Liste de voyage", headerBackVisible: false}}/>
         <Stack.Screen name="Parametres" component={Parametres} options={{headerTitle: "Parametres",}}/>
       </Stack.Navigator>

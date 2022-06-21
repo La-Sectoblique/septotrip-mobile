@@ -85,7 +85,7 @@ import Toast from "react-native-toast-message"
         })
         .catch((err: ApiError) => {
           setModalVisible(false)
-          console.log(err)
+          console.error(err)
           Toast.show({
             type: 'error',
             text1: err.name,
