@@ -44,7 +44,8 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
             if(!trip)
                 return
             
-            if(step.order === 1){
+            if(step.order === 0){
+
                 days.map((day,i) => {
                     setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, day.number); return prev})
                 })
@@ -54,15 +55,15 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
                 const filtered_steps = steps.filter((value) => value.order < step.order);
                 let daysToAdd = 0;
                 filtered_steps.map(async (filtered_step) => {
-                    daysToAdd += days.length;
+                    const filtered_step_days = await getStepDays(filtered_step.id)
+                    daysToAdd += filtered_step_days.length;
                     if(filtered_step.order == step.order - 1){
                         days.map((day,i) => {
-                            setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
+                            setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number - 1); return prev})
                         })
                     }
                 })
             }
-            console.log(prettier_dates)
             setLoading(false)
         }
         catch (err){

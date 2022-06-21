@@ -40,7 +40,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
     }
 
     const gotoMap = (point_or_step: PointOutput | StepOutput) => {
-        navigation.replace('Carte', {trip: trip, pointToFocus: point_or_step})
+        navigation.navigate('Carte', {trip: trip, pointToFocus: point_or_step})
     }
     
     useEffect(() => {
