@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import Toast from "react-native-toast-message"
 import * as Location from "expo-location";
@@ -28,6 +28,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { Loader } from "../component/utils/Loader";
 import { useIsFocused } from "@react-navigation/native";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 
 
@@ -74,7 +75,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
       
       if(res.length < 2)
         return
-        
+
       const trip_sort_longitude = res.sort((a, b) => {return a.localisation.coordinates[0] - b.localisation.coordinates[0] } )
       const trip_sort_latitude = res.sort((a, b) => {return a.localisation.coordinates[1] - b.localisation.coordinates[1] } )
 
@@ -187,6 +188,24 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
           map={true}
           key="dropdown"
         />
+
+        <TouchableOpacity
+          style={{
+              backgroundColor: "#1B91BF",
+              marginLeft: 5,
+              padding: 5,
+              borderRadius: 10,
+              position: "absolute",
+              top: 60,
+              zIndex: 999,
+              opacity: 0.7
+          }}
+          onPress={() => _refresh(trip)}
+        >
+          <Feather name="refresh-ccw" size={32} color="white" />
+        </TouchableOpacity> 
+
+
           <MapView
             style={styles.map}
             rotateEnabled={false}
