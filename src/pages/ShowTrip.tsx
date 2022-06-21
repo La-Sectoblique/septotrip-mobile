@@ -65,7 +65,16 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
   const _refresh = (trip: TripOutput) => {
     const trip_step = getTripSteps(trip.id).then((res: StepOutput[]) => {
       setSteps(res.sort((a,b) => a.order - b.order));
+
+      if (res.length > 0)
+        setFocus({
+          type: "Point",
+          coordinates: res[0].localisation.coordinates,
+        });
       
+      if(res.length < 2)
+        return
+        
       const trip_sort_longitude = res.sort((a, b) => {return a.localisation.coordinates[0] - b.localisation.coordinates[0] } )
       const trip_sort_latitude = res.sort((a, b) => {return a.localisation.coordinates[1] - b.localisation.coordinates[1] } )
 
@@ -82,11 +91,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
         )
       )
 
-      if (res.length > 0)
-        setFocus({
-          type: "Point",
-          coordinates: res[0].localisation.coordinates,
-        });
+      
     });
 
     const trip_point = getTripPoints(trip.id).then((res: PointOutput[]) => {
