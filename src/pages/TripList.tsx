@@ -2,15 +2,15 @@ import { getAllPublicTrips, getUserTrips } from "@la-sectoblique/septoblique-ser
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import React, { useEffect, useState } from "react"
+import * as SecureStore from 'expo-secure-store';
+import React, { useEffect, useState, useLayoutEffect } from "react"
 import { View, Text, FlatList, ListRenderItem, RefreshControl, Image } from "react-native"
 import Toast from "react-native-toast-message"
 import { RootStackParamList } from "../models/NavigationParamList"
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DebugScript } from "../component/utils/DebugScript"
 import { TripDetails } from "../component/trip/TripDetails"
 
 import { Loader } from "../component/utils/Loader"
+import { MaterialIcons } from "@expo/vector-icons"
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
@@ -21,7 +21,22 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
     const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
     
-        
+    const disconnect = async () => {
+      await SecureStore.deleteItemAsync('token');
+      navigation.navigate('Login')
+
+    }
+
+    useLayoutEffect(() => {
+      navigation.setOptions({
+        headerRight: () => {
+          return <MaterialIcons onPress={() => disconnect()} name="logout" size={24} color="black" />
+        },
+      });
+    }, [navigation]);
+  
+
+
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
         <TripDetails key={item.id} trip={item} navigation={navigation} have_started_trip={started_trip !== undefined} is_public={item.visibility === "public"}/>
     )
@@ -70,7 +85,6 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   if (trips.length == 0 && !started_trip)
     return (
       <View style={{flex: 1, justifyContent: "space-evenly", alignItems: "center"}}>
-        <DebugScript />
         <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
         <View>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Aucun voyage existe pour ce compte</Text>
@@ -82,8 +96,6 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   
   return (
     <View>
-    <DebugScript />
-
       {
         started_trip &&
         <View>
