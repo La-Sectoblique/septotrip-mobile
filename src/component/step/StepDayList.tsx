@@ -25,7 +25,9 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
     const handleClick = (step: StepOutput): void => {
         gotoMap(step)
     }
-    const prettierDate = (start_date: Date, day_number: number) => {
+    const prettierDate = (start_date: Date | undefined, day_number: number) => {
+        if(start_date === undefined)
+            return ""
         const date_number = new Date(start_date).getDate();
         const delayed_date = new Date(start_date).setDate(date_number + day_number)
         const final_date_format = new Date(delayed_date);
@@ -53,8 +55,6 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
             if(step.order === 1){
                 const days = await getStepDays(step.id)
                 days.map((day,i) => {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    //@ts-ignore 
                     setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, day.number); return prev})
                 })
             }
@@ -70,8 +70,6 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
                             if(filtered_step.order == step.order - 1){
                                 const days = await getStepDays(step.id);
                                 days.map((day,i) => {
-                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                    //@ts-ignore 
                                     setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
                                 })
                             }
