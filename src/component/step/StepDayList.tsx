@@ -1,9 +1,7 @@
 import { getStepDays, getTripById, getTripSteps } from '@la-sectoblique/septoblique-service';
-import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Day';
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
 import { StepOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Step';
-import { TripOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Trip';
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableHighlight, View } from 'react-native';
 import Toast from "react-native-toast-message"
@@ -59,7 +57,7 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
                     daysToAdd += filtered_step_days.length;
                     if(filtered_step.order == step.order - 1){
                         days.map((day,i) => {
-                            setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number - 1); return prev})
+                            setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number ); return prev})
                         })
                     }
                 })
