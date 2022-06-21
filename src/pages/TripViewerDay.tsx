@@ -21,7 +21,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
     const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[])
     const [loading, setLoading] = useState<boolean>(true)
     const _refresh = () => {
-        
+        setLoading(true)
         getTripSteps(trip.id)
         .then((steps: StepOutput[]) => {
             setSteps(steps)
