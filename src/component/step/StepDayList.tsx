@@ -65,14 +65,35 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
                     let daysToAdd = 0;
                     filtered_steps.map((filtered_step) => {
                         getStepDays(filtered_step.id)
-                        .then(async (days: DayOutput[]) => {
+                        .then((days: DayOutput[]) => {
                             daysToAdd += days.length;
                             if(filtered_step.order == step.order - 1){
-                                const days = await getStepDays(step.id);
-                                days.map((day,i) => {
-                                    setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
+                                getStepDays(step.id)
+                                .then((days: DayOutput[]) => {
+                                    days.map((day,i) => {
+                                        setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
+                                    })
                                 })
+                                .catch((err: ApiError) => {
+                                    console.error(err)
+                
+                                    Toast.show({
+                                        type: 'error',
+                                        text1: err.name,
+                                        text2: err.code + " " + err.message
+                                      })
+                                })
+                                
                             }
+                        })
+                        .catch((err: ApiError) => {
+                            console.error(err)
+        
+                            Toast.show({
+                                type: 'error',
+                                text1: err.name,
+                                text2: err.code + " " + err.message
+                              })
                         })
                     })
 
