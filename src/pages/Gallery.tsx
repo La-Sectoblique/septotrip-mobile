@@ -45,6 +45,7 @@ export const Gallery: React.FC<GalleryProps> = ({trip}) => {
 
     if(res.type === "cancel" || !res.mimeType) return;
 
+
     uploadFile({
       name: res.name,
       extension: res.name.split(".")[res.name.split(".").length - 1],

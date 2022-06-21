@@ -26,14 +26,22 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => setIsGallery(true)}
-            style={{ borderWidth: 1, borderRadius: 20, width: "45%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+            style={[
+              { borderWidth: 1, borderRadius: 20, width: "45%" },
+              isGallery ? { backgroundColor: "#1B91BF", borderColor: "#1B91BF" }
+              : { backgroundColor: "#365359", borderColor: "#365359" }
+            ]}
           >
             <Text style={{fontSize: 24, color: "white", textAlign: "center"}}>Album</Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => setIsGallery(false)}
-            style={{ borderWidth: 1, borderRadius: 20, width: "45%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+            style={[
+              { borderWidth: 1, borderRadius: 20, width: "45%" },
+              !isGallery ? { backgroundColor: "#1B91BF", borderColor: "#1B91BF" }
+              : { backgroundColor: "#365359", borderColor: "#365359" }
+            ]}
           >
             <Text style={{fontSize: 24, color: "white", textAlign: "center"}}>Document</Text>
           </TouchableOpacity>

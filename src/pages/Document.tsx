@@ -8,6 +8,9 @@ import { MobileFileFormat } from "@la-sectoblique/septoblique-service/dist/utils
 import { FileList } from "../component/trip/FileList";
 import { Feather } from "@expo/vector-icons";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
+import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
+import Toast from "react-native-toast-message"
+
 
 const styles = StyleSheet.create({
     page: {
@@ -33,6 +36,15 @@ export const Document: React.FC<DocumentProps> = ({trip}) => {
       setFiles(res)
       setLoading(false)
     })
+    .catch((err: ApiError) => {
+      console.error(err)
+
+      Toast.show({
+        type: 'error',
+        text1: err.name,
+        text2: err.code + " " + err.message
+      })
+    })
   }
 
   useEffect(() => {
@@ -41,27 +53,28 @@ export const Document: React.FC<DocumentProps> = ({trip}) => {
 
   const onPress = async () => {
     const res = await DocumentPicker.getDocumentAsync({
-        multiple: false,
-        type: "*/*"
-    });
+      multiple: false,
+      type: "*/*"
+  });
 
-    if(res.type === "cancel" || !res.mimeType) return;
+  if(res.type === "cancel" || !res.mimeType) return;
 
-    uploadFile({
+
+  uploadFile({
+    name: res.name,
+    extension: res.name.split(".")[res.name.split(".").length - 1],
+    mimeType: res.mimeType,
+    tripId: trip.id,
+    visibility: "private",
+    fileType: FileType.DOCUMENT
+  }, {
       name: res.name,
-      extension: res.name.split(".")[res.name.split(".").length - 1],
-      mimeType: res.mimeType,
-      tripId: trip.id,
-      stepId: 3,
-      visibility: "private",
-      fileType: FileType.DOCUMENT
-    }, {
-        name: res.name,
-        type: res.mimeType,
-        uri: res.uri
-    } as MobileFileFormat)
-    .then(() => { _refresh() })
+      type: res.mimeType,
+      uri: res.uri
+  } as MobileFileFormat)
+  .then(() => { _refresh() })
   }
+
 
 
   if(loading)

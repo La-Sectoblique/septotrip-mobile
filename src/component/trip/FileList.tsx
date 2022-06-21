@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Button, Dimensions, Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from 'react'
+import { BackHandler, Button, Dimensions, Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { FileMetadataOutput } from '@la-sectoblique/septoblique-service/dist/types/models/File';
 import WebView from 'react-native-webview';
 import { deleteFile, getFileLink } from '@la-sectoblique/septoblique-service';
@@ -36,6 +36,20 @@ export const FileList = ({files, showWebView, refresh}: FileListProps) => {
               })
         }
     }
+
+    useEffect(() => {
+        const onBackPress = () => {
+            if(fileURL !== ""){
+                setFileURL("")
+                return true
+            }else{
+                return false
+            }
+                
+        }
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    })
+
 
     const onPress = ((file: FileMetadataOutput) => {
         deleteFile(file.tripId, file.id)
