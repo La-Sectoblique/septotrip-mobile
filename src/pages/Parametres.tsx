@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {  } from "react";
+import React, { useLayoutEffect  } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -16,6 +16,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import { Travelers } from "../component/trip/Travelers";
 import * as SecureStore from 'expo-secure-store';
+import { AntDesign } from "@expo/vector-icons";
 
 
 
@@ -40,6 +41,18 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
         navigation.replace('Login')
 
     }
+
+    const goBack = () => {
+        navigation.replace('Planification', {trip: trip, isReadOnly: trip.startDate === undefined})
+      }
+    
+    
+    useLayoutEffect(() => {
+    navigation.setOptions({
+        headerTitle: trip.name,
+        headerRight: () => <AntDesign onPress={() => { goBack()}} name="back" size={24} color="black" />,
+    });
+    }, [navigation]);
 
     return (
         <KeyboardAvoidingView
