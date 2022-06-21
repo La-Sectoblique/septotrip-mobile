@@ -102,7 +102,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
         Toast.show({
           type: 'error',
           text1: err.name,
-          text2: err.code + " " + err.message
+          text2: err.code + " " + err.message,
         })
 
         setLoading(false)

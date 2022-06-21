@@ -16,6 +16,8 @@ import { Parametres } from "./src/pages/Parametres";
 import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
 import { Loader } from "./src/component/utils/Loader";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
+import { InitParameters } from "@la-sectoblique/septoblique-service/dist/utils/Config";
+import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 
 export default function App() {
 
@@ -28,9 +30,7 @@ export default function App() {
 
   useEffect( () => {
 
-    const initData = async () => {
-
-      await init({
+      const payload: InitParameters = {
         url: 'https://api.septotrip.com',
         getToken: async () => {
           const get_auth = await SecureStore.getItemAsync('token');
@@ -45,31 +45,41 @@ export default function App() {
         },
         platform: Platform.MOBILE,
         context: 'development'
+      }
+
+      init(payload)
+      
+      .then(() => {
+        me()
+        .then(async () => {
+          const user_trips = await getUserTrips()
+      
+          if (user_trips.filter(trip => trip.startDate != undefined).length > 0){
+            setInitalRoute("Planification")
+            setTrip(user_trips[0])
+            setIsReadonly(false)
+          }
+            
+          else
+            setInitalRoute("TripList");
+          setLoading(false)
+        })
+        .catch(() => {
+          setInitalRoute("Login")
+          setLoading(false)
+        })
+      })
+      .catch((err: ApiError) => {
+        console.log(err)
+
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
       })
 
-      me()
-      .then(async () => {
-        const user_trips = await getUserTrips()
-    
-        if (user_trips.filter(trip => trip.startDate != undefined).length > 0){
-          setInitalRoute("Planification")
-          setTrip(user_trips[0])
-          setIsReadonly(false)
-        }
-          
-        else
-          setInitalRoute("TripList");
-        setLoading(false)
-      })
-      .catch(() => {
-        setInitalRoute("Login")
-        setLoading(false)
-      })
-
-  }
-
-  initData();
-    
+     
   },[])
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
