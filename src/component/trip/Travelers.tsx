@@ -46,6 +46,7 @@ export const Travelers = ({trip}: TravelersProps) => {
         .then((res: ApiResponse) => {
             setResponse(res.message)
             setEmailNewTraveler("")
+            fetchData()
         })
         .catch((err: ApiError) => {
             console.error(err)
