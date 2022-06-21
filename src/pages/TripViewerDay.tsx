@@ -20,12 +20,11 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
 
     const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[])
     const [loading, setLoading] = useState<boolean>(true)
-    
     const _refresh = () => {
+        
         getTripSteps(trip.id)
         .then((steps: StepOutput[]) => {
             setSteps(steps)
-            
             setLoading(false)
         })
         .catch((err: ApiError) => {
@@ -72,7 +71,7 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
                         key={step.id} 
                         step={step} 
                         gotoMap={gotoMap} 
-                        started_trip={trip.startDate !== null} 
+                        started_trip={trip.startDate !== null}
                         />
                   })
               }

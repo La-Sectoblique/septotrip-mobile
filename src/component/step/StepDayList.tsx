@@ -17,7 +17,7 @@ interface StepDayListProps {
     started_trip: boolean,
 }
 
-export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) => {
+export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) => {
     const [days, setDays] = useState<DayOutput[]>([] as DayOutput[]);
     const [prettier_dates, setPrettierDate] = useState<string[]>([] as string[])
     const [loading, setLoading] = useState<boolean>(true)
@@ -32,7 +32,8 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
         return final_date_format.toLocaleDateString()
     }
 
-    useEffect(() => {
+
+    const _refresh = () => {
         const step_days = getStepDays(step.id)
         .then((days: DayOutput[]) => {
             setDays(days)
@@ -102,10 +103,14 @@ export const StepDayList = ({ step, gotoMap, started_trip, }: StepDayListProps) 
               })
         });
 
+
         Promise.all([step_days, make_date])
         .then(() => setLoading(false))
         .catch(() => setLoading(false))
-        
+    }
+
+    useEffect(() => {
+        _refresh()
     }, [])
 
 

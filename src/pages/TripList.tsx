@@ -11,6 +11,7 @@ import { TripDetails } from "../component/trip/TripDetails"
 
 import { Loader } from "../component/utils/Loader"
 import { MaterialIcons } from "@expo/vector-icons"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DebugScript } from "../component/utils/DebugScript";
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
