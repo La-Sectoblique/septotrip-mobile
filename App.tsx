@@ -26,29 +26,31 @@ export default function App() {
 
   const [loading, setLoading] = useState<boolean>(true)
 
-  init({
-    url: 'https://api.septotrip.com',
-    getToken: async () => {
-      const get_auth = await SecureStore.getItemAsync('token');
-      if (!get_auth) {
-        return '';
-      }
+  useEffect( () => {
 
-      return get_auth;
-    },
-    storeToken: async (token: string) => {
-      await SecureStore.setItemAsync('token', token);
-    },
-    platform: Platform.MOBILE,
-    context: 'development'
-})
+    const initData = async () => {
 
+      await init({
+        url: 'https://api.septotrip.com',
+        getToken: async () => {
+          const get_auth = await SecureStore.getItemAsync('token');
+          if (!get_auth) {
+            return '';
+          }
+    
+          return get_auth;
+        },
+        storeToken: async (token: string) => {
+          await SecureStore.setItemAsync('token', token);
+        },
+        platform: Platform.MOBILE,
+        context: 'development'
+      })
 
-  useEffect(() => {
-    me()
+      me()
       .then(async () => {
         const user_trips = await getUserTrips()
-
+    
         if (user_trips.filter(trip => trip.startDate != undefined).length > 0){
           setInitalRoute("Planification")
           setTrip(user_trips[0])
@@ -63,6 +65,11 @@ export default function App() {
         setInitalRoute("Login")
         setLoading(false)
       })
+
+  }
+
+  initData();
+    
   },[])
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
