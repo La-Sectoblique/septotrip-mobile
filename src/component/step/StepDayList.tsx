@@ -35,97 +35,46 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
     }
 
 
-    const _refresh = () => {
-        const step_days = getStepDays(step.id)
-        .then((days: DayOutput[]) => {
+    const _refresh = async () => {
+        try {
+            const days = await getStepDays(step.id)
             setDays(days)
-        })
-        .catch((err: ApiError) => {
-            console.error(err)
 
-            Toast.show({
-                type: 'error',
-                text1: err.name,
-                text2: err.code + " " + err.message
-              })
-        })
-
-        const make_date =  getTripById(step.tripId)
-        .then(async (trip: TripOutput) => {
+            const trip = await getTripById(step.tripId)
+            if(!trip)
+                return
+            
             if(step.order === 1){
-                const days = await getStepDays(step.id)
                 days.map((day,i) => {
                     setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, day.number); return prev})
                 })
             }
             else {
-                getTripSteps(step.tripId)
-                .then(async (steps: StepOutput[]) => {
-                    const filtered_steps = steps.filter((value) => value.order < step.order);
-                    let daysToAdd = 0;
-                    filtered_steps.map((filtered_step) => {
-                        getStepDays(filtered_step.id)
-                        .then((days: DayOutput[]) => {
-                            daysToAdd += days.length;
-                            if(filtered_step.order == step.order - 1){
-                                getStepDays(step.id)
-                                .then((days: DayOutput[]) => {
-                                    days.map((day,i) => {
-                                        setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
-                                    })
-                                })
-                                .catch((err: ApiError) => {
-                                    console.error(err)
-                
-                                    Toast.show({
-                                        type: 'error',
-                                        text1: err.name,
-                                        text2: err.code + " " + err.message
-                                      })
-                                })
-                                
-                            }
+                const steps = await getTripSteps(trip.id)
+                const filtered_steps = steps.filter((value) => value.order < step.order);
+                let daysToAdd = 0;
+                filtered_steps.map(async (filtered_step) => {
+                    daysToAdd += days.length;
+                    if(filtered_step.order == step.order - 1){
+                        days.map((day,i) => {
+                            setPrettierDate((prev) => { prev[i] = prettierDate(trip.startDate, daysToAdd + day.number); return prev})
                         })
-                        .catch((err: ApiError) => {
-                            console.error(err)
-        
-                            Toast.show({
-                                type: 'error',
-                                text1: err.name,
-                                text2: err.code + " " + err.message
-                              })
-                        })
-                    })
-
+                    }
                 })
-                .catch((err: ApiError) => {
-                    console.error(err)
-
-                    Toast.show({
-                        type: 'error',
-                        text1: err.name,
-                        text2: err.code + " " + err.message
-                      })
-                })
-               
-               
-              
             }
-        })
-        .catch((err: ApiError) => {
+            console.log(prettier_dates)
+            setLoading(false)
+        }
+        catch (err){
             console.error(err)
 
             Toast.show({
                 type: 'error',
-                text1: err.name,
-                text2: err.code + " " + err.message
-              })
-        });
+                text1: "An error occured"
+            })
+        }
 
-
-        Promise.all([step_days, make_date])
-        .then(() => setLoading(false))
-        .catch(() => setLoading(false))
+     
     }
 
     useEffect(() => {
