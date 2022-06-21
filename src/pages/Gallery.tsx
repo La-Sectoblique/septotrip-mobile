@@ -10,6 +10,8 @@ import { FileMetadataOutput, FileType } from '@la-sectoblique/septoblique-servic
 import { ImageCustom } from '../component/gallery/ImageCustom';
 import { FontAwesome } from '@expo/vector-icons';
 import { TripOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Trip';
+import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
+import Toast from "react-native-toast-message"
 
 interface GalleryProps {
   trip: TripOutput
@@ -59,6 +61,15 @@ export const Gallery: React.FC<GalleryProps> = ({trip}) => {
         uri: res.uri
     } as MobileFileFormat)
     .then(() => { _refresh() })
+    .catch((err: ApiError) => {
+      console.error(err)
+
+      Toast.show({
+        type: 'error',
+        text1: err.name,
+        text2: err.code + " " + err.message
+      })
+    })
   }
 
 

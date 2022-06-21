@@ -55,24 +55,33 @@ export const Document: React.FC<DocumentProps> = ({trip}) => {
     const res = await DocumentPicker.getDocumentAsync({
       multiple: false,
       type: "*/*"
-  });
+    });
 
-  if(res.type === "cancel" || !res.mimeType) return;
+    if(res.type === "cancel" || !res.mimeType) return;
 
 
-  uploadFile({
-    name: res.name,
-    extension: res.name.split(".")[res.name.split(".").length - 1],
-    mimeType: res.mimeType,
-    tripId: trip.id,
-    visibility: "private",
-    fileType: FileType.DOCUMENT
-  }, {
+    uploadFile({
       name: res.name,
-      type: res.mimeType,
-      uri: res.uri
-  } as MobileFileFormat)
-  .then(() => { _refresh() })
+      extension: res.name.split(".")[res.name.split(".").length - 1],
+      mimeType: res.mimeType,
+      tripId: trip.id,
+      visibility: "private",
+      fileType: FileType.DOCUMENT
+    }, {
+        name: res.name,
+        type: res.mimeType,
+        uri: res.uri
+    } as MobileFileFormat)
+    .then(() => { _refresh() })
+    .catch((err: ApiError) => {
+      console.error(err)
+
+      Toast.show({
+        type: 'error',
+        text1: err.name,
+        text2: err.code + " " + err.message
+      })
+    })
   }
 
 
