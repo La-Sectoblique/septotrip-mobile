@@ -4,7 +4,7 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useState, useLayoutEffect } from "react"
-import { View, Text, FlatList, ListRenderItem, RefreshControl, Image, TouchableOpacity } from "react-native"
+import { View, Text, FlatList, ListRenderItem, RefreshControl, Image, TouchableOpacity, Linking } from "react-native"
 import Toast from "react-native-toast-message"
 import { RootStackParamList } from "../models/NavigationParamList"
 import { TripDetails } from "../component/trip/TripDetails"
@@ -27,6 +27,17 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       await SecureStore.deleteItemAsync('token');
       navigation.replace('Login')
 
+    }
+
+    const gotoSite = async () => {
+      const url = "https://septotrip.com"
+      const supported = await Linking.canOpenURL(url);
+
+        if (supported) {
+            await Linking.openURL(url);
+        }else{
+          console.log("cheh")
+        }
     }
 
     useLayoutEffect(() => {
@@ -92,6 +103,16 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
         <View>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Aucun voyage existe pour ce compte</Text>
           <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Utilisez le service Web pour créer un voyage</Text>
+          <Text style={{
+            textAlign: "center", 
+            fontSize: 24, 
+            fontWeight: "bold", 
+            textDecorationLine: 'underline', 
+            color: "#1B91BF"}}
+            onPress={() => {gotoSite()}}
+          >
+            Allez sur septotrip.com
+          </Text>
         </View>
 
         <TouchableOpacity

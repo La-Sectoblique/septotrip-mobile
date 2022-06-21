@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -21,6 +21,7 @@ import { Error } from "../component/utils/Error";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
+import { AntDesign } from "@expo/vector-icons";
 
 
 
@@ -58,6 +59,17 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
   const [missingFirstName, setMissingFirstName] = useState(false);
   const [missingLastName, setMissingLastName] = useState(false);
 
+
+  const goBack = () => {
+    navigation.replace('Login')
+  }
+
+
+  useLayoutEffect(() => {
+  navigation.setOptions({
+      headerRight: () => <AntDesign onPress={() => { goBack()}} name="back" size={24} color="black" />,
+  });
+  }, [navigation]);
 
   useEffect(() => {
     setMissingEmail(false);

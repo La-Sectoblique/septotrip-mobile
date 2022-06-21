@@ -49,7 +49,6 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
     
     useLayoutEffect(() => {
     navigation.setOptions({
-        headerTitle: trip.name,
         headerRight: () => <AntDesign onPress={() => { goBack()}} name="back" size={24} color="black" />,
     });
     }, [navigation]);
