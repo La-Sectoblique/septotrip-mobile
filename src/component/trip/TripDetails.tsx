@@ -21,7 +21,6 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
 
     const [author, setAuthor] = useState<Author>({} as Author);
     const [loading, setLoading] = useState<boolean>(true)
-    console.log(is_public)
     const handlePressEvent = async (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
             await updateTrip(trip.id, {startDate: new Date(Date.now())})

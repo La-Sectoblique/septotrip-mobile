@@ -6,7 +6,6 @@ import {
   Text,
   Image,
   View,
-  useWindowDimensions,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
@@ -16,8 +15,8 @@ import { StatusBar } from "expo-status-bar";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import { Travelers } from "../component/trip/Travelers";
-import { useNavigation } from "@react-navigation/native";
-import { TripList } from "./TripList";
+import * as SecureStore from 'expo-secure-store';
+
 
 
 const styles = StyleSheet.create({
@@ -36,7 +35,12 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
     const { trip } = route.params;
 
 
-    //TODO: Button navigation doesnt work
+    const disconnect = async () => {
+        await SecureStore.deleteItemAsync('token');
+        navigation.navigate('Login')
+
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -62,7 +66,7 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
 
                 <TouchableOpacity
                     activeOpacity={0.5}
-                    onPress={() => navigation.navigate('Login')}
+                    onPress={() => disconnect()}
                     style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
                 <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Se déconnecter</Text>

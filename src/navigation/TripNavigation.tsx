@@ -1,5 +1,5 @@
 
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 
 import { ParamListBase } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -29,12 +29,6 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
     navigation.navigate('Parametres', {trip: trip})
   }
 
-  useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      // Prevent default behavior of leaving the screen
-      e.preventDefault();
-    })
-  }, [navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -42,6 +36,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
       headerRight: () => <FontAwesome onPress={() => moveToParameters()} name="gear" size={24} color="black" />,
     });
   }, [navigation]);
+
   return (
 
       <Tab.Navigator
@@ -64,7 +59,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
             }
           },
           tabBarInactiveTintColor: 'gray',
-          headerShown: false
+          headerShown: false,
       })}>
         <Tab.Screen name="Carte" component={ShowTrip} initialParams={{trip: trip}} />
         <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} />

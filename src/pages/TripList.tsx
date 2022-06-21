@@ -21,12 +21,6 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
     const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
     
-    useEffect(() => {
-        navigation.addListener('beforeRemove', (e) => {
-          // Prevent default behavior of leaving the screen
-          e.preventDefault();
-
-        })}, [navigation]);
         
     const renderItem: ListRenderItem<TripOutput> = ({item}) => (
         <TripDetails key={item.id} trip={item} navigation={navigation} have_started_trip={started_trip !== undefined} is_public={item.visibility === "public"}/>
