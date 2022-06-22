@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message"
@@ -18,10 +18,9 @@ import { Loader } from "./src/component/utils/Loader";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { InitParameters } from "@la-sectoblique/septoblique-service/dist/utils/Config";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
-import i18n from "./i18n"
 
 export default function App() {
-  const initI18n = i18n;
+
   const [initialRoute, setInitalRoute] = useState<keyof RootStackParamList>();
 
   const [trip, setTrip] = useState<TripOutput>()
@@ -88,7 +87,7 @@ export default function App() {
     return <Loader />
 
   return (
-    <Suspense fallback={Loader}>
+    <>
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen name="Login" component={Login} options={{headerTitle: "Se connecter", headerBackVisible: false}}/>
@@ -99,7 +98,7 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
     <Toast />
-    </Suspense>
+    </>
   );
 }
 
