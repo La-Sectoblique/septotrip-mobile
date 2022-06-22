@@ -5,6 +5,7 @@ import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/mode
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import React from "react";
 import { useState } from "react";
+import Toast from "react-native-toast-message"
 import { LatLng, Polyline } from "react-native-maps";
 
 interface StepPathListProps {
@@ -19,25 +20,31 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [origin, setOrigin] = useState<StepOutput>({} as StepOutput);
 
-  const handleClick = (step: StepOutput) => {
-    if (step === null) return;
+  const handleClick = (step: StepOutput, nextStep: StepOutput) => {
+    if (step === null || nextStep === null) return;
     setOrigin(step);
-
-    getPathToStep(step.id)
+    getPathToStep(nextStep.id)
       .then((res: PathOutput) => {
         setActiveElement({ path: res, origin: step });
         setModalVisible(true);
       })
-      .catch((err: ApiError) => console.log(JSON.stringify(err)));
+      .catch((err: ApiError) => {
+        console.error(err)
+
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
+      });
   };
 
   if (steps.length == 0) return <></>;
 
   return (
     <>
-      {steps.map((step: StepOutput, i: number, steps: StepOutput[]) => {
+      {steps.sort((a, b) => a.order - b.order).map((step: StepOutput, i: number, steps: StepOutput[]) => {
         if (i == steps.length - 1) return;
-        
         return (
             <Polyline
               key={step.id + "_" + steps[i + 1].id}
@@ -55,7 +62,7 @@ export const StepPathList = ({steps, setActiveElement, setModalVisible}: StepPat
               strokeWidth={6}
               tappable={true}
               onPress={() => {
-                handleClick(step);
+                handleClick(step, steps[i + 1]);
               }}
             />
         );

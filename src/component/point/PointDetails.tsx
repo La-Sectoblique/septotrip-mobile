@@ -22,7 +22,7 @@ export const PointDetails = ({point}: PointDetailsProps) => {
     return (
         <View style={{width: Dimensions.get('window').width * 75 / 100}}>
         <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${point.title}`}</Text>
-        <Text>{point.description}</Text>
+        <Text style={{textAlign: "center", margin: 10}}>{point.description}</Text>
         {
             files.length > 0 
             ? <FileList files={files} showWebView={false}/>

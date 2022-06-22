@@ -14,6 +14,7 @@ import {
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message"
 
 import { getUserTrips, login } from "@la-sectoblique/septoblique-service";
 import { LoginCredentials } from "@la-sectoblique/septoblique-service/dist/types/utils/Credentials";
@@ -22,8 +23,8 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
-import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
 
+import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
 
 const styles = StyleSheet.create({
   page: {
@@ -50,13 +51,12 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
   const [missingEmail, setMissingEmail] = useState<boolean>(false);
   const [missingPassword, setMissingPassword] = useState<boolean>(false);
 
 
   const handleRegisterButton = () => {
-    navigation.navigate("Register");
+    navigation.replace("Register");
   };
 
   const handleSubmitButton = () => {
@@ -82,29 +82,32 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
 
     //Execute register function after one second to see loading page
+    login(data)
+      .then(async (res) => {
+        const user_trips = await getUserTrips()
+        
+        setEmail("");
+        setPassword("");
+        setLoading(false)
+        if (user_trips.filter(trip => trip.startDate != undefined).length > 0){
+          navigation.replace("Planification", {trip: user_trips[0], isReadOnly: false})
+        }
+          
+        else
+          navigation.replace('TripList');
+      })
+      .catch((err: ApiError) => {
+        console.error(err)
 
-    setTimeout(async () => {
-      await login(data)
-        .then(async (res) => {
-          const my_user = await me()
-          const get_user_trips = await getUserTrips()
-         
-          setEmail("");
-          setPassword("");
-          setLoading(false)
-          if (get_user_trips.filter(trip => trip.startDate != undefined).length > 0)
-            navigation.navigate("Planification", {trip: get_user_trips[0], isReadOnly: false})
-          else
-            navigation.navigate('TripList');
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message,
         })
-        .catch((err: ApiError) => {
-          if (err.code === 404) setError("Utilisateur inexistant");
-          // else if (err.code === 400) setError("Mot de passe faux");
-          else setError("Une erreur s'est produite: " + JSON.stringify(err));
 
-          setLoading(false)
-        })
-    }, 1000);
+        setLoading(false)
+      })
+
   };
 
   if (loading)
@@ -155,11 +158,10 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
         
 
         <Text>{message}</Text>
-        <Error error={error} />
       </View>
 
       <View style={{flexDirection: "row", justifyContent: "center"}}>
-          <Text>Si vous ne possédez pas de compte: </Text>
+          <Text>Si vous ne possédez pas de compte, </Text>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={handleRegisterButton}

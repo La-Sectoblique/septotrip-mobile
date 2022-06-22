@@ -16,7 +16,9 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ],
+      "@config-plugins/react-native-blob-util",
+      "@config-plugins/react-native-pdf"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -27,7 +29,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.septotrip.mobile",
-      "buildNumber": "0.1.2"
+      "buildNumber": "0.1.2",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDsrTq09CX_kXYS-BDG_dzFBjLUgr-CIMY"
+      }
     },
     "android": {
       "adaptiveIcon": {

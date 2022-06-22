@@ -5,10 +5,12 @@ import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions } from "react-native";
+import Toast from "react-native-toast-message"
 import MapView, {
   LatLng,
   Marker,
   Polyline,
+  PROVIDER_GOOGLE,
 } from "react-native-maps";
 import { FileList } from "../trip/FileList";
 import { Loader } from "../utils/Loader";
@@ -28,7 +30,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
 
 
-  useEffect(() => {
+  const _refresh = () => {
     const step_id = getStepById(path.destinationId)
       .then((res: StepOutput) => {
 
@@ -38,26 +40,43 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
         setDestination(res)
       })
       .catch((err: ApiError) => {
-        console.log(err)
+        console.error(err)
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
       })
     
     const trip_files = getTripFiles(origin.tripId, {path: path.id})
     .then((res: FileMetadataOutput[]) => setFiles(res))
+    .catch((err: ApiError) => {
+      console.error(err)
+      Toast.show({
+        type: 'error',
+        text1: err.name,
+        text2: err.code + " " + err.message
+      })
+    })
 
     Promise.all([step_id, trip_files])
     .then(() => setLoading(false))
     .catch(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    _refresh()
   }, []);
 
   if (loading) return <Loader />;
 
   return (
-    <View style={{width: Dimensions.get('window').width * 75 / 100}}>
+    <View style={{width: Dimensions.get('window').width * 75 / 100, alignItems: "center"}}>
       <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 20}}>{`${origin.name} - ${destination.name}`}</Text>
 
       <MapView
         rotateEnabled={false}
-        provider={null}
+        provider={PROVIDER_GOOGLE}
         showsUserLocation={true}
         style={{
           width: (Dimensions.get("window").width * 50) / 100,
@@ -107,7 +126,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
       <Text style={{margin: 10}}>{ path.description }</Text>
       {
             files.length > 0 
-            ? <FileList files={files} showWebView={false}/>
+            ? <FileList files={files} showWebView={false} refresh={_refresh}/>
             // eslint-disable-next-line react/no-unescaped-entities
             : <Text style={{textAlign: "center", margin: 5}}>Aucun fichier n'est lié à cette étape</Text>
       }

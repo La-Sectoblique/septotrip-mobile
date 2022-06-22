@@ -13,9 +13,8 @@ export type RootStackParamList= {
 
 export type RootTabParamList= {
     Carte: { trip: TripOutput, pointToFocus?: PointOutput | StepOutput },
-    Voyage: { trip: TripOutput },
     Planning: { trip: TripOutput },
     Tache: { trip: TripOutput },
     Fichier: { trip: TripOutput},
-    Gallery: {trip: TripOutput },
+    Journal: {trip: TripOutput}
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import Toast from "react-native-toast-message"
 
 import { StatusBar } from "expo-status-bar";
 
@@ -20,6 +21,7 @@ import { Error } from "../component/utils/Error";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
+import { AntDesign } from "@expo/vector-icons";
 
 
 
@@ -57,6 +59,17 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
   const [missingFirstName, setMissingFirstName] = useState(false);
   const [missingLastName, setMissingLastName] = useState(false);
 
+
+  const goBack = () => {
+    navigation.replace('Login')
+  }
+
+
+  useLayoutEffect(() => {
+  navigation.setOptions({
+      headerRight: () => <AntDesign onPress={() => { goBack()}} name="back" size={24} color="black" />,
+  });
+  }, [navigation]);
 
   useEffect(() => {
     setMissingEmail(false);
@@ -113,15 +126,16 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
           setPassword("");
           setFirstName("");
           setLastName("");
-          navigation.navigate('Login')
+          navigation.replace('Login')
         })
         .catch((err: ApiError) => {
-          console.log(JSON.stringify(err));
-          if (err.code === 409) setError("L'utilisateur saisie existe déjà");
-          else
-            setError(
-              "Une erreur est survenue...Veuillez réessayer ultérieurement"
-            );
+          console.error(err)
+
+          Toast.show({
+            type: 'error',
+            text1: err.name,
+            text2: err.code + " " + err.message
+          })
             setLoading(false);
 
         })

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
+import Toast from "react-native-toast-message"
 import * as Location from "expo-location";
 
 import {
@@ -9,13 +10,11 @@ import {
   getTripSteps,
 } from "@la-sectoblique/septoblique-service";
 
-import useSteps from "../hook/useSteps";
 
 import { StepMarkerList } from "../component/step/StepMarkerList";
 import { StepPathList } from "../component/step/StepPathList";
 import { ModalDetails } from "../component/utils/ModalDetails";
 import { PointMarkerList } from "../component/point/PointMarkerList";
-import usePoints from "../hook/usePoints";
 import { Dropdown } from "../component/utils/Dropdown";
 import { PathOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Path";
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
@@ -28,15 +27,18 @@ import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiE
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../models/NavigationParamList";
 import { Loader } from "../component/utils/Loader";
+import { useIsFocused } from "@react-navigation/native";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 
 
 type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Carte'>
 
 export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
+  const isFocused= useIsFocused()
 
   const { trip, pointToFocus } = route.params
-  const [steps, initStep, addStep, removeStep] = useSteps();
+  const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[]);
 
   const [activeElement, setActiveElement] = useState<
     StepOutput | PointOutput | { path: PathOutput; origin: StepOutput }
@@ -45,7 +47,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
   const [filter, setFilter] = useState<string>("all");
 
-  const [points, initPoint, addPoint, removePoint] = usePoints();
+  const [points, setPoints] = useState<PointOutput[]>([] as PointOutput[]);
   
   //Default center the map on Paris coordinate
   const [focus, setFocus] = useState<LocalisationPoint>({
@@ -63,8 +65,17 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
   const _refresh = (trip: TripOutput) => {
     const trip_step = getTripSteps(trip.id).then((res: StepOutput[]) => {
-      initStep(res);
+      setSteps(res.sort((a,b) => a.order - b.order));
+
+      if (res.length > 0)
+        setFocus({
+          type: "Point",
+          coordinates: res[0].localisation.coordinates,
+        });
       
+      if(res.length < 2)
+        return
+
       const trip_sort_longitude = res.sort((a, b) => {return a.localisation.coordinates[0] - b.localisation.coordinates[0] } )
       const trip_sort_latitude = res.sort((a, b) => {return a.localisation.coordinates[1] - b.localisation.coordinates[1] } )
 
@@ -81,21 +92,23 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
         )
       )
 
-      if (res.length > 0)
-        setFocus({
-          type: "Point",
-          coordinates: res[0].localisation.coordinates,
-        });
+      
     });
 
     const trip_point = getTripPoints(trip.id).then((res: PointOutput[]) => {
-      initPoint(res);
+      setPoints(res);
     });
 
     Promise.all([trip_step, trip_point])
       .then(() => setRefreshing(false))
       .catch((err: ApiError) => {
-        console.log(JSON.stringify(err))
+        console.error(err)
+
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message
+        })
         setRefreshing(false)
       })
   };
@@ -131,7 +144,8 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
 
     _refresh(trip);
 
-  }, []);
+  }, [isFocused]);
+
 
 
   //WHen POI is click on Day page pointToFocus change and navigate to ShowTrip, so region have to change
@@ -174,10 +188,28 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
           map={true}
           key="dropdown"
         />
+
+        <TouchableOpacity
+          style={{
+              backgroundColor: "#1B91BF",
+              marginLeft: 5,
+              padding: 5,
+              borderRadius: 10,
+              position: "absolute",
+              top: 60,
+              zIndex: 999,
+              opacity: 0.7
+          }}
+          onPress={() => _refresh(trip)}
+        >
+          <Feather name="refresh-ccw" size={32} color="white" />
+        </TouchableOpacity> 
+
+
           <MapView
             style={styles.map}
             rotateEnabled={false}
-            provider={null}
+            provider={PROVIDER_GOOGLE}
             showsUserLocation={true}
             loadingEnabled={true}
             initialRegion={{
@@ -190,7 +222,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
             
             
           >
-            {filter == "step" || filter == "all" && (
+            {(filter == "step" || filter == "all") && (
               <>
                 <StepMarkerList
                   steps={steps}
@@ -206,7 +238,7 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
               </>
             )}
 
-            {filter == "point" || filter == "all" && (
+            {(filter == "point" || filter == "all") && (
               <PointMarkerList
                 points={points}
                 setActiveElement={setActiveElement}

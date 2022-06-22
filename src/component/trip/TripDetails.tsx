@@ -1,45 +1,78 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import Toast from "react-native-toast-message"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip";
 import { View, Text, TouchableOpacity } from "react-native";
 import { RootStackParamList } from '../../models/NavigationParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { updateTrip } from '@la-sectoblique/septoblique-service';
+import { getAuthor, updateTrip } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
+import { Author } from '@la-sectoblique/septoblique-service/dist/types/models/User';
+import { Loader } from '../utils/Loader';
 
 interface TripDetailsProps {
     trip: TripOutput,
     navigation: NativeStackNavigationProp<RootStackParamList, "TripList", undefined>,
     started?: boolean
-    have_started_trip: boolean
+    have_started_trip: boolean,
+    is_public?: boolean
 }
 
-export const TripDetails = ({trip, navigation, started, have_started_trip}: TripDetailsProps) => {
+export const TripDetails = ({trip, navigation, started, have_started_trip, is_public}: TripDetailsProps) => {
 
-    const handlePressEvent = async (isReadOnly: boolean) => {
+    const [author, setAuthor] = useState<Author>({} as Author);
+    const [loading, setLoading] = useState<boolean>(true)
+    const handlePressEvent = (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
-            await updateTrip(trip.id, {startDate: new Date(Date.now())})
-            .then((res: TripOutput) => navigation.navigate("Planification", {
+            updateTrip(trip.id, {startDate: new Date(Date.now())})
+            .then((res: TripOutput) => {    
+                navigation.replace("Planification", {
                 trip: res,
                 isReadOnly: false
-            }))
-            .catch((err: ApiError) => console.error(JSON.stringify(err)))
-        }
+                })
+            })
+            .catch((err: ApiError) => {
+                console.error(err)
 
-        navigation.navigate("Planification", {
+                Toast.show({
+                    type: 'error',
+                    text1: err.name,
+                    text2: err.code + " " + err.message
+                  })
+            })
+        }
+        navigation.replace("Planification", {
             trip: trip,
             isReadOnly: isReadOnly
         })
     }
 
     useEffect(() => {
-       //TODO: Get author 
+        getAuthor(trip.id)
+        .then((res: Author) => {
+            setLoading(false)
+            setAuthor(res)
+        })
+        .catch((err: ApiError) => {
+            console.error(err)
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+            })
+            setLoading(false)
+        })
     }, [])
+
+    if(loading)
+        return <Loader />
+
     return (
         <View style={{width: "95%", padding: 5, margin: 5, borderWidth: 1, borderRadius: 10, backgroundColor: "rgba(27,145,191, 0.5)", borderColor: "rgba(27,145,191, 0.5)"}}>
             
-            <Text style={{textAlign: 'left', marginStart: 10, fontWeight: "600", textDecorationLine: 'underline', }}>{trip.name}</Text>
-            <Text></Text>
-            
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'left', marginStart: 10, fontWeight: "600", textDecorationLine: 'underline', }}>{trip.name}</Text>
+                <Text style={{textAlign: 'right'}}>{author.firstName} {author.lastName}</Text>
+            </View>
 
             {
                 started
@@ -61,7 +94,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip}: Trip
                         <Text style={{padding: 5, color: "white", textAlign: "center"}}>Visualiser</Text>
                     </TouchableOpacity>
                     {
-                        !have_started_trip &&
+                        (!have_started_trip && is_public === false) &&
                         <TouchableOpacity 
                             onPress={() => handlePressEvent(false)} 
                             style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}

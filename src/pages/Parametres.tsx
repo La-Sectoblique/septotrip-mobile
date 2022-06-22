@@ -1,32 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect  } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  TextInput,
-  Dimensions,
   Image,
   View,
-  useWindowDimensions,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
-import { getTravelers, login } from "@la-sectoblique/septoblique-service";
-import { LoginCredentials } from "@la-sectoblique/septoblique-service/dist/types/utils/Credentials";
-import { Error } from "../component/utils/Error";
-import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
-import {Loader} from '../component/utils/Loader';
-import { UserOutput } from "@la-sectoblique/septoblique-service/dist/types/models/User";
-import { TripNavigation } from "../navigation/TripNavigation";
 import { Travelers } from "../component/trip/Travelers";
-import { ScrollView } from "react-native-gesture-handler";
+import * as SecureStore from 'expo-secure-store';
+import { AntDesign } from "@expo/vector-icons";
+
 
 
 const styles = StyleSheet.create({
@@ -44,8 +35,24 @@ type ParametresProps = NativeStackScreenProps<RootStackParamList, 'Parametres'>
 export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
     const { trip } = route.params;
 
-    const minHeight = useWindowDimensions().height;
-    //TODO: Button navigation doesnt work
+
+    const disconnect = async () => {
+        await SecureStore.deleteItemAsync('token');
+        navigation.replace('Login')
+
+    }
+
+    const goBack = () => {
+        navigation.replace('Planification', {trip: trip, isReadOnly: trip.startDate === undefined})
+      }
+    
+    
+    useLayoutEffect(() => {
+    navigation.setOptions({
+        headerRight: () => <AntDesign onPress={() => { goBack()}} name="back" size={24} color="black" />,
+    });
+    }, [navigation]);
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -61,7 +68,9 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
             <View style={{width: "100%"}}>
                 <TouchableOpacity
                     activeOpacity={0.5}
-                    onPress={() => navigation.navigate('TripList')}
+                    onPress={() => {
+                        navigation.replace("TripList")
+                    }}
                     style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
                 <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Retour à la liste de voyage</Text>
@@ -69,7 +78,7 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
 
                 <TouchableOpacity
                     activeOpacity={0.5}
-                    onPress={() => navigation.navigate('Login')}
+                    onPress={() => disconnect()}
                     style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
                 <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Se déconnecter</Text>
