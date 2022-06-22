@@ -25,6 +25,7 @@ import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 
 import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
+import { useTranslation } from "react-i18next";
 
 const styles = StyleSheet.create({
   page: {
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
 type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>
 
 export const Login: React.FC<LoginProps> = ({route, navigation}) => {
+  const { t, i18n } = useTranslation("locale");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -127,7 +129,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
         <TextInput
           style={styles.input}
           onChangeText={(email) => setEmail(email)}
-          placeholder="Email..."
+          placeholder={t("email")}
           keyboardType="email-address"
           blurOnSubmit={false}
         />
