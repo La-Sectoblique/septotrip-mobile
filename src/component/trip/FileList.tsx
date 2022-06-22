@@ -8,7 +8,7 @@ import { AntDesign, Entypo, FontAwesome5, MaterialCommunityIcons } from '@expo/v
 interface FileListProps {
     files: FileMetadataOutput[],
     showWebView?: boolean
-    refresh: () => void
+    refresh?: () => void
 }
 
 export const FileList = ({files, showWebView, refresh}: FileListProps) => {
@@ -34,7 +34,8 @@ export const FileList = ({files, showWebView, refresh}: FileListProps) => {
     const onPress = ((file: FileMetadataOutput) => {
         deleteFile(file.tripId, file.id)
         .then(() => {
-            refresh()
+            if(refresh !== undefined)
+                refresh()
         })
     })
 
