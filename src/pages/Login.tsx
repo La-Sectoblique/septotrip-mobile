@@ -39,12 +39,11 @@ const styles = StyleSheet.create({
 type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
 
 export const Login: React.FC<LoginProps> = (props) => {
-  const { t, i18n } = useTranslation('locale');
+  const { t, i18n } = useTranslation("locale");
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [missingEmail, setMissingEmail] = useState<boolean>(false);
@@ -111,36 +110,30 @@ export const Login: React.FC<LoginProps> = (props) => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Text>{t("wrongpassword")}</Text>
-      
       <TextInput
         style={styles.input}
         onChangeText={(email) => setEmail(email)}
-        placeholder="Email..."
+        placeholder={t("email")}
         keyboardType="email-address"
         blurOnSubmit={false}
       />
-      {missingEmail ? <Error error="Email invalide ou manquant..." /> : <></>}
+      {missingEmail ? <Error error={t("error.email")} /> : <></>}
 
       <TextInput
         style={styles.input}
         onChangeText={(password) => setPassword(password)}
-        placeholder="Mot de passe..."
+        placeholder={t("password")}
         blurOnSubmit={false}
         secureTextEntry={true}
       />
-      {missingPassword ? (
-        <Error error="Mot de passe manquant ou erroné..." />
-      ) : (
-        <></>
-      )}
+      {missingPassword ? <Error error={t("error.password")} /> : <></>}
 
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={handleSubmitButton}
         style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
       >
-        <Text>Se connecter</Text>
+        <Text>{t("signin")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -148,10 +141,9 @@ export const Login: React.FC<LoginProps> = (props) => {
         onPress={handleRegisterButton}
         style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
       >
-        <Text>Inscris toi</Text>
+        <Text>{t("signup")}</Text>
       </TouchableOpacity>
 
-      <Text>{message}</Text>
       <Error error={error} />
       <StatusBar style="auto" />
     </SafeAreaView>

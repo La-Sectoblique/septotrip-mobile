@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 type RegisterProps = NativeStackScreenProps<RootStackParamList, "Register">;
 
 export const Register: React.FC<RegisterProps> = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("locale");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -87,13 +87,16 @@ export const Register: React.FC<RegisterProps> = () => {
     //Execute register function after one second to see loading page
     setTimeout(() => {
       register(data)
-        .then(() => setMessage("Utilisateur créé ! Connectez-vous !"))
+        .then(() => setMessage("Utilisateur créé ! Connectez-vous !")) // {t("createUser")}
         .catch((err: ApiError) => {
           console.log(JSON.stringify(err));
-          if (err.code === 409) setError("L'utilisateur saisie existe déjà");
+          if (err.code === 409)
+            setError(
+              "L'utilisateur saisie existe déjà"
+            ); // {t("error.userexists")}
           else
             setError(
-              "Une erreur est survenue...Veuillez réessayer ultérieurement"
+              "Une erreur est survenue...Veuillez réessayer ultérieurement" // {t("error.default")}
             );
         })
         .finally(() => {
@@ -114,55 +117,45 @@ export const Register: React.FC<RegisterProps> = () => {
       <TextInput
         style={styles.input}
         onChangeText={(firstName) => setFirstName(firstName)}
-        placeholder="Prénom..."
+        placeholder={t("firstname")}
         keyboardType="default"
         blurOnSubmit={false}
       />
-      {missingFirstName ? (
-        <Error error="Prénom invalide ou manquant..." />
-      ) : (
-        <></>
-      )}
+      {missingFirstName ? <Error error={t("error.firstname")} /> : <></>}
 
       <TextInput
         style={styles.input}
         onChangeText={(lastName) => setLastName(lastName)}
-        placeholder="Nom..."
+        placeholder={t("name")}
         keyboardType="default"
         blurOnSubmit={false}
       />
-      {missingLastName ? <Error error="Nom invalide ou manquant..." /> : <></>}
+      {missingLastName ? <Error error={t("error.name")} /> : <></>}
 
       <TextInput
         style={styles.input}
         onChangeText={(email) => setEmail(email)}
-        placeholder="Email..."
+        placeholder={t("email")}
         keyboardType="email-address"
         blurOnSubmit={false}
       />
-      {missingEmail ? <Error error="Email invalide ou manquant..." /> : <></>}
+      {missingEmail ? <Error error={t("error.email")} /> : <></>}
 
       <TextInput
         style={styles.input}
         onChangeText={(password) => setPassword(password)}
-        placeholder="Mot de passe..."
+        placeholder={t("password")}
         blurOnSubmit={false}
         secureTextEntry={true}
       />
-      {missingPassword ? (
-        <Error error={t('wrongpassword')} />
-      ) : (
-        <></>
-      )}
+      {missingPassword ? <Error error={t("error.password")} /> : <></>}
 
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={handleSubmitButton}
         style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
       >
-        <Text>
-          <Trans i18nKey="signup">{"S'inscrire"}</Trans>
-        </Text>
+        <Text>{t("signup")}</Text>
       </TouchableOpacity>
 
       <Text>{message}</Text>
