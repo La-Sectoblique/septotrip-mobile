@@ -22,6 +22,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 import { AntDesign } from "@expo/vector-icons";
+import { useTranslation, Trans } from "react-i18next";
 
 
 
@@ -42,10 +43,11 @@ const styles = StyleSheet.create({
   },
 });
 
-type RegisterProps = NativeStackScreenProps<RootStackParamList, 'Register'>
-
+type RegisterProps = NativeStackScreenProps<RootStackParamList, "Register">;
 
 export const Register: React.FC<RegisterProps> = ({navigation}) => {
+  const { t } = useTranslation("locale");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -142,9 +144,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
     }, 1000);
   };
 
-  if (loading)
-    return <Loader/>
-
+  if (loading) return <Loader />;
 
   return (
     <KeyboardAvoidingView

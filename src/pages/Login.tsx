@@ -22,7 +22,8 @@ import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
-import {Loader} from '../component/utils/Loader';
+import { Loader } from "../component/utils/Loader";
+import { useTranslation, Trans } from "react-i18next";
 
 import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
 
@@ -43,13 +44,13 @@ const styles = StyleSheet.create({
   },
 });
 
-type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>
+type LoginProps = NativeStackScreenProps<RootStackParamList, "Login">;
 
 export const Login: React.FC<LoginProps> = ({route, navigation}) => {
+  const { t, i18n } = useTranslation("locale");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [missingEmail, setMissingEmail] = useState<boolean>(false);
   const [missingPassword, setMissingPassword] = useState<boolean>(false);
@@ -110,9 +111,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
 
   };
 
-  if (loading)
-    return <Loader/>
-
+  if (loading) return <Loader />;
 
   return (
     <KeyboardAvoidingView
@@ -155,9 +154,6 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
           <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Se connecter</Text>
         </TouchableOpacity>
 
-        
-
-        <Text>{message}</Text>
       </View>
 
       <View style={{flexDirection: "row", justifyContent: "center"}}>
