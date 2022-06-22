@@ -20,7 +20,6 @@ import { InitParameters } from "@la-sectoblique/septoblique-service/dist/utils/C
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import i18n from "./i18n";
 export default function App() {
-  const initI18n = i18n;  
   const [initialRoute, setInitalRoute] = useState<keyof RootStackParamList>();
 
   const [trip, setTrip] = useState<TripOutput>()
@@ -29,7 +28,7 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect( () => {
-
+      const initI18n = i18n;  
       const payload: InitParameters = {
         url: 'https://api.septotrip.com',
         getToken: async () => {
