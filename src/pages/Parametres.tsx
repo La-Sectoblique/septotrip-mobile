@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useLayoutEffect  } from "react";
+import React, { useLayoutEffect, useState  } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -17,7 +17,10 @@ import { RootStackParamList } from "../models/NavigationParamList";
 import { Travelers } from "../component/trip/Travelers";
 import * as SecureStore from 'expo-secure-store';
 import { AntDesign } from "@expo/vector-icons";
+import RadioForm from 'react-native-simple-radio-button';
+import i18n from '../../i18n';
 import { useTranslation } from "react-i18next";
+
 
 
 const styles = StyleSheet.create({
@@ -33,9 +36,22 @@ const styles = StyleSheet.create({
 type ParametresProps = NativeStackScreenProps<RootStackParamList, 'Parametres'>
 
 export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
-    const { trip } = route.params;
     const { t, i18n } = useTranslation("locale");
+    const [lang, setLang] = useState<string>("fr")
+    const { trip } = route.params;
+    type Items = {
+        label: string,
+        value: string
+    }
 
+    const items: Items[] = [
+        { label: "Anglais", value: "en" },
+        { label: "Français", value: "fr" },
+    ];
+
+    const update = (value: string) => {
+        i18n.changeLanguage(value);
+    }
 
     const disconnect = async () => {
         await SecureStore.deleteItemAsync('token');
@@ -65,6 +81,16 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
             </View>
 
             <Travelers trip={trip}/>
+            <RadioForm
+                    radio_props={items}
+                    initial={lang === "fr" ? 0 : 1}
+                    formHorizontal={true}
+                    buttonColor={'#365359'}
+                    selectedButtonColor={'#365359'}
+                    selectedLabelColor={'#365359'}
+                    labelColor={'#365359'}            
+                    onPress={(value: string) => {update(value)}}
+                />
 
             <View style={{width: "100%"}}>
                 <TouchableOpacity

@@ -19,6 +19,8 @@ import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import { InitParameters } from "@la-sectoblique/septoblique-service/dist/utils/Config";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import i18n from "./i18n";
+
+
 export default function App() {
   const [initialRoute, setInitalRoute] = useState<keyof RootStackParamList>();
 
