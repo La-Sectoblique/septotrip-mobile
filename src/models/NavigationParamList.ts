@@ -1,3 +1,5 @@
+import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point"
+import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step"
 import { TripOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Trip"
 
 export type RootStackParamList= {
@@ -5,12 +7,14 @@ export type RootStackParamList= {
     Register: undefined,
     Planification: { trip: TripOutput, isReadOnly: boolean },
     TripList: undefined,
+    Parametres: {trip: TripOutput}
 }
 
 
 export type RootTabParamList= {
-    Voyage: { trip: TripOutput },
-    Day: { trip: TripOutput },
-    Info: { trip: TripOutput },
-    Fichier: { trip: TripOutput}
+    Carte: { trip: TripOutput, pointToFocus?: PointOutput | StepOutput },
+    Planning: { trip: TripOutput },
+    Tache: { trip: TripOutput },
+    Fichier: { trip: TripOutput},
+    Journal: {trip: TripOutput}
 }

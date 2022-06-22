@@ -3,38 +3,69 @@ import { getPointsByDay } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { DayOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Day';
 import { PointOutput } from '@la-sectoblique/septoblique-service/dist/types/models/Point';
-import React, { useEffect } from 'react'
-import { Text, View } from 'react-native';
-import usePoints from '../../hook/usePoints';
+import React, { useEffect, useState } from 'react'
+import { Text, TouchableHighlight, View } from 'react-native';
+import Toast from "react-native-toast-message"
+import { Loader } from '../utils/Loader';
 
 interface PointDayListProps {
     day: DayOutput
+    gotoMap: (arg0: PointOutput) => void
 }
 
-export const PointDayList = ({ day }: PointDayListProps) => {
-    const [points, initPoint, addPoint, removePoint] = usePoints();
-    
+export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
+    const [points, setPoints] = useState<PointOutput[]>([] as PointOutput[]);
+
+    const [loading, setLoading] = useState<boolean>(true)
+
+    const handleClick = (point: PointOutput): void => {
+       gotoMap(point)
+    }
+
     useEffect(() => {
         getPointsByDay(day.id)
         .then((points: PointOutput[]) => {
-            initPoint(points)
+            setPoints(points)
+            setLoading(false)
         })
         .catch((err: ApiError) => {
-            console.log(JSON.stringify(err))
+            console.error(err)
+            Toast.show({
+                type: 'error',
+                text1: err.name,
+                text2: err.code + " " + err.message
+            })
+            setLoading(false)
         })
-        
     }, [])
 
+    if(loading)
+        return <Loader />
+
     if(points.length < 1)
-        return <Text>Aucun point lié à ce jour</Text>
+        return <Text></Text>
         
     return (
           <View style={{}}>
               {
                   points.map((point) => {
-                      return <Text key={point.id}>{point.title}: {point.description ? point.description : "Aucune description"}</Text>
+                      return <View key={point.id} style={{marginHorizontal: 2, marginVertical: 5}}>
+                        <TouchableHighlight
+                            underlayColor="#ccc"
+                            onPress={() =>
+                                handleClick(point)
+                            }
+                        >
+                            <>
+                                <Text>{point.title} </Text>
+                                { point.description && <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> }
+                            </>
+                        </TouchableHighlight>
+                          </View>
                   })
               }
           </View>
     )
 }
+
+
