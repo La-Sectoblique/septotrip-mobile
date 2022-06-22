@@ -196,6 +196,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
               style={styles.input}
               onChangeText={(password) => setPassword(password)}
               placeholder="Mot de passe..."
+              autoCapitalize='none'
               blurOnSubmit={false}
               secureTextEntry={true}
             />
