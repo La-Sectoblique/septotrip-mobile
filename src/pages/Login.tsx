@@ -128,6 +128,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
           style={styles.input}
           onChangeText={(email) => setEmail(email)}
           placeholder="Email..."
+          autoCapitalize='none'
           keyboardType="email-address"
           blurOnSubmit={false}
         />

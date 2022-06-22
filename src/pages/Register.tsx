@@ -185,6 +185,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
               onChangeText={(email) => setEmail(email)}
               placeholder="Email..."
               keyboardType="email-address"
+              autoCapitalize='none'
               blurOnSubmit={false}
             />
             
