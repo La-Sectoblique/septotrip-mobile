@@ -22,6 +22,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 import { AntDesign } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -46,6 +47,7 @@ type RegisterProps = NativeStackScreenProps<RootStackParamList, 'Register'>
 
 
 export const Register: React.FC<RegisterProps> = ({navigation}) => {
+  const { t, i18n } = useTranslation("locale");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -105,7 +107,8 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
       const expression = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
   
       if( !expression.test(String(email).toLowerCase())){
-        setError("L'email doit avoir un format valide")
+        let errorMessage:string={t("error.emailFormat")};
+        setError(errorMessage)
         setLoading(false)
         return
       }
@@ -121,7 +124,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
     setTimeout(() => {
       register(data)
         .then(() => {
-          setMessage("Utilisateur créer ! Connectez-vous !")
+          setMessage({t("createUser")})
           setEmail("");
           setPassword("");
           setFirstName("");
@@ -157,22 +160,22 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
 
       <View style={{}}>
         <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Prénom: {missingFirstName && <Error error="Prénom invalide ou manquant..." /> }</Text>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Prénom: {missingFirstName && <Error error={t("error.firstname")} /> }</Text>
           <TextInput
             style={styles.input}
             onChangeText={(firstName) => setFirstName(firstName)}
-            placeholder="Prénom..."
+            placeholder={t("firstname")}
             keyboardType="default"
             blurOnSubmit={false}
           />
         </View>
 
         <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Nom: {missingLastName && <Error error="Nom invalide ou manquant..." />}</Text>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Nom: {missingLastName && <Error error={t("error.name")} />}</Text>
           <TextInput
             style={styles.input}
             onChangeText={(lastName) => setLastName(lastName)}
-            placeholder="Nom..."
+            placeholder={t("name")}
             keyboardType="default"
             blurOnSubmit={false}
           />
@@ -180,11 +183,11 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         </View>
 
         <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Email: {missingEmail && <Error error="Email invalide ou manquant..." />}</Text>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Email: {missingEmail && <Error error={t("error.email")} />}</Text>
           <TextInput
             style={styles.input}
             onChangeText={(email) => setEmail(email)}
-            placeholder="Email..."
+            placeholder={t("email")}
             keyboardType="email-address"
             blurOnSubmit={false}
           />
@@ -192,11 +195,11 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         </View>
 
         <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Mot de passe: {missingPassword && <Error error="Mot de passe invalide ou manquant..." />}</Text>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Mot de passe: {missingPassword && <Error error={t("error.password")} />}</Text>
           <TextInput
             style={styles.input}
             onChangeText={(password) => setPassword(password)}
-            placeholder="Mot de passe..."
+            placeholder={t("password")}
             blurOnSubmit={false}
             secureTextEntry={true}
           />
@@ -209,7 +212,7 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
         onPress={handleSubmitButton}
         style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
         >
-        <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}} >{"S'inscrire"}</Text>
+        <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}} >{t("signup")}</Text>
       </TouchableOpacity>
 
       <Text>{message}</Text>

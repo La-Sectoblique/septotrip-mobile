@@ -8,6 +8,7 @@ import { getTodoEntriesByTripId } from "@la-sectoblique/septoblique-service";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
 import { TodoEntryOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Todo";
 import { Todo } from "../component/todoEntry/Todo";
+import { useTranslation } from "react-i18next";
 
 const styles = StyleSheet.create({
     page: {
@@ -20,7 +21,8 @@ type TripViewerTaskProps = NativeStackScreenProps<RootTabParamList, 'Tache'>
 
 export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
   const { trip } = route.params;
-  
+  const { t, i18n } = useTranslation("locale");
+
   const [loading, setLoading] = useState<boolean>(true)
   const [todoEntries, setTodoEntries] = useState<TodoEntryOutput[]>([] as TodoEntryOutput[]);
 
@@ -52,7 +54,7 @@ export const TripViewerTask: React.FC<TripViewerTaskProps> = ({route}) => {
 
   return (
       <View style={styles.page}>
-        <Text style={{fontSize: 20, marginStart: 10}}>Liste des taches</Text>
+        <Text style={{fontSize: 20, marginStart: 10}}>{t("taskList")}</Text>
         <FlatList
             data={todoEntries}
             renderItem={renderItem}

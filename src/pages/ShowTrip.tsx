@@ -29,12 +29,14 @@ import { RootTabParamList } from "../models/NavigationParamList";
 import { Loader } from "../component/utils/Loader";
 import { useIsFocused } from "@react-navigation/native";
 import { AntDesign, Feather } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 
 
 type ShowTripProps = NativeStackScreenProps<RootTabParamList, 'Carte'>
 
 export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
+  const { t, i18n } = useTranslation("locale");
   const isFocused= useIsFocused()
 
   const { trip, pointToFocus } = route.params
@@ -179,9 +181,9 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
         <View style={styles.container}>
         <Dropdown
           items={[
-            { label: "Etape", value: "step" },
-            { label: "Point d'intérêts", value: "point" },
-            { label: "Tout", value: "all" },
+            { label: {t("trip.step")}, value: "step" },
+            { label: {t("trip.point")}, value: "point" },
+            { label: {t("trip.all")}, value: "all" },
           ]}
           setCurrentValue={setFilter}
           currentValue={filter}

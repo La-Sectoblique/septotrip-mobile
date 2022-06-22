@@ -6,6 +6,7 @@ import { UserOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import React, { useState } from "react";
 import { View, Modal, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message"
+import { useTranslation } from "react-i18next";
   
   interface ModalAddLobBookentryProps {
     setModalVisible: (arg0: boolean) => void;
@@ -63,6 +64,7 @@ import Toast from "react-native-toast-message"
   });
   
   export const ModalAddLobBookentry = (props: ModalAddLobBookentryProps) => {
+    const { t, i18n } = useTranslation("locale");
     const {setModalVisible, modalVisible, user, trip} = props;
 
     const [title, setTitle] = useState<string>("");
@@ -112,7 +114,7 @@ import Toast from "react-native-toast-message"
                 style={styles.input}
                 onChangeText={setTitle}
                 value={title}
-                placeholder="Titre..."
+                placeholder={t("title")}
                 keyboardType="default"
                 blurOnSubmit={false}
             />
@@ -121,7 +123,7 @@ import Toast from "react-native-toast-message"
                 style={styles.input}
                 onChangeText={setMessage}
                 value={message}
-                placeholder="Message..."
+                placeholder={t("message")}
                 keyboardType="default"
                 blurOnSubmit={false}
                 multiline={true}
@@ -134,7 +136,7 @@ import Toast from "react-native-toast-message"
                   onPress={handleSendButton}
                   style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
-                  <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Envoyer</Text>
+                  <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>{t("send")}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -142,7 +144,7 @@ import Toast from "react-native-toast-message"
                   onPress={() => setModalVisible(!modalVisible)}
                   style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
-                  <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Fermer</Text>
+                  <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>{t("close")}</Text>
                 </TouchableOpacity>
             </View>
           </View>

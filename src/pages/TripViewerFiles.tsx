@@ -4,6 +4,7 @@ import { RootTabParamList } from "../models/NavigationParamList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Gallery } from "./Gallery";
 import { Document } from "./Document";
+import { useTranslation } from "react-i18next";
 
 const styles = StyleSheet.create({
     page: {
@@ -16,6 +17,7 @@ const styles = StyleSheet.create({
 type TripViewerFilesProps = NativeStackScreenProps<RootTabParamList, 'Fichier'>
 
 export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
+  const { t, i18n } = useTranslation("locale");
   const { trip } = route.params;
   
   const [isGallery, setIsGallery] = useState<boolean>(true);
@@ -32,7 +34,7 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
               : { backgroundColor: "#365359", borderColor: "#365359" }
             ]}
           >
-            <Text style={{fontSize: 24, color: "white", textAlign: "center"}}>Album</Text>
+            <Text style={{fontSize: 24, color: "white", textAlign: "center"}}>{t("album")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.5}
@@ -43,7 +45,7 @@ export const TripViewerFiles: React.FC<TripViewerFilesProps> = ({route}) => {
               : { backgroundColor: "#365359", borderColor: "#365359" }
             ]}
           >
-            <Text style={{fontSize: 24, color: "white", textAlign: "center"}}>Document</Text>
+            <Text style={{fontSize: 24, color: "white", textAlign: "center"}}>{t("document")}</Text>
           </TouchableOpacity>
         </View>
         <View style={{flex: 1}}>

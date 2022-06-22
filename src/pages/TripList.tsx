@@ -13,12 +13,14 @@ import { Loader } from "../component/utils/Loader"
 import { MaterialIcons } from "@expo/vector-icons"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DebugScript } from "../component/utils/DebugScript";
+import { useTranslation } from "react-i18next";
 
 type TripListProps = NativeStackScreenProps<RootStackParamList, 'TripList'>
 
 
 export const TripList: React.FC<TripListProps> = ({navigation}) => {
-    const [trips, setTrips] = useState<TripOutput[]>([] as TripOutput[]);
+  const { t, i18n } = useTranslation("locale");
+  const [trips, setTrips] = useState<TripOutput[]>([] as TripOutput[]);
     const [public_trips, setPublicTrips] = useState<TripOutput[]>([] as TripOutput[])
     const [started_trip, setStartedTrip] = useState<TripOutput>();
     const [refreshing, setRefreshing] = useState<boolean>(true)
@@ -35,8 +37,6 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
 
         if (supported) {
             await Linking.openURL(url);
-        }else{
-          console.log("cheh")
         }
     }
 
@@ -101,8 +101,8 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
         {/* <DebugScript /> */}
         <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
         <View>
-          <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Aucun voyage existe pour ce compte</Text>
-          <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>Utilisez le service Web pour créer un voyage</Text>
+          <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>{t("noTripForThisUser")}</Text>
+          <Text style={{textAlign: "center", fontSize: 24, fontWeight: "bold"}}>{t("useWebService")}</Text>
           <Text style={{
             textAlign: "center", 
             fontSize: 24, 
@@ -111,7 +111,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
             color: "#1B91BF"}}
             onPress={() => {gotoSite()}}
           >
-            Allez sur septotrip.com
+            {t("refresh")}
           </Text>
         </View>
 
@@ -120,7 +120,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
           onPress={() => fetchData()}
           style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
         >
-          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Rafraîchir</Text>
+          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>{t("refresh")}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -133,7 +133,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       {
         started_trip &&
         <View>
-          <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Voyage commencé</Text>
+          <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>{t("trip.started")}</Text>
 
           <TripDetails key={started_trip.id} trip={started_trip} navigation={navigation} started={true} have_started_trip={started_trip !== undefined} />
         </View>
@@ -141,7 +141,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       {
         trips.length > 0 &&
         <View style={{height: "50%"}}>
-          <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Mes voyages</Text>
+          <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>{t("trip.mine")}</Text>
           <FlatList
             data={trips}
             renderItem={renderItem}
@@ -156,7 +156,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       {
         public_trips.length > 0 &&
         <View style={{height: "40%"}}>
-          <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Voyages publics</Text>
+          <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>{t("trip.public")}</Text>
           <FlatList
             data={public_trips}
             renderItem={renderItem}

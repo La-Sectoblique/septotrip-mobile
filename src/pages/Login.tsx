@@ -133,7 +133,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
           keyboardType="email-address"
           blurOnSubmit={false}
         />
-        {missingEmail && <Error error="Email invalide ou manquant..." />}
+        {missingEmail && <Error error={t("error.email")} />}
         </View>
 
         <View>
@@ -141,12 +141,12 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
           <TextInput
             style={styles.input}
             onChangeText={(password) => setPassword(password)}
-            placeholder="Mot de passe..."
+            placeholder={t("password")}
             autoCapitalize='none'
             blurOnSubmit={false}
             secureTextEntry={true}
           />
-          {missingPassword && <Error error="Mot de passe manquant ou erroné..." /> }
+          {missingPassword && <Error error={t("wrong.password")}/> }
         </View>
         
         <TouchableOpacity
@@ -154,7 +154,7 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
           onPress={handleSubmitButton}
           style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
         >
-          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Se connecter</Text>
+          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>{t("signin")}</Text>
         </TouchableOpacity>
 
         
@@ -163,13 +163,13 @@ export const Login: React.FC<LoginProps> = ({route, navigation}) => {
       </View>
 
       <View style={{flexDirection: "row", justifyContent: "center"}}>
-          <Text>Si vous ne possédez pas de compte, </Text>
+          <Text>{t("noaccount")}</Text>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={handleRegisterButton}
             style={{}}
           >
-            <Text style={{color: "blue", textDecorationLine: "underline"}}>Inscrivez vous</Text>
+            <Text style={{color: "blue", textDecorationLine: "underline"}}>{t("signup")}</Text>
           </TouchableOpacity>
         </View>
       <StatusBar style="auto" />

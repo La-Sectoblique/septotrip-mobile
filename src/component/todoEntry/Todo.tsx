@@ -7,20 +7,25 @@ import Toast from "react-native-toast-message"
 
 import RadioForm from 'react-native-simple-radio-button';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
+import { useTranslation } from "react-i18next";
+
+
 interface EntryProps {
     todo: TodoEntryOutput,
     refresh: () => void
 }
 
 export const Todo = ({todo, refresh}: EntryProps) => {
+    const { t, i18n } = useTranslation("locale");
+
     type Items = {
         label: string,
         value: TodoState
     }
     const items: Items[] = [
-        { label: "A faire", value: TodoState.TODO },
-        { label: "En cours", value: TodoState.DOING },
-        { label: "Fini", value: TodoState.DONE },
+        { label: {t("todo.todo")}, value: TodoState.TODO },
+        { label: {t("todo.current")}, value: TodoState.DOING },
+        { label: {t("todo.done")}, value: TodoState.DONE },
     ];
 
     const onPress = (todo: TodoEntryOutput) => {
@@ -33,7 +38,7 @@ export const Todo = ({todo, refresh}: EntryProps) => {
             Toast.show({
                 type: 'success',
                 text1: res.title,
-                text2: "Passe à l'état: " + res.state
+                text2: {t("todo.nextState")} + res.state
               })
         })
         .catch((err: ApiError) => {

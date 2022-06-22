@@ -8,6 +8,7 @@ import { getAuthor, updateTrip } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { Author } from '@la-sectoblique/septoblique-service/dist/types/models/User';
 import { Loader } from '../utils/Loader';
+import { useTranslation } from "react-i18next";
 
 interface TripDetailsProps {
     trip: TripOutput,
@@ -18,6 +19,7 @@ interface TripDetailsProps {
 }
 
 export const TripDetails = ({trip, navigation, started, have_started_trip, is_public}: TripDetailsProps) => {
+    const { t, i18n } = useTranslation("locale");
 
     const [author, setAuthor] = useState<Author>({} as Author);
     const [loading, setLoading] = useState<boolean>(true)
@@ -82,7 +84,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
                         onPress={() => handlePressEvent(false)} 
                         style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                     >
-                        <Text style={{padding: 5, color: "white", textAlign: "center"}}>Continuer</Text>
+                        <Text style={{padding: 5, color: "white", textAlign: "center"}}>{t("continue")}</Text>
                     </TouchableOpacity>
                 </View>
                 :
@@ -91,7 +93,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
                         onPress={() => handlePressEvent(true)} 
                         style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                         >
-                        <Text style={{padding: 5, color: "white", textAlign: "center"}}>Visualiser</Text>
+                        <Text style={{padding: 5, color: "white", textAlign: "center"}}>{t("show")}</Text>
                     </TouchableOpacity>
                     {
                         (!have_started_trip && is_public === false) &&
@@ -99,7 +101,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
                             onPress={() => handlePressEvent(false)} 
                             style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                             >
-                            <Text style={{padding: 5, color: "white", textAlign: "center"}}>Commencer</Text>
+                            <Text style={{padding: 5, color: "white", textAlign: "center"}}>{t("start")}</Text>
                         </TouchableOpacity>
                     }
                    

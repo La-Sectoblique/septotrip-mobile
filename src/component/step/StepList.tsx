@@ -7,6 +7,7 @@ import {
 
 import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/models/Point";
+import { useTranslation } from "react-i18next";
 
 interface StepListProps {
   gotoMap: (arg0: StepOutput | PointOutput) => void;
@@ -14,7 +15,8 @@ interface StepListProps {
 }
 
 export const StepList = ({gotoMap, steps}: StepListProps) => {
- 
+  const { t, i18n } = useTranslation("locale");
+
   const handleClick = (step: StepOutput) => {
     gotoMap(step)
   };
@@ -22,14 +24,14 @@ export const StepList = ({gotoMap, steps}: StepListProps) => {
   if (steps.length == 0)
     return (
       <Text style={{ textAlign: "center", marginTop: 10 }}>
-        Ce voyage ne possède aucun étape
+        {t("trip.noStep")}
       </Text>
     );
 
   return (
     <>
       <Text style={{ marginVertical: 5, marginHorizontal: 5, fontSize: 24, textAlign: "center", fontWeight: "bold" }}>
-        Liste des étapes
+      {t("trip.stepList")}
       </Text>
 
       <ScrollView>

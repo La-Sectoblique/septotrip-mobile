@@ -17,7 +17,7 @@ import { RootStackParamList } from "../models/NavigationParamList";
 import { Travelers } from "../component/trip/Travelers";
 import * as SecureStore from 'expo-secure-store';
 import { AntDesign } from "@expo/vector-icons";
-
+import { useTranslation } from "react-i18next";
 
 
 const styles = StyleSheet.create({
@@ -34,6 +34,7 @@ type ParametresProps = NativeStackScreenProps<RootStackParamList, 'Parametres'>
 
 export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
     const { trip } = route.params;
+    const { t, i18n } = useTranslation("locale");
 
 
     const disconnect = async () => {
@@ -73,7 +74,7 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
                     }}
                     style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
-                <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Retour à la liste de voyage</Text>
+                <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>{t("backToTripList")}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -81,7 +82,7 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
                     onPress={() => disconnect()}
                     style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
                 >
-                <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Se déconnecter</Text>
+                <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>{t("signout")}</Text>
                 </TouchableOpacity>
             </View>
             <StatusBar style="auto" />

@@ -14,6 +14,7 @@ import MapView, {
 } from "react-native-maps";
 import { FileList } from "../trip/FileList";
 import { Loader } from "../utils/Loader";
+import { useTranslation } from "react-i18next";
 
 interface PathDetailsProps {
   origin: StepOutput;
@@ -21,6 +22,8 @@ interface PathDetailsProps {
 }
 
 export const PathDetails = ({origin, path}: PathDetailsProps) => {
+  const { t, i18n } = useTranslation("locale");
+
   const [destination, setDestination] = useState<StepOutput>({} as StepOutput);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -128,7 +131,7 @@ export const PathDetails = ({origin, path}: PathDetailsProps) => {
             files.length > 0 
             ? <FileList files={files} showWebView={false} refresh={_refresh}/>
             // eslint-disable-next-line react/no-unescaped-entities
-            : <Text style={{textAlign: "center", margin: 5}}>Aucun fichier n'est lié à cette étape</Text>
+            : <Text style={{textAlign: "center", margin: 5}}>{t("stepNoFile")}</Text>
       }
     </View>
   );

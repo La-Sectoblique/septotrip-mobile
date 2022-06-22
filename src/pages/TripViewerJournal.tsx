@@ -13,6 +13,7 @@ import { Loader } from '../component/utils/Loader';
 import { ModalAddLobBookentry } from '../component/utils/ModalAddLogBookEntry';
 import { RootTabParamList } from '../models/NavigationParamList';
 import Toast from "react-native-toast-message"
+import { useTranslation } from "react-i18next";
 
 
 type TripViewerJournalProps = NativeStackScreenProps<RootTabParamList, 'Journal'>
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
 
 export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) => {
     const { trip } = route.params
+    const { t, i18n } = useTranslation("locale");
 
     const [user, setUser] = useState<UserOutput>({} as UserOutput);
     const [entries, setEntries] = useState<LogbookEntryOutput[]>([] as LogbookEntryOutput[])
@@ -110,7 +112,7 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
             onPress={() => setModalVisible(true)}
             style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
             >
-                <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Ajouter</Text>
+                <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>{t("add")}</Text>
             </TouchableOpacity>
 
           </View>

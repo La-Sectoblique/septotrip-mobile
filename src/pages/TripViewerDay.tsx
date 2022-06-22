@@ -12,10 +12,12 @@ import { StepDayList } from '../component/step/StepDayList';
 import { Loader } from '../component/utils/Loader';
 import { RootTabParamList } from '../models/NavigationParamList';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useTranslation } from "react-i18next";
 
 type TripViewerDayProps = NativeStackScreenProps<RootTabParamList, 'Planning'>
 
 export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }) => {
+    const { t, i18n } = useTranslation("locale");
     const { trip } = route.params
 
     const [steps, setSteps] = useState<StepOutput[]>([] as StepOutput[])
@@ -58,13 +60,13 @@ export const TripViewerDay: React.FC<TripViewerDayProps> = ({route, navigation }
             }}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={_refresh}/>}
         >
-        <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 20}}>{"Aucune étape n'est disponible, veuillez planifier votre voyage d'abord sur le site internet"}</Text>
+        <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 20}}>{t("trip.noStepWeb")}</Text>
         </ScrollView>)
         
     return (
         <PTRView onRefresh={() => _refresh()}>
           <View style={{}}>
-              <Text style={{textAlign: 'center', marginBottom:10}}>Cliquez pour accédez sur la map</Text>
+              <Text style={{textAlign: 'center', marginBottom:10}}>{t("openMap")}</Text>
               {
                   steps.map((step) => {
                       return <StepDayList 

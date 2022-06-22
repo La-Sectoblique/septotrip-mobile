@@ -14,6 +14,7 @@ import { View, Text, Modal, StyleSheet, Pressable } from "react-native";
 import { PathDetails } from "../path/PathDetails";
 import { PointDetails } from "../point/PointDetails";
 import { StepDetails } from "../step/StepDetails";
+import { useTranslation } from "react-i18next";
 
 interface StepDetailsProps {
   activeElement:
@@ -72,6 +73,8 @@ const styles = StyleSheet.create({
 });
 
 export const ModalDetails = ({activeElement, setModalVisible, modalVisible}: StepDetailsProps) => {
+  const { t, i18n } = useTranslation("locale");
+
   if (activeElement == null) return <></>;
   return (
     <Modal
@@ -99,7 +102,7 @@ export const ModalDetails = ({activeElement, setModalVisible, modalVisible}: Ste
             style={[styles.button, styles.buttonClose]}
             onPress={() => setModalVisible(!modalVisible)}
           >
-            <Text style={styles.textStyle}>Fermer</Text>
+            <Text style={styles.textStyle}>{t("close")}</Text>
           </Pressable>
         </View>
       </View>

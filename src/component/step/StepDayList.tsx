@@ -8,6 +8,7 @@ import Toast from "react-native-toast-message"
 
 import { PointDayList } from '../point/PointDayList';
 import { Loader } from '../utils/Loader';
+import { useTranslation } from "react-i18next";
 
 interface StepDayListProps {
     step: StepOutput
@@ -16,6 +17,7 @@ interface StepDayListProps {
 }
 
 export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) => {
+    const { t, i18n } = useTranslation("locale");
     const [days, setDays] = useState<DayOutput[]>([] as DayOutput[]);
     const [prettier_dates, setPrettierDate] = useState<string[]>([] as string[])
     const [loading, setLoading] = useState<boolean>(true)
@@ -85,7 +87,7 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
         return <Loader />
 
     if(days.length < 1)
-        return <Text>Aucun jour disponible</Text>
+        return <Text>{t("trip.day")}</Text>
      
     return (
           <View style={{}}>
@@ -102,7 +104,7 @@ export const StepDayList = ({ step, gotoMap, started_trip}: StepDayListProps) =>
               {
                   days.map((day, i) => {
                     return <View key={day.id} style={{borderWidth: 1, borderRadius: 15, padding: 10, margin: 10, width: "40%"}}>
-                    {!started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>Jour: {day.number}</Text> }
+                    {!started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>{t("trip.day")} {day.number}</Text> }
                     {started_trip && <Text style={{textAlign: 'center', textDecorationLine: 'underline'}}>{ prettier_dates[i] }</Text> }
                     <PointDayList day={day} gotoMap={gotoMap}/>
                     </View>

@@ -4,12 +4,15 @@ import { PointOutput } from "@la-sectoblique/septoblique-service/dist/types/mode
 import React, { useEffect, useState } from "react"
 import { View, Text, Dimensions } from "react-native"
 import { FileList } from "../trip/FileList"
+import { useTranslation } from "react-i18next";
 
 interface PointDetailsProps {
     point: PointOutput
 }
 
 export const PointDetails = ({point}: PointDetailsProps) => {
+    const { t, i18n } = useTranslation("locale");
+
     if(point == null) return <></>
     
     const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
@@ -27,7 +30,7 @@ export const PointDetails = ({point}: PointDetailsProps) => {
             files.length > 0 
             ? <FileList files={files} showWebView={false}/>
             // eslint-disable-next-line react/no-unescaped-entities
-            : <Text style={{textAlign: "center", margin: 5}}>Aucun fichier n'est lié à ce point</Text>
+            : <Text style={{textAlign: "center", margin: 5}}>{t("pointNoFile")}</Text>
         }
         </View>
     );

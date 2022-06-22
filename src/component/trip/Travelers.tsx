@@ -10,12 +10,14 @@ import { Loader } from '../utils/Loader';
 import { ApiResponse } from '@la-sectoblique/septoblique-service/dist/types/utils/Api';
 
 import { Error } from "../utils/Error"
+import { useTranslation } from "react-i18next";
 
 interface TravelersProps {
     trip: TripOutput,
 }
 
 export const Travelers = ({trip}: TravelersProps) => {
+    const { t, i18n } = useTranslation("locale");
     const [travelers, setTravelers] = useState<UserOutput[]>([] as UserOutput[]);
     const [emailNewTraveler, setEmailNewTraveler] = useState<string>();
     const [error, setError] = useState<string>("");
@@ -27,7 +29,7 @@ export const Travelers = ({trip}: TravelersProps) => {
         setError("");
         setResponse("");
         if(!emailNewTraveler || emailNewTraveler.length == 0){
-            setError("L'email ne peut pas être vide")
+            setError({t("error.emailFormat")})
             return
         }
 
@@ -35,7 +37,7 @@ export const Travelers = ({trip}: TravelersProps) => {
         const expression = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
 
         if( !expression.test(String(emailNewTraveler).toLowerCase())){
-            setError("L'email doit avoir un format valide")
+            setError({t("error.emailFormat")})
             return
         }
 
@@ -89,7 +91,7 @@ export const Travelers = ({trip}: TravelersProps) => {
     return (
         <View style={{flex: 1}}>
             <View style={{height: "40%", margin: 10, flexWrap: "wrap", borderWidth: 1, padding: 5, borderRadius: 10, backgroundColor: "rgba(27,145,191, 0.5)", borderColor: "rgba(27,145,191, 0.5)" }}>
-                    <Text style={{fontSize: 20, width: "100%"}}>Liste des voyageurs:</Text>
+                    <Text style={{fontSize: 20, width: "100%"}}>{t("trip.travelersList")}</Text>
                     {
                         travelers.map((traveler) => <Text key={traveler.id} style={{marginStart: 10}}>{traveler.firstName} {traveler.lastName}</Text>)
                     }
@@ -106,7 +108,7 @@ export const Travelers = ({trip}: TravelersProps) => {
                 }}
                 onChangeText={(email) => setEmailNewTraveler(email)}
                 value={emailNewTraveler}
-                placeholder="Email de l'utilisateur à ajouter..."
+                placeholder={t("trip.addTravelerEmail")}
                 keyboardType="email-address"
                 blurOnSubmit={false}
                 />

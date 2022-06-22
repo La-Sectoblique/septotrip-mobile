@@ -4,6 +4,7 @@ import { StepOutput } from "@la-sectoblique/septoblique-service/dist/types/model
 import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import { FileList } from "../trip/FileList";
+import { useTranslation } from "react-i18next";
 
 interface StepDetailsProps {
   step: StepOutput;
@@ -11,6 +12,8 @@ interface StepDetailsProps {
 
 
 export const StepDetails = ({step}: StepDetailsProps) => {
+  const { t, i18n } = useTranslation("locale");
+
   if (step == null) return <></>;
 
   const [files, setFiles] = useState<FileMetadataOutput[]>([] as FileMetadataOutput[])
@@ -26,7 +29,7 @@ export const StepDetails = ({step}: StepDetailsProps) => {
             files.length > 0 
             ? <FileList files={files} showWebView={false}/>
             // eslint-disable-next-line react/no-unescaped-entities
-            : <Text style={{textAlign: "center", margin: 5}}>Aucun fichier n'est lié à cette étape</Text>
+            : <Text style={{textAlign: "center", margin: 5}}>{t("trip.stepNoFile")}</Text>
       }
     </View>
   );
