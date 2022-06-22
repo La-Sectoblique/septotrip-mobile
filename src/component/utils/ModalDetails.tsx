@@ -10,7 +10,7 @@ import {
   StepOutput,
 } from "@la-sectoblique/septoblique-service/dist/types/models/Step";
 import React from "react";
-import { View, Text, Modal, StyleSheet, Pressable } from "react-native";
+import { View, Text, Modal, StyleSheet, Pressable, } from "react-native";
 import { PathDetails } from "../path/PathDetails";
 import { PointDetails } from "../point/PointDetails";
 import { StepDetails } from "../step/StepDetails";

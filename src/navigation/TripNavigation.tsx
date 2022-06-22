@@ -65,7 +65,7 @@ export const TripNavigation: React.FC<TripNavigationProps> = ({route, navigation
         <Tab.Screen name="Tache" component={TripViewerTask} initialParams={{trip: trip}} />
         <Tab.Screen name="Planning" component={TripViewerDay} initialParams={{trip: trip}} />
         { !isReadOnly && <Tab.Screen name="Journal" component={TripViewerJournal} initialParams={{trip: trip}} options={{headerTitle: trip.name}}/> }
-        { !isReadOnly && <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} />}
+        <Tab.Screen name="Fichier" component={TripViewerFiles} initialParams={{trip: trip}} />
       </Tab.Navigator>
   );
 }
