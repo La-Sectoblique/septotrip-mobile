@@ -8,6 +8,7 @@ import { getAuthor, updateTrip } from '@la-sectoblique/septoblique-service';
 import ApiError from '@la-sectoblique/septoblique-service/dist/types/errors/ApiError';
 import { Author } from '@la-sectoblique/septoblique-service/dist/types/models/User';
 import { Loader } from '../utils/Loader';
+import { me } from '@la-sectoblique/septoblique-service/dist/data/user/Login';
 
 interface TripDetailsProps {
     trip: TripOutput,
@@ -21,6 +22,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
 
     const [author, setAuthor] = useState<Author>({} as Author);
     const [loading, setLoading] = useState<boolean>(true)
+    const [isMe, setIsMe] = useState<boolean>(false)
     const handlePressEvent = (isReadOnly: boolean) => {
         if(!started && !isReadOnly){
             updateTrip(trip.id, {startDate: new Date(Date.now())})
@@ -47,20 +49,25 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
     }
 
     useEffect(() => {
-        getAuthor(trip.id)
-        .then((res: Author) => {
-            setLoading(false)
-            setAuthor(res)
-        })
-        .catch((err: ApiError) => {
-            console.error(err)
-            Toast.show({
-                type: 'error',
-                text1: err.name,
-                text2: err.code + " " + err.message
-            })
-            setLoading(false)
-        })
+        const fetchData = async () => {
+            try {
+                const author = await getAuthor(trip.id)
+                setAuthor(author)
+                const my_user = await me();
+                setIsMe(my_user.id === author.id)
+                setLoading(false)
+            }catch (err) {
+                console.error(err)
+                Toast.show({
+                    type: 'error',
+                    text1: (err as ApiError).name,
+                    text2: (err as ApiError).code + " " + (err as ApiError).message
+                })
+            }
+        }
+        
+        fetchData()
+        
     }, [])
 
     if(loading)
@@ -94,7 +101,7 @@ export const TripDetails = ({trip, navigation, started, have_started_trip, is_pu
                         <Text style={{padding: 5, color: "white", textAlign: "center"}}>Visualiser</Text>
                     </TouchableOpacity>
                     {
-                        (!have_started_trip && is_public === false) &&
+                        ((!have_started_trip && is_public === false) || isMe) &&
                         <TouchableOpacity 
                             onPress={() => handlePressEvent(false)} 
                             style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
