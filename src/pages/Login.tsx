@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     width: (Dimensions.get("window").width * 95) / 100,
-    fontSize: 25,
+    fontSize: 20,
     borderWidth: 1,
     borderRadius: 10,
   },

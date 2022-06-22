@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     width: (Dimensions.get("window").width * 95) / 100,
-    fontSize: 25,
+    fontSize: 20,
     borderWidth: 1,
     borderRadius: 10,
   },
@@ -151,69 +151,68 @@ export const Register: React.FC<RegisterProps> = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.page}
     >
+        <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
+        <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 32}}>Inscription</Text>
 
-      <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
-      <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 32}}>Inscription</Text>
+        <View style={{}}>
+          <View>
+            <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Prénom: {missingFirstName && <Error error="Prénom invalide ou manquant..." /> }</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(firstName) => setFirstName(firstName)}
+              placeholder="Prénom..."
+              keyboardType="default"
+              blurOnSubmit={false}
+            />
+          </View>
 
-      <View style={{}}>
-        <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Prénom: {missingFirstName && <Error error="Prénom invalide ou manquant..." /> }</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(firstName) => setFirstName(firstName)}
-            placeholder="Prénom..."
-            keyboardType="default"
-            blurOnSubmit={false}
-          />
-        </View>
+          <View>
+            <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Nom: {missingLastName && <Error error="Nom invalide ou manquant..." />}</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(lastName) => setLastName(lastName)}
+              placeholder="Nom..."
+              keyboardType="default"
+              blurOnSubmit={false}
+            />
+            
+          </View>
 
-        <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Nom: {missingLastName && <Error error="Nom invalide ou manquant..." />}</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(lastName) => setLastName(lastName)}
-            placeholder="Nom..."
-            keyboardType="default"
-            blurOnSubmit={false}
-          />
+          <View>
+            <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Email: {missingEmail && <Error error="Email invalide ou manquant..." />}</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(email) => setEmail(email)}
+              placeholder="Email..."
+              keyboardType="email-address"
+              blurOnSubmit={false}
+            />
+            
+          </View>
+
+          <View>
+            <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Mot de passe: {missingPassword && <Error error="Mot de passe invalide ou manquant..." />}</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={(password) => setPassword(password)}
+              placeholder="Mot de passe..."
+              blurOnSubmit={false}
+              secureTextEntry={true}
+            />
           
+          </View>
         </View>
+        <Error error={error} />
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={handleSubmitButton}
+          style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+          >
+          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}} >{"S'inscrire"}</Text>
+        </TouchableOpacity>
 
-        <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Email: {missingEmail && <Error error="Email invalide ou manquant..." />}</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(email) => setEmail(email)}
-            placeholder="Email..."
-            keyboardType="email-address"
-            blurOnSubmit={false}
-          />
-          
-        </View>
-
-        <View>
-          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Mot de passe: {missingPassword && <Error error="Mot de passe invalide ou manquant..." />}</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(password) => setPassword(password)}
-            placeholder="Mot de passe..."
-            blurOnSubmit={false}
-            secureTextEntry={true}
-          />
-        
-        </View>
-      </View>
-      <Error error={error} />
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={handleSubmitButton}
-        style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
-        >
-        <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}} >{"S'inscrire"}</Text>
-      </TouchableOpacity>
-
-      <Text>{message}</Text>
-      <StatusBar style="auto" />
+        <Text>{message}</Text>
+        <StatusBar style="auto" />
     </KeyboardAvoidingView>
   );
 };
