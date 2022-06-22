@@ -181,9 +181,9 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
         <View style={styles.container}>
         <Dropdown
           items={[
-            { label: {t("trip.step")}, value: "step" },
-            { label: {t("trip.point")}, value: "point" },
-            { label: {t("trip.all")}, value: "all" },
+            { label: t("trip.step"), value: "step" },
+            { label: t("trip.point"), value: "point" },
+            { label: t("trip.all"), value: "all" },
           ]}
           setCurrentValue={setFilter}
           currentValue={filter}

@@ -23,9 +23,9 @@ export const Todo = ({todo, refresh}: EntryProps) => {
         value: TodoState
     }
     const items: Items[] = [
-        { label: {t("todo.todo")}, value: TodoState.TODO },
-        { label: {t("todo.current")}, value: TodoState.DOING },
-        { label: {t("todo.done")}, value: TodoState.DONE },
+        { label: t("todo.todo"), value: TodoState.TODO },
+        { label: t("todo.current"), value: TodoState.DOING },
+        { label: t("todo.done"), value: TodoState.DONE },
     ];
 
     const onPress = (todo: TodoEntryOutput) => {
@@ -38,7 +38,7 @@ export const Todo = ({todo, refresh}: EntryProps) => {
             Toast.show({
                 type: 'success',
                 text1: res.title,
-                text2: {t("todo.nextState")} + res.state
+                text2: t("todo.nextState") + res.state
               })
         })
         .catch((err: ApiError) => {

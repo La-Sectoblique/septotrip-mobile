@@ -1,9 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import { fr, en } from "./lang";
-
-// import { fr, en, de } from "./translations";
+import { de, en, fi, fr, sv } from "./lang";
 
 i18n
   // detect user language
@@ -24,8 +22,11 @@ i18n
     ns: ["locale"],
     defaultNS: "locale",
     resources: {
-      fr: { fr },
+      de: { de },
       en: { en },
+      fi: { fi },
+      fr: { fr },
+      sv: { sv },
     },
   });
 
