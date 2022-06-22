@@ -18,7 +18,6 @@ import { Travelers } from "../component/trip/Travelers";
 import * as SecureStore from 'expo-secure-store';
 import { AntDesign } from "@expo/vector-icons";
 import RadioForm from 'react-native-simple-radio-button';
-import i18n from '../../i18n';
 import { useTranslation } from "react-i18next";
 
 
@@ -86,8 +85,6 @@ export const Parametres: React.FC<ParametresProps> = ({route, navigation}) => {
                     initial={lang === "fr" ? 0 : 1}
                     formHorizontal={true}
                     buttonColor={'#365359'}
-                    selectedButtonColor={'#365359'}
-                    selectedLabelColor={'#365359'}
                     labelColor={'#365359'}            
                     onPress={(value: string) => {update(value)}}
                 />

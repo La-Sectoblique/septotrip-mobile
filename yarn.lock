@@ -2043,6 +2043,14 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native-simple-radio-button@^2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@types/react-native-simple-radio-button/-/react-native-simple-radio-button-2.7.2.tgz#f2f4f218b61514aa9a71f1d268a1e1df33fd3fd2"
+  integrity sha512-iH/EBAtH2XznNvh+eCNeIl2c1fW5ZGGe6XC4qcNCiqO7oBHVQuyCTrtg+xEN3uxwxxYFb8EXa0hez1UqOKSJiw==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.10":
   version "6.4.10"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.10.tgz#9bfd6e64dd37b8119425496b5e53ff91d034efa9"

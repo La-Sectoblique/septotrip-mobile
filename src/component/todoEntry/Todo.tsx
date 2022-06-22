@@ -71,8 +71,6 @@ export const Todo = ({todo, refresh}: EntryProps) => {
                     initial={todo.state == TodoState.TODO ? 0 : todo.state == TodoState.DOING ? 1 : 2}
                     formHorizontal={true}
                     buttonColor={'#365359'}
-                    selectedButtonColor={'#365359'}
-                    selectedLabelColor={'#365359'}
                     labelColor={'#365359'}            
                     onPress={(value: TodoState) => {update(todo, value)}}
                 />
