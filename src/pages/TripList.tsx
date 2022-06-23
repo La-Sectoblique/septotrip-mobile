@@ -95,7 +95,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   if(refreshing)
     return <Loader />
     
-  if (trips.length == 0 && !started_trip)
+  if ((trips.length == 0 && public_trips.length == 0) && !started_trip)
     return (
       <View style={{flex: 1, justifyContent: "space-evenly", alignItems: "center"}}>
         {/* <DebugScript /> */}

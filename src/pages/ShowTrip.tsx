@@ -119,7 +119,6 @@ export const ShowTrip: React.FC<ShowTripProps> = ({route, navigation}) => {
       width: Dimensions.get("window").width,
       height: Dimensions.get("window").height,
 
-      backgroundColor: "tomato",
     },
     map: {
       flex: 1,

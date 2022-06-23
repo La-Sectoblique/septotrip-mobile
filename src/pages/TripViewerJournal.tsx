@@ -72,7 +72,7 @@ export const TripViewerJournal: React.FC<TripViewerJournalProps> = ({ route }) =
 
     
     useEffect(() => {
-
+        //TODO: getAuthorLobBookEntry
         me()
         .then((res: UserOutput) => setUser(res))
         .catch((err: ApiError) => {
