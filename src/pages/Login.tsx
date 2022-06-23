@@ -6,12 +6,17 @@ import {
   Text,
   TextInput,
   Dimensions,
+  Image,
+  View,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message"
 
-import { login } from "@la-sectoblique/septoblique-service";
+import { getUserTrips, login } from "@la-sectoblique/septoblique-service";
 import { LoginCredentials } from "@la-sectoblique/septoblique-service/dist/types/utils/Credentials";
 import { Error } from "../component/utils/Error";
 import ApiError from "@la-sectoblique/septoblique-service/dist/types/errors/ApiError";
@@ -19,36 +24,39 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/NavigationParamList";
 import {Loader} from '../component/utils/Loader';
 
+import { me } from "@la-sectoblique/septoblique-service/dist/data/user/Login";
+
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#F5FCFF",
+    alignItems: "center",
+    justifyContent: "space-evenly"
   },
   input: {
-    padding: 5,
-    margin: 5,
+    padding: 10,
+    margin: 10,
     width: (Dimensions.get("window").width * 95) / 100,
-    fontSize: 25,
+    fontSize: 20,
     borderWidth: 1,
+    borderRadius: 10,
   },
 });
 
 type LoginProps = NativeStackScreenProps<RootStackParamList, 'Login'>
 
-export const Login: React.FC<LoginProps> = (props) => {
+export const Login: React.FC<LoginProps> = ({route, navigation}) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
   const [missingEmail, setMissingEmail] = useState<boolean>(false);
   const [missingPassword, setMissingPassword] = useState<boolean>(false);
 
+
   const handleRegisterButton = () => {
-    props.navigation.navigate("Register");
+    navigation.replace("Register");
   };
 
   const handleSubmitButton = () => {
@@ -56,52 +64,50 @@ export const Login: React.FC<LoginProps> = (props) => {
     setMissingEmail(false);
     setMissingPassword(false);
 
-    // if(password.length === 0)
-    //   setMissingPassword(true)
+    if(password.length === 0)
+      setMissingPassword(true)
 
-    // if(email.length === 0)
-    //   setMissingEmail(true)
+    if(email.length === 0)
+      setMissingEmail(true)
 
-    // if(email.length === 0 || password.length === 0){
-    //   setLoading(false)
-    //   return
-    // }
-
-    // const data: LoginCredentials = {
-    //   email: email,
-    //   password: password
-    // }
-    //DEBUG
-
-    // const data: LoginCredentials = {<
-    //   email: "test@ladwein.fr",
-    //   password: "1234"
-    // }
+    if(email.length === 0 || password.length === 0){
+      setLoading(false)
+      return
+    }
 
     const data: LoginCredentials = {
-      email: "jean",
-      password: "jean",
-    };
+      email: email,
+      password: password
+    }
+
 
     //Execute register function after one second to see loading page
-    setTimeout(() => {
-      login(data)
-        .then(() => {
-          props.navigation.navigate('TripList');
-          setLoading(false)
+    login(data)
+      .then(async (res) => {
+        const user_trips = await getUserTrips()
+        
+        setEmail("");
+        setPassword("");
+        setLoading(false)
+        if (user_trips.filter(trip => trip.startDate != undefined).length > 0){
+          navigation.replace("Planification", {trip: user_trips[0], isReadOnly: false})
+        }
+          
+        else
+          navigation.replace('TripList');
+      })
+      .catch((err: ApiError) => {
+        console.error(err)
+
+        Toast.show({
+          type: 'error',
+          text1: err.name,
+          text2: err.code + " " + err.message,
         })
-        .catch((err: ApiError) => {
-          console.log(JSON.stringify(err));
-          if (err.code === 404) setError("Utilisateur inexistant");
-          else setError("Une erreur s'est produite");
-          //TODO erreur 400 mauvais mdp
-        })
-        .finally(() => {
-          setEmail("");
-          setPassword("");
-          setLoading(false);
-        });
-    }, 1000);
+
+        setLoading(false)
+      })
+
   };
 
   if (loading)
@@ -109,48 +115,63 @@ export const Login: React.FC<LoginProps> = (props) => {
 
 
   return (
-    <SafeAreaView style={styles.page}>
-      <TextInput
-        style={styles.input}
-        onChangeText={(email) => setEmail(email)}
-        placeholder="Email..."
-        keyboardType="email-address"
-        blurOnSubmit={false}
-      />
-      {missingEmail ? <Error error="Email invalide ou manquant..." /> : <></>}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.page}
+    >      
+        <Image source={require("../../assets/splash.png")} style={{resizeMode: 'contain', aspectRatio: 4}}/>
 
-      <TextInput
-        style={styles.input}
-        onChangeText={(password) => setPassword(password)}
-        placeholder="Mot de passe..."
-        blurOnSubmit={false}
-        secureTextEntry={true}
-      />
-      {missingPassword ? (
-        <Error error="Mot de passe manquant ou erroné..." />
-      ) : (
-        <></>
-      )}
+      <View style={{alignItems: "center"}}>
+        <View>
+        <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Adresse Mail: </Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(email) => setEmail(email)}
+          placeholder="Email..."
+          autoCapitalize='none'
+          keyboardType="email-address"
+          blurOnSubmit={false}
+        />
+        {missingEmail && <Error error="Email invalide ou manquant..." />}
+        </View>
 
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={handleSubmitButton}
-        style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
-      >
-        <Text>Se connecter</Text>
-      </TouchableOpacity>
+        <View>
+          <Text style={{marginStart: 10, fontWeight: "bold", fontSize: 20}}>Mot de passe: </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={(password) => setPassword(password)}
+            placeholder="Mot de passe..."
+            autoCapitalize='none'
+            blurOnSubmit={false}
+            secureTextEntry={true}
+          />
+          {missingPassword && <Error error="Mot de passe manquant ou erroné..." /> }
+        </View>
+        
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={handleSubmitButton}
+          style={{ borderWidth: 1, borderRadius: 20, paddingHorizontal: 5, paddingVertical: 1, margin: 10 ,width: "95%", backgroundColor: "#1B91BF", borderColor: "#1B91BF" }}
+        >
+          <Text style={{fontSize: 24, padding: 5, color: "white", textAlign: "center"}}>Se connecter</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={handleRegisterButton}
-        style={{ borderWidth: 1, paddingHorizontal: 5, paddingVertical: 1 }}
-      >
-        <Text>Inscris toi</Text>
-      </TouchableOpacity>
+        
 
-      <Text>{message}</Text>
-      <Error error={error} />
+        <Text>{message}</Text>
+      </View>
+
+      <View style={{flexDirection: "row", justifyContent: "center"}}>
+          <Text>Si vous ne possédez pas de compte, </Text>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={handleRegisterButton}
+            style={{}}
+          >
+            <Text style={{color: "blue", textDecorationLine: "underline"}}>Inscrivez vous</Text>
+          </TouchableOpacity>
+        </View>
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
