@@ -127,7 +127,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
   
   
   return (
-    <View>
+    <View style={{flex: 1}}>
       {/* <DebugScript /> */}
 
       {
@@ -140,7 +140,7 @@ export const TripList: React.FC<TripListProps> = ({navigation}) => {
       }
       {
         trips.length > 0 &&
-        <View style={{height: "50%"}}>
+        <View style={{height: "40%"}}>
           <Text style={{ textAlign: "left", marginVertical: 10,marginStart: 10, fontWeight: "bold", fontSize: 24 }}>Mes voyages</Text>
           <FlatList
             data={trips}
