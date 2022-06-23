@@ -52,14 +52,12 @@ export const PointDayList = ({ day, gotoMap }: PointDayListProps) => {
                       return <View key={point.id} style={{marginHorizontal: 2, marginVertical: 5}}>
                         <TouchableHighlight
                             underlayColor="#ccc"
-                            onPress={() =>
-                                handleClick(point)
-                            }
+                            onPress={() => handleClick(point)}
                         >
-                            <>
-                                <Text>{point.title} </Text>
-                                { point.description && <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> }
-                            </>
+                            <View>
+                                <Text>{point.title}</Text>
+                                { point.description ? <Text style={{fontStyle: 'italic'}}>{ point.description }</Text> : <></>}
+                            </View>
                         </TouchableHighlight>
                           </View>
                   })

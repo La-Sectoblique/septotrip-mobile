@@ -121,7 +121,7 @@ import Toast from "react-native-toast-message"
                 style={styles.input}
                 onChangeText={setMessage}
                 value={message}
-                placeholder="Message..."
+                placeholder="Description..."
                 keyboardType="default"
                 blurOnSubmit={false}
                 multiline={true}
